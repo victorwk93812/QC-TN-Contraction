@@ -1,0 +1,23 @@
+{
+ "schema": 1,
+ "id": "F05",
+ "kind": "static",
+ "meta": {
+  "title": "Treewidth spectrum"
+ },
+ "nodes": {},
+ "edges": [],
+ "tw": {
+  "tree": 1,
+  "cycle": 2,
+  "grid": 4,
+  "clique": 5
+ },
+ "n": {
+  "tree": 7,
+  "cycle": 8,
+  "grid": 16,
+  "clique": 6
+ },
+ "grid_L": 4
+}

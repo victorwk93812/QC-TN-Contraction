@@ -1,0 +1,92 @@
+{
+ "schema": 1,
+ "id": "F06_ring",
+ "meta": {
+  "title": "MinFill on the ring's index graph",
+  "rule": "minfill",
+  "seed": 0,
+  "label_mode": "fill"
+ },
+ "nodes": {
+  "i": [
+   340.0,
+   80.0
+  ],
+  "l": [
+   290.0,
+   130.0
+  ],
+  "j": [
+   390.0,
+   130.0
+  ],
+  "k": [
+   340.0,
+   180.0
+  ]
+ },
+ "edges": [
+  [
+   "i",
+   "l"
+  ],
+  [
+   "i",
+   "j"
+  ],
+  [
+   "l",
+   "k"
+  ],
+  [
+   "j",
+   "k"
+  ]
+ ],
+ "kind": "elimination",
+ "steps": [
+  {
+   "elim": "k",
+   "nbrs": [
+    "j",
+    "l"
+   ],
+   "fill": [
+    [
+     "j",
+     "l"
+    ]
+   ],
+   "bag": 3,
+   "width": 2
+  },
+  {
+   "elim": "j",
+   "nbrs": [
+    "i",
+    "l"
+   ],
+   "fill": [],
+   "bag": 3,
+   "width": 2
+  },
+  {
+   "elim": "l",
+   "nbrs": [
+    "i"
+   ],
+   "fill": [],
+   "bag": 2,
+   "width": 2
+  },
+  {
+   "elim": "i",
+   "nbrs": [],
+   "fill": [],
+   "bag": 1,
+   "width": 2
+  }
+ ],
+ "width": 2,
+ "log2cost": 4.459431618637297
+}

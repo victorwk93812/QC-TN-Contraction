@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F06 · Elimination game: MinFill, MinDegree, column sweep</title>
+<link rel="stylesheet" href="shim.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+</head><body>
+<div class="proto-note">Chat prototype for F06. Reference for layout, colour roles and interaction only: numbers here are hand-placed or computed in the browser; the deck must read them from traces.</div>
+<h2 class="sr-only">Step-by-step elimination game comparing MinFill, MinDegree and a column sweep on a grid or a random cubic graph.</h2>
+<style>
+.ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
+.ctl label{font-size:13px;color:var(--text-secondary)}
+.stat{background:var(--surface-1);border-radius:var(--radius);padding:8px 10px}
+.stat .k{font-size:12px;color:var(--text-secondary)}
+.stat .v{font-size:20px;font-weight:500}
+</style>
+<div class="ctl">
+<label for="g">Graph</label>
+<select id="g"><option value="grid">6×6 grid</option><option value="cubic">Random cubic, 16 nodes</option></select>
+<label for="r">Rule</label>
+<select id="r"><option value="minfill">MinFill</option><option value="mindeg">MinDegree</option><option value="sweep">Column sweep</option></select>
+<button id="step"><i class="ti ti-player-track-next" aria-hidden="true"></i> Step</button>
+<button id="play"><i class="ti ti-player-play" aria-hidden="true"></i> Play</button>
+<button id="reset"><i class="ti ti-refresh" aria-hidden="true"></i> Reset</button>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+<svg id="sv" viewBox="0 0 380 380" style="width:100%;max-width:380px;flex:0 0 auto" role="img" aria-label="Graph being eliminated"></svg>
+<div style="flex:1;min-width:220px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<div class="stat"><div class="k">Step</div><div class="v" id="sStep">0</div></div>
+<div class="stat"><div class="k">Fill added</div><div class="v" id="sFill">–</div></div>
+<div class="stat"><div class="k">Bag size</div><div class="v" id="sBag">–</div></div>
+<div class="stat"><div class="k">Width so far</div><div class="v" id="sW">0</div></div>
+<div class="stat" style="grid-column:1/3"><div class="k">log₂ total cost (bond dim 2)</div><div class="v" id="sC">–</div></div>
+<div style="grid-column:1/3"><div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px">Bag size per step</div><svg id="spark" viewBox="0 0 300 70" style="width:100%" role="img" aria-label="Bag size per elimination step"></svg></div>
+<div style="grid-column:1/3;font-size:12px;color:var(--text-secondary);line-height:1.6">Node label: current fill count (MinFill) or degree. Coral: chosen vertex. Light coral: its bag. Dashed purple: fill edges. Faded number: elimination time.</div>
+</div>
+</div>
+<script>
+const NS="http://www.w3.org/2000/svg",sv=document.getElementById("sv"),sp=document.getElementById("spark");
+let G,pos,adj,alive,t,width,trace,fillE,orderT,chosen,bag,timer=null,fixedOrder=null,labelsMode;
+function rng(s){return()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296}}
+function build(kind){
+ const E=[];pos=[];
+ if(kind==="grid"){const L=6;for(let r=0;r<L;r++)for(let c=0;c<L;c++){pos.push([40+c*60,40+r*60]);if(c<L-1)E.push([r*L+c,r*L+c+1]);if(r<L-1)E.push([r*L+c,(r+1)*L+c])}
+  fixedOrder=[];for(let c=0;c<L;c++)for(let r=0;r<L;r++)fixedOrder.push(r*L+c)}
+ else{const n=16,R=rng(7);for(let i=0;i<n;i++){const a=2*Math.PI*i/n-Math.PI/2;pos.push([190+150*Math.cos(a),190+150*Math.sin(a)])}
+  let ok=false,tries=0;while(!ok&&tries<500){tries++;const st=[];for(let i=0;i<n;i++)for(let k=0;k<3;k++)st.push(i);for(let i=st.length-1;i>0;i--){const j=Math.floor(R()*(i+1));[st[i],st[j]]=[st[j],st[i]]}
+   const s=new Set();ok=true;E.length=0;for(let i=0;i<st.length;i+=2){const a=Math.min(st[i],st[i+1]),b=Math.max(st[i],st[i+1]);if(a===b||s.has(a+"_"+b)){ok=false;break}s.add(a+"_"+b);E.push([a,b])}}
+  fixedOrder=[...Array(16).keys()]}
+ G={n:pos.length,E};
+}
+function reset(){stop();build(document.getElementById("g").value);adj=[];for(let i=0;i<G.n;i++)adj.push(new Set());G.E.forEach(([a,b])=>{adj[a].add(b);adj[b].add(a)});
+ alive=new Set([...Array(G.n).keys()]);t=0;width=0;trace=[];fillE=[];orderT={};chosen=null;bag=[];draw();}
+function fillOf(v){const nb=[...adj[v]];let f=0;for(let i=0;i<nb.length;i++)for(let j=i+1;j<nb.length;j++)if(!adj[nb[i]].has(nb[j]))f++;return f}
+function pick(){const rule=document.getElementById("r").value;
+ if(rule==="sweep"){for(const v of fixedOrder)if(alive.has(v))return v}
+ let best=null,bk=null;for(const v of alive){const k=rule==="minfill"?[fillOf(v),adj[v].size,v]:[adj[v].size,fillOf(v),v];
+  if(!bk||k[0]<bk[0]||(k[0]===bk[0]&&(k[1]<bk[1]||(k[1]===bk[1]&&k[2]<bk[2])))){bk=k;best=v}}return best}
+function step(){if(alive.size===0){stop();return}
+ const v=pick(),nb=[...adj[v]];let added=0;
+ for(let i=0;i<nb.length;i++)for(let j=i+1;j<nb.length;j++){const a=nb[i],b=nb[j];if(!adj[a].has(b)){adj[a].add(b);adj[b].add(a);fillE.push([a,b]);added++}}
+ nb.forEach(a=>adj[a].delete(v));adj[v]=new Set();alive.delete(v);orderT[v]=t;t++;
+ chosen=v;bag=nb;width=Math.max(width,nb.length);trace.push(nb.length+1);
+ document.getElementById("sFill").textContent=added;document.getElementById("sBag").textContent=nb.length+1;draw();
+ if(alive.size===0)stop();}
+function el(n,a,p){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);(p||sv).appendChild(e);return e}
+function draw(){sv.innerHTML="";const rule=document.getElementById("r").value;
+ const live=(a,b)=>alive.has(a)&&alive.has(b);
+ G.E.forEach(([a,b])=>{if(live(a,b))el("line",{x1:pos[a][0],y1:pos[a][1],x2:pos[b][0],y2:pos[b][1],stroke:"#888780","stroke-width":1.2})});
+ fillE.forEach(([a,b])=>{if(live(a,b))el("line",{x1:pos[a][0],y1:pos[a][1],x2:pos[b][0],y2:pos[b][1],stroke:"#7F77DD","stroke-width":1.2,"stroke-dasharray":"4 3"})});
+ if(chosen!==null)bag.forEach(a=>el("line",{x1:pos[chosen][0],y1:pos[chosen][1],x2:pos[a][0],y2:pos[a][1],stroke:"#D85A30","stroke-width":1.5}));
+ const bs=new Set(bag);
+ for(let v=0;v<G.n;v++){const [x,y]=pos[v];
+  if(!alive.has(v)){const g=el("g",{class:v===chosen?"c-coral":"c-gray",opacity:v===chosen?1:0.35});el("circle",{cx:x,cy:y,r:13,"stroke-width":0.5},g);const tx=el("text",{x,y,class:"ts","text-anchor":"middle","dominant-baseline":"central"},g);tx.textContent=orderT[v];continue}
+  const g=el("g",{class:bs.has(v)?"c-coral":"c-gray"});el("circle",{cx:x,cy:y,r:13,"stroke-width":bs.has(v)?1.5:0.5},g);
+  const tx=el("text",{x,y,class:"ts","text-anchor":"middle","dominant-baseline":"central"},g);tx.textContent=rule==="mindeg"?adj[v].size:fillOf(v)}
+ document.getElementById("sStep").textContent=t;document.getElementById("sW").textContent=width;
+ if(trace.length){const m=Math.max(...trace);const c=m+Math.log2(trace.reduce((s,x)=>s+Math.pow(2,x-m),0));document.getElementById("sC").textContent=c.toFixed(2)}else{document.getElementById("sC").textContent="–";document.getElementById("sFill").textContent="–";document.getElementById("sBag").textContent="–"}
+ sp.innerHTML="";const n=G.n,bw=300/n,mx=Math.max(8,...trace);trace.forEach((b,i)=>{const h=62*b/mx;el("rect",{x:i*bw+0.5,y:66-h,width:Math.max(1,bw-1),height:h,fill:b-1===width?"#D85A30":"#B4B2A9"},sp)});
+ el("line",{x1:0,y1:66,x2:300,y2:66,stroke:"#888780","stroke-width":0.5},sp);}
+function stop(){if(timer){clearInterval(timer);timer=null}document.getElementById("play").innerHTML='<i class="ti ti-player-play" aria-hidden="true"></i> Play'}
+document.getElementById("step").onclick=()=>{stop();step()};
+document.getElementById("play").onclick=()=>{if(timer){stop();return}if(alive.size===0)reset();timer=setInterval(step,380);document.getElementById("play").innerHTML='<i class="ti ti-player-pause" aria-hidden="true"></i> Pause'};
+document.getElementById("reset").onclick=reset;document.getElementById("g").onchange=reset;document.getElementById("r").onchange=reset;
+reset();
+</script>
+
+</body></html>

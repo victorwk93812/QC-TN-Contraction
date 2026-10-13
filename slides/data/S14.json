@@ -1,0 +1,40 @@
+{
+ "schema": 1,
+ "id": "S14",
+ "kind": "table",
+ "meta": {
+  "title": "How the widths relate"
+ },
+ "nodes": {},
+ "edges": [],
+ "rows": {
+  "ring": {
+   "tensors": 4,
+   "max_degree": 2,
+   "tw_G": 2,
+   "tw_LG": 2,
+   "cw_G": 2
+  },
+  "bowtie": {
+   "tensors": 7,
+   "max_degree": 4,
+   "tw_G": 2,
+   "tw_LG": 3,
+   "cw_G": 4
+  },
+  "grid2x3": {
+   "tensors": 6,
+   "max_degree": 3,
+   "tw_G": 2,
+   "tw_LG": 3,
+   "cw_G": 3
+  },
+  "grid3x3": {
+   "tensors": 9,
+   "max_degree": 4,
+   "tw_G": 3,
+   "tw_LG": 5,
+   "cw_G": 4
+  }
+ }
+}

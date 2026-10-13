@@ -1,0 +1,30 @@
+{
+ "schema": 1,
+ "id": "SC",
+ "kind": "table",
+ "meta": {
+  "title": "Scorecard"
+ },
+ "nodes": {},
+ "edges": [],
+ "rows": {
+  "minfill": {
+   "label": "MinFill",
+   "w7": 8,
+   "w20": 26,
+   "wc": 10,
+   "cost_c": 13.95,
+   "tree_rank_c": 8,
+   "tree_cost_c": 13.28
+  },
+  "nd_fc": {
+   "label": "ND with FlowCutter-lite",
+   "w7": 9,
+   "w20": 28,
+   "wc": 13,
+   "cost_c": 15.65,
+   "tree_rank_c": 12,
+   "tree_cost_c": 15.01
+  }
+ }
+}

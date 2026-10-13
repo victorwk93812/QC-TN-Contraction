@@ -1,0 +1,22 @@
+{
+ "schema": 1,
+ "id": "S47",
+ "kind": "static",
+ "meta": {
+  "title": "A step is a GEMM"
+ },
+ "nodes": {},
+ "edges": [],
+ "step": 19,
+ "n_steps": 32,
+ "m": 3,
+ "n": 3,
+ "k": 5,
+ "c": 11,
+ "p": 6,
+ "d": 0.0,
+ "M": 8,
+ "N": 8,
+ "K": 32,
+ "flops": 4096
+}

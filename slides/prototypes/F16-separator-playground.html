@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F16 · Click to build S: separator, minimality, balance, Menger paths</title>
+<link rel="stylesheet" href="shim.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+</head><body>
+<div class="proto-note">Chat prototype for F16. Reference for layout, colour roles and interaction only: numbers here are hand-placed or computed in the browser; the deck must read them from traces.</div>
+<h2 class="sr-only">Interactive graph of 11 vertices where clicking vertices builds a set S; the panel reports separator properties.</h2>
+<style>
+.ctl{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 10px}
+.ctl span{font-size:13px;color:var(--text-secondary)}
+.row{display:flex;justify-content:space-between;gap:8px;font-size:14px;padding:5px 0;border-bottom:0.5px solid var(--border)}
+.row .k{color:var(--text-secondary)}
+.yes{color:var(--text-success)}.no{color:var(--text-danger)}
+</style>
+<div class="ctl"><span>Presets</span>
+<button data-s="xy">{x, y}</button><button data-s="cd">{c, d}</button><button data-s="efg">{e, f, g}</button><button data-s="xyz">{x, y, z}</button><button data-s="c">{c}</button><button data-s="">Clear</button>
+<label style="font-size:13px;color:var(--text-secondary);display:flex;align-items:center;gap:4px"><input type="checkbox" id="men"> Show disjoint a–h paths</label>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+<svg id="g" viewBox="0 0 620 300" style="width:100%;max-width:430px;flex:0 0 auto;cursor:pointer" role="img" aria-label="Clickable example graph"></svg>
+<div style="flex:1;min-width:210px">
+<div class="row"><span class="k">S</span><span id="rS">∅</span></div>
+<div class="row"><span class="k">Separator (G − S disconnected)</span><span id="rSep"></span></div>
+<div class="row"><span class="k">Component sizes</span><span id="rComp"></span></div>
+<div class="row"><span class="k">Separates a from h</span><span id="rAH"></span></div>
+<div class="row"><span class="k">Minimal (≥ 2 full components)</span><span id="rMin"></span></div>
+<div class="row"><span class="k">½-balanced (all ≤ 5.5)</span><span id="rB2"></span></div>
+<div class="row"><span class="k">⅔-balanced (all ≤ 7.3)</span><span id="rB3"></span></div>
+<div style="font-size:12px;color:var(--text-secondary);margin-top:8px;line-height:1.6">Coral: S. Purple: component of a. Teal: component of h. Gray: other components. Minimum a–h separator size is 2.</div>
+</div></div>
+<script>
+const NS="http://www.w3.org/2000/svg",sv=document.getElementById("g");
+const P={a:[60,90],b:[60,210],c:[170,90],d:[170,210],x:[300,50],y:[255,245],z:[345,255],e:[440,80],f:[440,200],g:[555,200],h:[555,80]};
+const E=[];const K=(s)=>{for(let i=0;i<s.length;i++)for(let j=i+1;j<s.length;j++)E.push([s[i],s[j]])};K("abcd");K("efgh");
+E.push(["c","x"],["x","e"],["d","y"],["y","z"],["z","f"],["z","g"]);
+const V=Object.keys(P),adj={};V.forEach(v=>adj[v]=new Set());E.forEach(([u,v])=>{adj[u].add(v);adj[v].add(u)});
+const paths=[["a","c","x","e","h"],["a","d","y","z","f","h"]];
+let S=new Set();
+function comps(){const seen=new Set(),out=[];V.forEach(v=>{if(S.has(v)||seen.has(v))return;const c=[],q=[v];seen.add(v);while(q.length){const u=q.pop();c.push(u);adj[u].forEach(w=>{if(!S.has(w)&&!seen.has(w)){seen.add(w);q.push(w)}})}out.push(c)});return out}
+function el(n,a,p){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);(p||sv).appendChild(e);return e}
+function yn(id,b){const e=document.getElementById(id);e.textContent=b?"yes":"no";e.className=b?"yes":"no"}
+function draw(){sv.innerHTML="";const C=comps(),cls={};
+ C.forEach(c=>{const k=c.includes("a")?"c-purple":c.includes("h")?"c-teal":"c-gray";c.forEach(v=>cls[v]=C.length>1?k:"c-gray")});
+ const men=document.getElementById("men").checked,pe=new Set();if(men)paths.forEach(p=>{for(let i=0;i<p.length-1;i++){pe.add(p[i]+p[i+1]);pe.add(p[i+1]+p[i])}});
+ E.forEach(([u,v])=>{const cut=S.has(u)||S.has(v);el("line",{x1:P[u][0],y1:P[u][1],x2:P[v][0],y2:P[v][1],stroke:pe.has(u+v)?"#D85A30":"#B4B2A9","stroke-width":pe.has(u+v)?3:1.2,"stroke-dasharray":cut&&!pe.has(u+v)?"4 4":"none",opacity:cut&&!pe.has(u+v)?0.5:1})});
+ V.forEach(v=>{const g=el("g",{class:S.has(v)?"c-coral":cls[v],style:"cursor:pointer"});g.addEventListener("click",()=>{S.has(v)?S.delete(v):S.add(v);draw()});
+  el("circle",{cx:P[v][0],cy:P[v][1],r:19,"stroke-width":S.has(v)?2:0.5},g);const t=el("text",{x:P[v][0],y:P[v][1],class:"th","text-anchor":"middle","dominant-baseline":"central"},g);t.textContent=v});
+ document.getElementById("rS").textContent=S.size?"{"+[...S].sort().join(", ")+"}  (size "+S.size+")":"∅";
+ const sep=S.size>0&&C.length>=2;yn("rSep",sep);
+ document.getElementById("rComp").textContent=C.map(c=>c.length).sort((a,b)=>b-a).join(", ")||"–";
+ const ca=C.findIndex(c=>c.includes("a")),ch=C.findIndex(c=>c.includes("h"));
+ const ah=!S.has("a")&&!S.has("h")&&ca!==ch;const eAH=document.getElementById("rAH");
+ if(S.has("a")||S.has("h")){eAH.textContent="n/a (a or h in S)";eAH.className=""}else yn("rAH",ah);
+ const full=C.filter(c=>[...S].every(s=>c.some(u=>adj[s].has(u)))).length;yn("rMin",sep&&full>=2);
+ const mx=Math.max(0,...C.map(c=>c.length));yn("rB2",sep&&mx<=11/2);yn("rB3",sep&&mx<=22/3)}
+document.querySelectorAll("button[data-s]").forEach(b=>b.onclick=()=>{S=new Set(b.dataset.s.split("").filter(Boolean));draw()});
+document.getElementById("men").onchange=draw;
+draw();
+</script>
+
+</body></html>

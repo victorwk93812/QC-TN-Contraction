@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F12 · Balanced ND vs one cut + sweeps vs column sweep, 7×7</title>
+<link rel="stylesheet" href="shim.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+</head><body>
+<div class="proto-note">Chat prototype for F12. Reference for layout, colour roles and interaction only: numbers here are hand-placed or computed in the browser; the deck must read them from traces.</div>
+<h2 class="sr-only">Step-through of three elimination orders on a 7 by 7 grid: balanced nested dissection, one separator plus inward column sweeps, and a plain column sweep.</h2>
+<style>
+.ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
+.ctl label{font-size:13px;color:var(--text-secondary)}
+.stat{background:var(--surface-1);border-radius:var(--radius);padding:8px 10px}
+.stat .k{font-size:12px;color:var(--text-secondary)}
+.stat .v{font-size:20px;font-weight:500}
+</style>
+<div class="ctl">
+<label for="st">Order</label>
+<select id="st"><option value="nd">Balanced ND</option><option value="hy">One cut + inward sweeps</option><option value="sw">Column sweep</option></select>
+<button id="step"><i class="ti ti-player-track-next" aria-hidden="true"></i> Step</button>
+<button id="play"><i class="ti ti-player-play" aria-hidden="true"></i> Play</button>
+<button id="reset"><i class="ti ti-refresh" aria-hidden="true"></i> Reset</button>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+<svg id="sv" viewBox="0 0 330 330" style="width:100%;max-width:330px;flex:0 0 auto" role="img" aria-label="Grid being eliminated"></svg>
+<div style="flex:1;min-width:230px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<div class="stat"><div class="k">Step</div><div class="v" id="sStep">0</div></div>
+<div class="stat"><div class="k">Bag size</div><div class="v" id="sBag">–</div></div>
+<div class="stat"><div class="k">Width so far</div><div class="v" id="sW">0</div></div>
+<div class="stat"><div class="k">log₂ total cost</div><div class="v" id="sC">–</div></div>
+<div style="grid-column:1/3"><div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px">Bag size per step (coral = current max)</div><svg id="spark" viewBox="0 0 300 80" style="width:100%" role="img" aria-label="Bag size per step"></svg></div>
+<div style="grid-column:1/3;font-size:12px;color:var(--text-secondary);line-height:1.6">Coral nodes: separators, labelled by depth. Purple ring: current bag. Dashed purple: fill edges. Faded number: elimination time.</div>
+</div>
+</div>
+<script>
+const NS="http://www.w3.org/2000/svg",sv=document.getElementById("sv"),sp=document.getElementById("spark"),L=7,D=44,O=33;
+let adj,alive,t,width,trace,fillE,orderT,chosen,bag,timer=null,order,sepLevel;
+const id=(r,c)=>r*L+c,pos=v=>[O+(v%L)*D,O+Math.floor(v/L)*D];
+function nd(rows,cols,depth,out){
+ if(rows.length*cols.length<=4||(rows.length<=1&&cols.length<=1)){rows.forEach(r=>cols.forEach(c=>out.push(id(r,c))));return}
+ let S,A,B;
+ if(cols.length>=rows.length){const m=Math.floor(cols.length/2);S=rows.map(r=>id(r,cols[m]));A=[rows,cols.slice(0,m)];B=[rows,cols.slice(m+1)]}
+ else{const m=Math.floor(rows.length/2);S=cols.map(c=>id(rows[m],c));A=[rows.slice(0,m),cols];B=[rows.slice(m+1),cols]}
+ nd(A[0],A[1],depth+1,out);nd(B[0],B[1],depth+1,out);S.forEach(v=>{sepLevel[v]=depth;out.push(v)});
+}
+function build(){
+ const s=document.getElementById("st").value,R=[...Array(L).keys()];sepLevel={};order=[];
+ if(s==="nd")nd(R,R,0,order);
+ else if(s==="hy"){const m=3;for(let c=0;c<m;c++)R.forEach(r=>order.push(id(r,c)));for(let c=L-1;c>m;c--)R.forEach(r=>order.push(id(r,c)));R.forEach(r=>{sepLevel[id(r,m)]=0;order.push(id(r,m))})}
+ else for(let c=0;c<L;c++)R.forEach(r=>order.push(id(r,c)));
+}
+function reset(){stop();build();adj=[];for(let v=0;v<L*L;v++)adj.push(new Set());
+ for(let r=0;r<L;r++)for(let c=0;c<L;c++){if(c<L-1){adj[id(r,c)].add(id(r,c+1));adj[id(r,c+1)].add(id(r,c))}if(r<L-1){adj[id(r,c)].add(id(r+1,c));adj[id(r+1,c)].add(id(r,c))}}
+ alive=new Set([...Array(L*L).keys()]);t=0;width=0;trace=[];fillE=[];orderT={};chosen=null;bag=[];
+ document.getElementById("sBag").textContent="–";draw()}
+function step(){if(t>=order.length){stop();return}
+ const v=order[t],nb=[...adj[v]];
+ for(let i=0;i<nb.length;i++)for(let j=i+1;j<nb.length;j++){const a=nb[i],b=nb[j];if(!adj[a].has(b)){adj[a].add(b);adj[b].add(a);fillE.push([a,b])}}
+ nb.forEach(a=>adj[a].delete(v));adj[v]=new Set();alive.delete(v);orderT[v]=t;t++;
+ chosen=v;bag=nb;width=Math.max(width,nb.length);trace.push(nb.length+1);
+ document.getElementById("sBag").textContent=nb.length+1;draw();if(t>=order.length)stop()}
+function el(n,a,p){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);(p||sv).appendChild(e);return e}
+function draw(){sv.innerHTML="";const live=(a,b)=>alive.has(a)&&alive.has(b);
+ for(let r=0;r<L;r++)for(let c=0;c<L;c++){const v=id(r,c);[[r,c+1],[r+1,c]].forEach(([r2,c2])=>{if(r2<L&&c2<L){const u=id(r2,c2);if(live(v,u)){const[a,b]=pos(v),[x,y]=pos(u);el("line",{x1:a,y1:b,x2:x,y2:y,stroke:"#B4B2A9","stroke-width":1})}}})}
+ fillE.forEach(([a,b])=>{if(live(a,b)){const[x1,y1]=pos(a),[x2,y2]=pos(b);el("line",{x1,y1,x2,y2,stroke:"#7F77DD","stroke-width":0.8,"stroke-dasharray":"3 3",opacity:0.7})}});
+ const bs=new Set(bag);
+ for(let v=0;v<L*L;v++){const[x,y]=pos(v),isSep=v in sepLevel;
+  if(!alive.has(v)){const g=el("g",{class:v===chosen?"c-purple":"c-gray",opacity:v===chosen?1:0.3});el("circle",{cx:x,cy:y,r:12,"stroke-width":0.5},g);const tx=el("text",{x,y,class:"ts","text-anchor":"middle","dominant-baseline":"central"},g);tx.textContent=orderT[v];continue}
+  const g=el("g",{class:isSep?"c-coral":"c-gray"});el("circle",{cx:x,cy:y,r:12,"stroke-width":0.5},g);
+  if(isSep){const tx=el("text",{x,y,class:"ts","text-anchor":"middle","dominant-baseline":"central"},g);tx.textContent=sepLevel[v]}
+  if(bs.has(v))el("circle",{cx:x,cy:y,r:15,fill:"none",stroke:"#534AB7","stroke-width":2})}
+ document.getElementById("sStep").textContent=t;document.getElementById("sW").textContent=width;
+ if(trace.length){const m=Math.max(...trace);document.getElementById("sC").textContent=(m+Math.log2(trace.reduce((s,x)=>s+Math.pow(2,x-m),0))).toFixed(2)}else document.getElementById("sC").textContent="–";
+ sp.innerHTML="";const bw=300/(L*L),mx=11;trace.forEach((b,i)=>{const h=72*b/mx;el("rect",{x:i*bw+0.5,y:76-h,width:Math.max(1,bw-1),height:h,fill:b-1===width?"#D85A30":"#B4B2A9"},sp)});
+ el("line",{x1:0,y1:76,x2:300,y2:76,stroke:"#888780","stroke-width":0.5},sp)}
+function stop(){if(timer){clearInterval(timer);timer=null}document.getElementById("play").innerHTML='<i class="ti ti-player-play" aria-hidden="true"></i> Play'}
+document.getElementById("step").onclick=()=>{stop();step()};
+document.getElementById("play").onclick=()=>{if(timer){stop();return}if(t>=order.length)reset();timer=setInterval(step,260);document.getElementById("play").innerHTML='<i class="ti ti-player-pause" aria-hidden="true"></i> Pause'};
+document.getElementById("reset").onclick=reset;document.getElementById("st").onchange=reset;
+reset();
+</script>
+
+</body></html>

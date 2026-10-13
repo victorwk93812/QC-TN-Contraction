@@ -1,0 +1,58 @@
+<!-- Act V — Conclusion and open questions (deck slides 51–53; proposal 49–51) -->
+
+<section id="s49">
+  <div class="act-label">V · Conclusion</div>
+  <h2>Four takeaways</h2>
+  <div data-fig="arc" data-trace="F00" data-static></div>
+  <ol style="font-size: 0.7em; margin-top: 10px">
+    <li class="fragment">The order, not the network, decides the cost: one ring already shows rank <span data-bind="F04:trees.good.max_rank"></span> against rank <span data-bind="F04:trees.bad.max_rank"></span>.</li>
+    <li class="fragment">Bottom-up greedy rules see distance-2 structure; top-down separator methods see the global cut — but balance alone does not minimize width.</li>
+    <li class="fragment">Width, FLOPs, memory and GPU runtime are four different objectives, and they disagree on real graphs.</li>
+    <li class="fragment">Ranking a diverse pool of plans beats committing to any single heuristic.</li>
+  </ol>
+  <div class="fragment math-anchor">
+    \[ \chi^{\tw(L(G))}\ \le\ \text{peak memory of the best order},\qquad \tw\ \asymp\ \text{balanced separator size},\qquad \text{runtime}=F(\text{plan shape},\ \text{hardware}) \]
+  </div>
+  <aside class="notes">
+    One chain: contraction cost is exponential in width (Act I, Markov–Shi); width is governed by balanced separator size (deep dive 2, Robertson–Seymour,
+    Dvořák–Norin); heuristics differ in how they find separators (deep dives 1–4); and runtime depends on plan shape beyond width (Act IV).
+    Evidence: ring 2 vs 4 (slide 2); MinFill wider but cheaper until L = 22 (slide 26); balanced ND 1.5× wider (slide 35); Jdrasil narrower-cost
+    but wider-width on our circuit (slide 44); the paper's ranker 60% Top-1 against 12% for MinFill-first (slide 49).
+  </aside>
+</section>
+
+<section id="s50">
+  <div class="act-label">V · Conclusion</div>
+  <h2>Open questions</h2>
+  <div class="oq-grid">
+    <div class="oq-head"></div><div class="oq-head">generate</div><div class="oq-head">rank</div>
+    <div class="oq-side">theory</div>
+    <div class="oq-cell fragment"><b>Guarantees.</b> MinFill has no known approximation guarantee; separator methods do. Can a practical heuristic carry FHL-style guarantees on circuit networks?</div>
+    <div class="oq-cell fragment"><b>Objective.</b> Should generators optimize width, FLOPs, memory or GEMM geometry directly — can a runtime model sit inside the generator instead of after it?</div>
+    <div class="oq-side">practice</div>
+    <div class="oq-cell fragment"><b>Pool design.</b> Seven generators is a choice; hypergraph partitioners (KaHyPar) or randomized restarts may matter more than a better ranker.</div>
+    <div class="oq-cell fragment"><b>Transfer.</b> Labels are hardware-specific; how far does a ranker trained on one GPU carry to multi-GPU runs, or to slicing?</div>
+  </div>
+  <div class="fragment math-anchor">
+    <span class="theorem-name">Feige–Hajiaghayi–Lee (2008).</span> Polynomial-time tree decompositions of width \(O\big(\tw\sqrt{\log \tw}\big)\), i.e. an \(O\big(\sqrt{\log \tw}\big)\)-approximation.
+  </div>
+  <aside class="notes">
+    Feige, Hajiaghayi, Lee, SIAM J. Comput. 38(2) 2008. The authors' own future work (Sec 8): larger and more varied candidate sets, withholding whole
+    generator families, more GPU backends and hardware-conditioned rankers. Slicing = fixing some indices to fit memory; it changes which plan is best.
+  </aside>
+</section>
+
+<section id="s51" class="title-slide">
+  <h2 style="margin-top: 60px">Thank you</h2>
+  <div class="cols c-wide-right">
+    <div style="font-size: 0.75em; padding-top: 40px">
+      <p>Questions?</p>
+      <p class="muted-text">Backup slides: low rank across a cut — kernels, MPO bonds, separators.</p>
+    </div>
+    <div>
+      <div data-fig="tree" data-trace="F04" data-key="trees.good" data-reveal="merges" data-flag-max="off" class="fig-h420"></div>
+      <div class="panel-sub">((A B)(C D)) → one number</div>
+    </div>
+  </div>
+  <aside class="notes">Three clicks contract the ring to a scalar, the way the talk started.</aside>
+</section>

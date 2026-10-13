@@ -1,0 +1,113 @@
+{
+ "schema": 1,
+ "id": "P50",
+ "kind": "static",
+ "meta": {
+  "title": "Kept and discarded features",
+  "source": "arXiv 2608.05819 Table 2"
+ },
+ "nodes": {},
+ "edges": [],
+ "blocks": [
+  {
+   "block": "Complexity / critical load",
+   "features": [
+    {
+     "name": "max_cost",
+     "status": "discarded"
+    },
+    {
+     "name": "log2_sum_flops",
+     "status": "discarded"
+    },
+    {
+     "name": "topq_mean_cost",
+     "status": "discarded"
+    },
+    {
+     "name": "avg_cost",
+     "status": "discarded"
+    },
+    {
+     "name": "std_cost",
+     "status": "opt_ndcg only"
+    }
+   ]
+  },
+  {
+   "block": "Sequence / granularity",
+   "features": [
+    {
+     "name": "n_steps",
+     "status": "kept"
+    },
+    {
+     "name": "frac_tiny_steps",
+     "status": "kept"
+    }
+   ]
+  },
+  {
+   "block": "Parallelism dynamics",
+   "features": [
+    {
+     "name": "max_out_rank",
+     "status": "kept"
+    },
+    {
+     "name": "avg_out_rank",
+     "status": "kept"
+    },
+    {
+     "name": "costw_out_rank",
+     "status": "kept"
+    },
+    {
+     "name": "p_at_max_cost",
+     "status": "kept"
+    }
+   ]
+  },
+  {
+   "block": "Reduction / intensity",
+   "features": [
+    {
+     "name": "max_red_rank",
+     "status": "kept"
+    },
+    {
+     "name": "costw_red_rank",
+     "status": "opt_pair only"
+    },
+    {
+     "name": "k_at_max_cost",
+     "status": "kept"
+    }
+   ]
+  },
+  {
+   "block": "Geometry / memory access",
+   "features": [
+    {
+     "name": "max_asym",
+     "status": "kept"
+    },
+    {
+     "name": "avg_asym",
+     "status": "kept"
+    },
+    {
+     "name": "costw_asym",
+     "status": "kept"
+    },
+    {
+     "name": "d_at_max_cost",
+     "status": "kept"
+    }
+   ]
+  }
+ ],
+ "n_features": 18,
+ "n_discarded": 4,
+ "n_per_model": 13
+}

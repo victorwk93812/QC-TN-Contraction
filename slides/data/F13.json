@@ -1,0 +1,106 @@
+{
+ "schema": 1,
+ "id": "F13",
+ "kind": "chart",
+ "meta": {
+  "title": "Balance has a price"
+ },
+ "nodes": {},
+ "edges": [],
+ "L": [
+  7,
+  15,
+  23,
+  31
+ ],
+ "nd": [
+  9,
+  21,
+  33,
+  45
+ ],
+ "hybrid": [
+  7,
+  15,
+  23,
+  31
+ ],
+ "sweep": [
+  7,
+  15,
+  23,
+  31
+ ],
+ "minfill": [
+  8,
+  20,
+  31,
+  41
+ ],
+ "bisection32": {
+  "max_rank": 40,
+  "max_exp": 48
+ },
+ "chart": {
+  "xlabel": "grid side L",
+  "ylabel": "width",
+  "xticks": [
+   7,
+   15,
+   23,
+   31
+  ],
+  "series": [
+   {
+    "name": "balanced ND",
+    "x": [
+     7,
+     15,
+     23,
+     31
+    ],
+    "y": [
+     9,
+     21,
+     33,
+     45
+    ],
+    "cls": "accent",
+    "dy": -4
+   },
+   {
+    "name": "MinFill",
+    "x": [
+     7,
+     15,
+     23,
+     31
+    ],
+    "y": [
+     8,
+     20,
+     31,
+     41
+    ],
+    "cls": "derived",
+    "dy": 4
+   },
+   {
+    "name": "sweep, cut + sweeps: L",
+    "x": [
+     7,
+     15,
+     23,
+     31
+    ],
+    "y": [
+     7,
+     15,
+     23,
+     31
+    ],
+    "cls": "side-b"
+   }
+  ]
+ }
+}

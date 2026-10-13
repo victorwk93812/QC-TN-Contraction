@@ -1,0 +1,74 @@
+%%% Self-contained setup (replaces the author's local fatslides class and fatscience package) %%%
+%% Theme
+\usetheme{Boadilla}
+\useoutertheme{miniframes}
+\usefonttheme{serif}
+\setbeamertemplate{theorems}[numbered]
+\setbeamertemplate{caption}[numbered]
+
+%% Packages (all in stock TeX Live)
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{physics}                 % \ket, \bra, \tr
+\usepackage{csquotes}                % \enquote
+\usepackage[
+    backend=biber,
+    style=phys,
+    articletitle=false,
+    biblabel=brackets,
+    chaptertitle=false,
+    pageranges=false
+]{biblatex}
+\urlstyle{same}
+\hypersetup{colorlinks=true, linkcolor=., filecolor=magenta, urlcolor=cyan, pdfpagemode=FullScreen}
+
+%% Theorem-like environments (numbered within sections)
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{dfn}{Definition}[section]
+\newtheorem{rem}{Remark}[section]
+
+%% Shorthands
+\newcommand{\C}{\mathcal{C}}
+\renewcommand{\L}{\mathcal{L}}       % overrides the text command \L (Polish L-stroke)
+\renewcommand{\H}{\mathcal{H}}       % overrides the text accent \H (Hungarian umlaut)
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\Ra}{\Rightarrow}
+\newcommand{\Lra}{\Leftrightarrow}
+\DeclarePairedDelimiter{\rbcs}{(}{)}
+\DeclarePairedDelimiter{\sbcs}{[}{]}
+
+%% Fixed-width table columns: L{width} left, C{width} centred
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+%%% Self-contained setup %%%
+
+%%% Bibliography %%%
+\addbibresource{bibliography.bib}
+%%% Bibliography %%%
+
+\title[Contracting Tensor Networks]{Simulating Quantum Computation by Contracting Tensor Networks}
+\subtitle{Paper review, research directions, and a benchmark proposal}
+\author[fat]{fat}
+\institute{Paper: I. L. Markov and Y. Shi, SIAM J. Comput. 38(3), 2008 (arXiv:quant-ph/0511069)}
+\date[\today]{\today}
+
+%%% Table of Contents on Section Begin %%%
+\AtBeginSection[]
+{
+	\begin{frame}
+		\frametitle{Table of Contents}
+		\tableofcontents[currentsection]
+	\end{frame}
+}
+%%% Table of Contents on Section Begin %%%
+
+%%% Local macros %%%
+\newcommand{\tw}{\operatorname{tw}}
+\newcommand{\cc}{\operatorname{cc}}
+\newcommand{\GC}{G_{\mathcal{C}}}
+\newcommand{\poly}{\operatorname{poly}}
+%%% Local macros %%%

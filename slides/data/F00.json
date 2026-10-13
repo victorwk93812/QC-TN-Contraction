@@ -1,0 +1,95 @@
+{
+ "schema": 1,
+ "id": "F00",
+ "kind": "static",
+ "meta": {
+  "title": "Narrative arc"
+ },
+ "nodes": {},
+ "edges": [],
+ "acts": [
+  {
+   "id": "I",
+   "title": "Why contraction order matters",
+   "first": 1,
+   "last": 8,
+   "slides": 8,
+   "minutes": 9,
+   "group": 1
+  },
+  {
+   "id": "II",
+   "title": "The shared language",
+   "first": 9,
+   "last": 16,
+   "slides": 8,
+   "minutes": 9,
+   "group": 2
+  },
+  {
+   "id": "III",
+   "title": "Seven techniques at a glance",
+   "first": 17,
+   "last": 22,
+   "slides": 6,
+   "minutes": 5,
+   "group": 3
+  },
+  {
+   "id": "DD1",
+   "title": "Greedy elimination: MinFill",
+   "first": 23,
+   "last": 28,
+   "slides": 6,
+   "minutes": 7,
+   "group": 4
+  },
+  {
+   "id": "DD2",
+   "title": "Separators, ND, FlowCutter",
+   "first": 29,
+   "last": 37,
+   "slides": 9,
+   "minutes": 11,
+   "group": 4
+  },
+  {
+   "id": "DD3",
+   "title": "Community detection: Girvan\u2013Newman",
+   "first": 38,
+   "last": 41,
+   "slides": 4,
+   "minutes": 5,
+   "group": 4
+  },
+  {
+   "id": "DD4",
+   "title": "Treewidth solvers: Jdrasil, Tamaki",
+   "first": 42,
+   "last": 44,
+   "slides": 3,
+   "minutes": 4,
+   "group": 4
+  },
+  {
+   "id": "IV",
+   "title": "Head-to-head: a learned ranker",
+   "first": 45,
+   "last": 50,
+   "slides": 6,
+   "minutes": 8,
+   "group": 5
+  },
+  {
+   "id": "V",
+   "title": "Conclusion and open questions",
+   "first": 51,
+   "last": 53,
+   "slides": 3,
+   "minutes": 4,
+   "group": 6
+  }
+ ],
+ "total_slides": 53,
+ "total_minutes": 62
+}

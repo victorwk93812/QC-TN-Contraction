@@ -1,0 +1,309 @@
+<!-- Act II — The shared language (slides 7–14) -->
+
+<section id="s07">
+  <div class="act-label">II · The shared language</div>
+  <h2>A bond cut in the tensor graph is a separator in the index graph</h2>
+  <div class="cols">
+    <div>
+      <div class="panel-title">Tensor graph: cut two bonds</div>
+      <div data-fig="graph" data-trace="F17" data-key="tensor_graph" data-shape="square" data-r="17"
+           data-derived="T00,T01,T10,T11" data-side-b="T02,T12" data-accent-edges="p,q" class="fig-h360"></div>
+      <div class="panel-sub">the cut bonds <span class="acc">p, q</span> are exactly the open legs of each half</div>
+    </div>
+    <div class="fragment">
+      <div class="panel-title">Index graph: remove two vertices</div>
+      <div data-fig="graph" data-trace="F17" data-r="16" data-accent="p,q" data-derived="a,b,c,d" data-side-b="e" class="fig-h360"></div>
+      <div class="panel-sub">removing <span class="acc" data-bind="F17:cut" data-fmt="list"></span> leaves
+        <span class="der" data-bind="F17:components.0" data-fmt="set"></span> and <span class="sideb" data-bind="F17:components.1" data-fmt="set"></span></div>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    <span class="theorem-name">Lemma.</span> For a bipartition \((X, Y)\) of the tensors, the bonds crossing it form a vertex separator
+    of the index graph between the indices internal to \(X\) and those internal to \(Y\).
+  </div>
+  <aside class="notes">
+    Proof: an index-graph edge means one tensor carries both indices. An internal index of X lives only on tensors in X,
+    so its neighbours are internal to X or crossing bonds; same for Y. So every path from X-internal to Y-internal passes a crossing bond.
+    This is why the two pictures can be used interchangeably: an edge cut of size s in the tensor graph costs χ^s,
+    exactly like a separator of size s among the indices. Data: data/F17.json, checked with separator_report.
+  </aside>
+</section>
+
+<section id="s08">
+  <div class="act-label">II · The shared language</div>
+  <h2>The elimination game: delete a vertex, join its neighbours</h2>
+  <div class="fig">
+    <div data-fig="stepper" data-trace="F06_ring" data-label-mode="fill" data-radius="16" class="fig-h420" style="width: 460px">
+      <div class="graph"></div>
+    </div>
+    <div class="readouts">
+      <div class="stat"><span class="k">Step</span><span data-readout="step"></span></div>
+      <div class="stat"><span class="k">Fill added</span><span data-readout="fill"></span></div>
+      <div class="stat"><span class="k">Bag size</span><span data-readout="bag"></span></div>
+      <div class="stat"><span class="k">Width so far</span><span data-readout="width"></span></div>
+      <div class="stat" style="grid-column: 1 / 3"><span class="k">log₂ total cost (χ = 2)</span><span data-readout="log2cost"></span></div>
+      <div class="spark-wrap"><svg class="spark"></svg></div>
+      <div class="small" style="grid-column: 1 / 3">Label = fill count of a live vertex. Coral: chosen vertex. Purple ring: its bag. Dashed: fill.</div>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    \[ \fillin(v)=\#\{\{a,b\}\subseteq N(v): a\not\sim b\}, \qquad \width(\pi)=\max_t |N(v_t)|, \qquad \tw(G)=\min_\pi \width(\pi) \]
+  </div>
+  <aside class="notes">
+    The game: pick a vertex, connect all its remaining neighbours, delete it. The number of edges it adds is its fill.
+    The width of an order is the largest neighbourhood met; the treewidth is the best width over all orders.
+    On the ring every vertex starts with fill 1 (its two neighbours are not adjacent); after one step the remaining triangle is a clique, so no more fill.
+    Rule shown: MinFill, ties by degree then a seeded random value (seed 0, data/F06_ring.json).
+  </aside>
+</section>
+
+<section id="s09">
+  <div class="act-label">II · The shared language</div>
+  <h2>A tree decomposition writes the elimination down as bags</h2>
+  <div class="cols c-wide-left">
+    <div>
+      <svg viewBox="0 0 680 350" class="figsvg fig-h480" role="img" aria-label="separator tree of nested dissection on the 7 by 7 grid">
+        <g class="s-line">
+          <line x1="340" y1="72" x2="170" y2="118"/><line x1="340" y1="72" x2="510" y2="118"/>
+          <line x1="170" y1="172" x2="85" y2="208"/><line x1="170" y1="172" x2="255" y2="208"/>
+          <line x1="510" y1="172" x2="425" y2="208"/><line x1="510" y1="172" x2="595" y2="208"/>
+          <line x1="85" y1="262" x2="42" y2="290"/><line x1="85" y1="262" x2="127" y2="290"/>
+          <line x1="255" y1="262" x2="212" y2="290"/><line x1="255" y1="262" x2="297" y2="290"/>
+          <line x1="425" y1="262" x2="382" y2="290"/><line x1="425" y1="262" x2="467" y2="290"/>
+          <line x1="595" y1="262" x2="552" y2="290"/><line x1="595" y1="262" x2="637" y2="290"/>
+        </g>
+        <rect x="255" y="16" width="170" height="56" rx="8" class="s-box"/>
+        <text class="s-th" x="340" y="37" text-anchor="middle" dominant-baseline="central">Middle column</text>
+        <text class="s-ts" x="340" y="57" text-anchor="middle" dominant-baseline="central">bag <tspan data-bind="F14:levels.0.bag"></tspan></text>
+        <g>
+          <rect x="90" y="118" width="160" height="56" rx="8" class="s-box is-accent"/>
+          <rect x="430" y="118" width="160" height="56" rx="8" class="s-box is-accent"/>
+          <text class="s-th" x="170" y="138" text-anchor="middle" dominant-baseline="central">Half-row (<tspan data-bind="F14:levels.1.own"></tspan>)</text>
+          <text class="s-ts" x="170" y="158" text-anchor="middle" dominant-baseline="central"><tspan data-bind="F14:levels.1.own"></tspan> + <tspan data-bind="F14:levels.1.inherited"></tspan> inherited = <tspan data-bind="F14:levels.1.bag"></tspan></text>
+          <text class="s-th" x="510" y="138" text-anchor="middle" dominant-baseline="central">Half-row (<tspan data-bind="F14:levels.1.own"></tspan>)</text>
+          <text class="s-ts" x="510" y="158" text-anchor="middle" dominant-baseline="central"><tspan data-bind="F14:levels.1.own"></tspan> + <tspan data-bind="F14:levels.1.inherited"></tspan> inherited = <tspan data-bind="F14:levels.1.bag"></tspan></text>
+        </g>
+        <g>
+          <rect x="22" y="208" width="126" height="54" rx="8" class="s-box is-derived"/><rect x="192" y="208" width="126" height="54" rx="8" class="s-box is-derived"/>
+          <rect x="362" y="208" width="126" height="54" rx="8" class="s-box is-derived"/><rect x="532" y="208" width="126" height="54" rx="8" class="s-box is-derived"/>
+          <text class="s-th" x="85" y="228" text-anchor="middle" dominant-baseline="central">Column (<tspan data-bind="F14:levels.2.own"></tspan>)</text>
+          <text class="s-th" x="255" y="228" text-anchor="middle" dominant-baseline="central">Column (<tspan data-bind="F14:levels.2.own"></tspan>)</text>
+          <text class="s-th" x="425" y="228" text-anchor="middle" dominant-baseline="central">Column (<tspan data-bind="F14:levels.2.own"></tspan>)</text>
+          <text class="s-th" x="595" y="228" text-anchor="middle" dominant-baseline="central">Column (<tspan data-bind="F14:levels.2.own"></tspan>)</text>
+          <text class="s-ts" x="85" y="247" text-anchor="middle" dominant-baseline="central"><tspan data-bind="F14:levels.2.own"></tspan> + <tspan data-bind="F14:levels.2.inherited"></tspan> = <tspan data-bind="F14:levels.2.bag"></tspan></text>
+          <text class="s-ts" x="255" y="247" text-anchor="middle" dominant-baseline="central"><tspan data-bind="F14:levels.2.own"></tspan> + <tspan data-bind="F14:levels.2.inherited"></tspan> = <tspan data-bind="F14:levels.2.bag"></tspan></text>
+          <text class="s-ts" x="425" y="247" text-anchor="middle" dominant-baseline="central"><tspan data-bind="F14:levels.2.own"></tspan> + <tspan data-bind="F14:levels.2.inherited"></tspan> = <tspan data-bind="F14:levels.2.bag"></tspan></text>
+          <text class="s-ts" x="595" y="247" text-anchor="middle" dominant-baseline="central"><tspan data-bind="F14:levels.2.own"></tspan> + <tspan data-bind="F14:levels.2.inherited"></tspan> = <tspan data-bind="F14:levels.2.bag"></tspan></text>
+        </g>
+        <g>
+          <rect x="14" y="290" width="56" height="30" rx="4" class="s-box"/><rect x="99" y="290" width="56" height="30" rx="4" class="s-box"/>
+          <rect x="184" y="290" width="56" height="30" rx="4" class="s-box"/><rect x="269" y="290" width="56" height="30" rx="4" class="s-box"/>
+          <rect x="354" y="290" width="56" height="30" rx="4" class="s-box"/><rect x="439" y="290" width="56" height="30" rx="4" class="s-box"/>
+          <rect x="524" y="290" width="56" height="30" rx="4" class="s-box"/><rect x="609" y="290" width="56" height="30" rx="4" class="s-box"/>
+          <text class="s-ts" x="42" y="305" text-anchor="middle" dominant-baseline="central">≤ <tspan data-bind="F14:leaf_max_bag"></tspan></text>
+          <text class="s-ts" x="127" y="305" text-anchor="middle" dominant-baseline="central">≤ <tspan data-bind="F14:leaf_max_bag"></tspan></text>
+          <text class="s-ts" x="212" y="305" text-anchor="middle" dominant-baseline="central">≤ <tspan data-bind="F14:leaf_max_bag"></tspan></text>
+          <text class="s-ts" x="297" y="305" text-anchor="middle" dominant-baseline="central">≤ <tspan data-bind="F14:leaf_max_bag"></tspan></text>
+          <text class="s-ts" x="382" y="305" text-anchor="middle" dominant-baseline="central">≤ <tspan data-bind="F14:leaf_max_bag"></tspan></text>
+          <text class="s-ts" x="467" y="305" text-anchor="middle" dominant-baseline="central">≤ <tspan data-bind="F14:leaf_max_bag"></tspan></text>
+          <text class="s-ts" x="552" y="305" text-anchor="middle" dominant-baseline="central">≤ <tspan data-bind="F14:leaf_max_bag"></tspan></text>
+          <text class="s-ts" x="637" y="305" text-anchor="middle" dominant-baseline="central">≤ <tspan data-bind="F14:leaf_max_bag"></tspan></text>
+        </g>
+        <text class="s-ts" x="340" y="342" text-anchor="middle">bag = own separator + inherited boundary · coral = widest bag</text>
+      </svg>
+    </div>
+    <div style="font-size: 0.66em; padding-top: 30px">
+      <p>Nested dissection on the 7×7 grid, eliminated leaves first, separators last.</p>
+      <p>Every bag is a set of indices that one summation touches together.</p>
+      <p>Widest bag <b class="acc" data-bind="F14:levels.1.bag"></b> ⇒ width <b class="acc" data-bind="F14:width"></b>.</p>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    <span class="theorem-name">Tree decomposition</span> \((T,\{B_t\})\):
+    \[ \textstyle\bigcup_t B_t=V;\quad \forall uv\in E\ \exists t: \{u,v\}\subseteq B_t;\quad \{t: v\in B_t\}\ \text{connected};\qquad \width=\max_t|B_t|-1 \]
+    \[ \tw(G)=\min\{\,\omega(H)-1 : H\supseteq G,\ H \text{ chordal}\,\} \]
+  </div>
+  <aside class="notes">
+    Every elimination order gives a tree decomposition: the bag of a step is v plus its neighbours at that time, and bags are linked
+    in the order their vertices are eliminated. Conversely every tree decomposition gives orders of the same width.
+    The second line: add all fill edges of an order and you get a chordal graph H whose largest clique is the largest bag;
+    minimizing over chordal supergraphs is the same as minimizing over orders.
+    Bag sizes here are read from the nested-dissection trace (data/F14.json): 7 at the root, own 3 + inherited 7 = 10 for the half rows,
+    own 3 + inherited 6 = 9 for the columns, at most 8 in the leaves. Width = 10 − 1 = 9.
+  </aside>
+</section>
+
+<section id="s10">
+  <div class="act-label">II · The shared language</div>
+  <h2>Certificates that treewidth is large</h2>
+  <div class="cols">
+    <div>
+      <div class="panel-title">A clique of size ω forces a bag of size ω</div>
+      <div data-fig="graph" data-trace="S10" data-key="clique" data-labels="off" data-r="12" data-accent="k0,k1,k2,k3,k4" class="fig-h360"></div>
+      <div class="panel-sub">K<sub>5</sub>: ω = <span data-bind="S10:clique.omega"></span> ⇒ tw ≥ <b class="acc" data-bind="S10:clique.tw"></b></div>
+    </div>
+    <div>
+      <div class="panel-title">A k×k grid minor forces width k</div>
+      <div data-fig="graph" data-trace="S10" data-key="grid" data-labels="off" data-r="12" class="fig-h360"></div>
+      <div class="panel-sub">ω = <span data-bind="S10:grid.omega"></span> and degeneracy <span data-bind="S10:grid.degeneracy"></span> say little,
+        but the <span data-bind="S10:grid.k"></span>×<span data-bind="S10:grid.k"></span> grid has tw = <b class="acc" data-bind="S10:grid.tw"></b></div>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    \[ \tw(G)\ \ge\ \max\big(\omega(G)-1,\ \operatorname{degeneracy}(G),\ k \text{ if } G \text{ has a } k\times k \text{ grid minor}\big) \]
+  </div>
+  <div class="fragment math-anchor">
+    <span class="theorem-name">Excluded grid theorem.</span>
+    (Robertson–Seymour 1986) \(\exists f:\ \tw(G)\ge f(k)\Rightarrow G\) has a \(k\times k\) grid minor;
+    \(f\) polynomial (Chekuri–Chuzhoy 2016), now \(f(k)=O(k^{9}\operatorname{polylog} k)\) (Chuzhoy–Tan 2021).
+  </div>
+  <aside class="notes">
+    Recall the primer (slide 5): treewidth is the smallest frontier any order can manage. To prove it is large we need certificates.
+    A clique of size ω needs a bag of size ω whatever the order (the first of its vertices to go sees the other ω − 1), so tw ≥ ω − 1;
+    for K5 that is 4 and it is tight. The degeneracy bound holds because any order meets, at its first vertex of a min-degree-δ subgraph,
+    at least δ live neighbours. On a grid both bounds are tiny (ω = 2, degeneracy 2) yet tw(4×4) = 4: the certificate is the grid itself,
+    because treewidth never increases when taking minors and tw(k×k grid) = k. The excluded grid theorem is the converse:
+    large treewidth forces a large grid minor. Values: data/S10.json (exact DP).
+    Sources: Robertson–Seymour GM V, JCTB 41 (1986); Chekuri–Chuzhoy, J. ACM 63(5) (2016), first polynomial bound;
+    Chuzhoy–Tan, JCTB 146 (2021), O(g^9 polylog g); the lower bound is Ω(g² log g).
+  </aside>
+</section>
+
+<section id="s11">
+  <div class="act-label">II · The shared language</div>
+  <h2>A catalog to remember: treewidth tracks the boundary you must carry</h2>
+  <table class="tbl" style="font-size: 0.6em; width: 100%">
+    <tr><th>Graph family</th><th>Treewidth</th><th>Why</th></tr>
+    <tr><td>Forest</td><td>1</td><td>any edge is a separator</td></tr>
+    <tr><td>Cycle, series-parallel, outerplanar</td><td>≤ 2</td><td>tw ≤ 2 ⟺ no K<sub>4</sub> minor</td></tr>
+    <tr><td>k-tree, chordal</td><td>ω − 1</td><td>the clique bound is tight</td></tr>
+    <tr><td>K<sub>n</sub>, K<sub>m,n</sub></td><td>n − 1, min(m, n)</td><td>clique / bipartite cut</td></tr>
+    <tr><td>L × L grid</td><td>L</td><td>cut a column</td></tr>
+    <tr class="hl"><td>L<sup>d</sup> lattice</td><td>Θ(L<sup>d−1</sup>)</td><td>cut a hyperplane: treewidth ≈ boundary area</td></tr>
+    <tr><td>Planar, n vertices</td><td>O(√n)</td><td>Lipton–Tarjan separator</td></tr>
+    <tr><td>Hypercube Q<sub>d</sub></td><td>Θ(2<sup>d</sup>/√d)</td><td>isoperimetry on the cube</td></tr>
+    <tr><td>Expander, random d-regular</td><td>Θ(n)</td><td>no small balanced cut</td></tr>
+    <tr><td>Complete binary tree</td><td>1 (pathwidth ~ log n)</td><td>a branching sweep beats a linear one</td></tr>
+  </table>
+  <div class="fragment math-anchor">
+    \[ \tw\big(L^{d}\text{ lattice}\big) = \Theta\big(L^{\,d-1}\big) \quad\Rightarrow\quad \text{exact contraction of a 2D lattice of side } L \text{ costs } \chi^{\Theta(L)} \]
+  </div>
+  <aside class="notes">
+    Exact values checked on small members (data/F11.json, exact DP): forest 1, C9 2, K7 6, K3,5 3, 3×3 grid 3, 4×4 grid 4, Q3 3, Q4 6.
+    The highlighted row is the one physicists use most: treewidth scales like the area of the cut, so a 2D lattice costs χ^Θ(L) and a 3D lattice χ^Θ(L²).
+    The binary tree row anticipates slide 15: a tree-shaped schedule can beat any list.
+    Sources: hypercube Chandran–Kavitha, Discrete Math. 306 (2006) (checked via secondary sources); lattice Θ(L^{d−1}) Hickingbotham–Wood,
+    JGT 109 (2023) Cor. 26; random regular graphs are expanders, expanders have linear treewidth (Grohe–Marx 2009).
+    tw ≤ 2 ⟺ no K4 minor; tw ≤ 3 has four forbidden minors (Arnborg–Proskurowski–Corneil 1990). Planar: Lipton–Tarjan 1979, separator 2√2·√n.
+  </aside>
+</section>
+
+<section id="s12">
+  <div class="act-label">II · The shared language</div>
+  <h2>Carving width: the largest cut a contraction tree carries</h2>
+  <div class="cols">
+    <div>
+      <div class="panel-title">((A B)(C D))</div>
+      <div data-fig="tree" data-trace="F04" data-key="trees.good" data-reveal="edges" data-flag-max="off" class="fig-h360"></div>
+    </div>
+    <div>
+      <div class="panel-title">((A C)(B D))</div>
+      <div data-fig="tree" data-trace="F04" data-key="trees.bad" data-reveal="edges" data-offset="6" class="fig-h360"></div>
+    </div>
+  </div>
+  <div class="panel-sub">Each label = the bonds crossing that tree edge. Best possible for the ring: carving width <b data-bind="F04:carving_width"></b> = max degree <b data-bind="F04:max_degree"></b>.</div>
+  <div class="fragment math-anchor">
+    \[ \cw(G)=\min_{\text{binary trees}}\ \max_{\text{tree edges } e} |\delta(e)|\ \ge\ \Delta(G), \qquad 2(m+n+k)\le 3\,\cw\ \Rightarrow\ \text{step cost}\le \chi^{1.5\,\cw} \]
+  </div>
+  <aside class="notes">
+    Cut a contraction tree at one of its edges: the tensors below form one side, everything else the other; the bonds crossing are the open legs
+    of that intermediate. Carving width minimizes the largest such cut. Leaf edges count too, so cw ≥ max degree.
+    The cost bound: at a step with inputs of rank m+k and n+k and output of rank m+n, each of the three is a tree-edge cut, so each is ≤ cw.
+    Adding the three gives 2(m+n+k) ≤ 3 cw. Ring values from data/F04.json (subset DP, carving.carving_width_dp).
+    Sources: cw ≥ Δ is Observation 1 in Belmonte et al., DAM 2013; the 1.5·cw cost bound is O'Gorman, TQC 2019, Thm 1
+    (time n·2^{1.5 ec+1}, space 2^{ec+1}, ec = carving width).
+  </aside>
+</section>
+
+<section id="s13">
+  <div class="act-label">II · The shared language</div>
+  <h2>Three schedules, one network: a list can lose to a tree</h2>
+  <div class="cols c3" style="grid-template-columns: 1.05fr 1fr 1fr">
+    <div>
+      <div class="panel-title">Bowtie tensor graph</div>
+      <div data-fig="graph" data-trace="F09" data-key="tensor_graph" data-shape="square" data-r="15" data-accent="H" class="fig-h240"></div>
+      <div class="panel-title" style="margin-top: 10px">Index graph: H's legs form a K<sub>4</sub></div>
+      <div data-fig="graph" data-trace="F09" data-r="14" data-accent="p,q,r,s" data-accent-edges="p-q,p-r,p-s,q-r,q-s,r-s" class="fig-h240"></div>
+    </div>
+    <div class="fragment">
+      <div class="panel-title">Best tree: max rank <span data-bind="F10:tree.max_rank"></span>, cost <span data-bind="F10:tree.cost"></span></div>
+      <div data-fig="tree" data-trace="F10" data-key="tree" data-flag-max="off" data-highlight="H" data-edge-labels="off" class="fig-h480"></div>
+      <div class="panel-sub">node label = rank of the intermediate</div>
+    </div>
+    <div class="fragment">
+      <div class="panel-title">Best list: max rank <span class="acc" data-bind="F10:list_opt.max_rank"></span>, cost <span data-bind="F10:list_opt.cost"></span></div>
+      <div data-fig="tree" data-trace="F10" data-key="list_rec" data-layout="spine" data-highlight="H" class="fig-h480"></div>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    <table class="tbl" style="font-size: 0.85em; margin: 0 auto">
+      <tr><th>schedule</th><th class="r">max rank / width</th><th class="r">total cost</th><th>searched</th></tr>
+      <tr><td>index elimination</td><td class="r" data-bind="F09:best_elimination.width"></td><td class="r" data-bind="F09:best_elimination.cost"></td><td>all <span data-bind="F09:n_orders" data-fmt="int"></span> orders</td></tr>
+      <tr><td>pairwise tree</td><td class="r" data-bind="F10:tree_opt.max_rank"></td><td class="r" data-bind="F10:tree_opt.cost"></td><td>subset DP over all <span data-bind="F10:n_trees" data-fmt="int"></span> trees</td></tr>
+      <tr><td>list (caterpillar tree)</td><td class="r acc" data-bind="F10:list_opt.max_rank"></td><td class="r" data-bind="F10:list_opt.cost"></td><td>all <span data-bind="F10:n_lists" data-fmt="int"></span> lists</td></tr>
+    </table>
+  </div>
+  <aside class="notes">
+    The bowtie: hub H of degree 4 on two cycles, pendants U and V. A list schedule keeps one running tensor and absorbs one tensor at a time:
+    that is a caterpillar tree. None of the 5040 lists keeps every intermediate at rank 2; the best reaches rank 3 (cost 58).
+    A branching tree contracts (H(RS)) and (PU) separately and then merges them, staying at rank 2 (cost 50); the subset DP shows only
+    two trees reach (2, 50) and they are mirror images. Index elimination is a third model: best width 3, cost 62 over all 8! orders.
+    All values: data/F09.json, data/F10.json; acceptance tests in tests/test_acceptance.py.
+    Note: the chat prototype drew the tree ((UP)(VQ))(H(RS)); it also has rank 2 but costs 52, so the slide shows the optimum instead.
+    Carving width of the bowtie is 4 because the hub has degree 4.
+  </aside>
+</section>
+
+<section id="s14">
+  <div class="act-label">II · The shared language</div>
+  <h2>Three widths of one network, tied by the maximum degree</h2>
+  <div class="cols" style="grid-template-columns: 1fr 1.1fr; gap: 50px">
+    <svg viewBox="0 0 620 380" class="figsvg" style="max-height: 460px" role="img" aria-label="relations between treewidth, line-graph treewidth and carving width">
+      <defs><marker id="ah14" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted-2)"/></marker></defs>
+      <rect x="20" y="150" width="170" height="80" rx="12" class="s-box"/>
+      <text class="s-th" x="105" y="183" text-anchor="middle">tw(G)</text>
+      <text class="s-ts" x="105" y="208" text-anchor="middle">tensor graph</text>
+      <rect x="400" y="30" width="200" height="80" rx="12" class="s-box is-accent"/>
+      <text class="s-th" x="500" y="63" text-anchor="middle">tw(L(G))</text>
+      <text class="s-ts" x="500" y="88" text-anchor="middle">index graph · elimination</text>
+      <rect x="400" y="270" width="200" height="80" rx="12" class="s-box is-derived"/>
+      <text class="s-th" x="500" y="303" text-anchor="middle">cw(G)</text>
+      <text class="s-ts" x="500" y="328" text-anchor="middle">pairwise trees</text>
+      <line x1="195" y1="170" x2="395" y2="80" class="s-line" marker-end="url(#ah14)"/>
+      <text class="s-t" x="20" y="60">tw(G) − 1 ≤ tw(L(G))</text>
+      <text class="s-t" x="20" y="86">tw(L(G)) ≤ Δ(tw(G)+1) − 1</text>
+      <line x1="500" y1="115" x2="500" y2="265" class="s-line" marker-end="url(#ah14)"/>
+      <text class="s-t" x="490" y="182" text-anchor="end">cw ≤ tw(L(G)) + 1</text>
+      <text class="s-t" x="490" y="208" text-anchor="end">tw(L(G)) + 1 ≤ 1.5 cw</text>
+      <line x1="195" y1="210" x2="395" y2="300" class="s-line" marker-end="url(#ah14)"/>
+      <text class="s-t" x="150" y="320">cw ≥ Δ(G)</text>
+    </svg>
+    <table class="tbl" style="font-size: 0.72em; align-self: center">
+      <tr><th>network</th><th class="r">Δ</th><th class="r">tw(G)</th><th class="r">tw(L(G))</th><th class="r">cw(G)</th></tr>
+      <tr><td>ring</td><td class="r" data-bind="S14:rows.ring.max_degree"></td><td class="r" data-bind="S14:rows.ring.tw_G"></td><td class="r" data-bind="S14:rows.ring.tw_LG"></td><td class="r" data-bind="S14:rows.ring.cw_G"></td></tr>
+      <tr><td>bowtie</td><td class="r" data-bind="S14:rows.bowtie.max_degree"></td><td class="r" data-bind="S14:rows.bowtie.tw_G"></td><td class="r" data-bind="S14:rows.bowtie.tw_LG"></td><td class="r" data-bind="S14:rows.bowtie.cw_G"></td></tr>
+      <tr><td>2×3 grid</td><td class="r" data-bind="S14:rows.grid2x3.max_degree"></td><td class="r" data-bind="S14:rows.grid2x3.tw_G"></td><td class="r" data-bind="S14:rows.grid2x3.tw_LG"></td><td class="r" data-bind="S14:rows.grid2x3.cw_G"></td></tr>
+      <tr><td>3×3 grid</td><td class="r" data-bind="S14:rows.grid3x3.max_degree"></td><td class="r" data-bind="S14:rows.grid3x3.tw_G"></td><td class="r" data-bind="S14:rows.grid3x3.tw_LG"></td><td class="r" data-bind="S14:rows.grid3x3.cw_G"></td></tr>
+    </table>
+  </div>
+  <div class="fragment math-anchor">
+    \[ \max\big(\Delta-1,\ \tw(G)-1\big)\ \le\ \tw\big(L(G)\big)\ \le\ \Delta\,(\tw(G)+1)-1, \qquad \Delta \le \cw(G)\ \le\ \tw\big(L(G)\big)+1\ \le\ \tfrac32\,\cw(G) \]
+  </div>
+  <aside class="notes">
+    All table values exact (data/S14.json: subset DP for treewidth and carving width); tests/test_figures.py::test_S14_widths checks
+    every inequality on these rows. Sources: Harvey–Wood, JCTB 132 (2018): tw(L(G)) ≥ Δ − 1, ≥ tw(G) − 1 (Prop 2.3), ≤ (tw(G)+1)Δ − 1 (eq. 2);
+    Dudek–Dueñas-Osorio–Vardi (arXiv:1908.04381) Thm 4: cw ≤ tw(L(G)) + 1; vertex congestion ≤ 1.5 edge congestion (Bienstock 1990, used by O'Gorman 2019)
+    gives tw(L(G)) + 1 ≤ 1.5 cw. For circuits Δ ≤ 4, so the three widths agree up to small constant factors: elimination order or pairwise tree,
+    the exponent is the same up to a factor 1.5. That is why the talk moves freely between the pictures.
+  </aside>
+</section>

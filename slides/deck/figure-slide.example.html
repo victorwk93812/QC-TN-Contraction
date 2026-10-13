@@ -1,0 +1,60 @@
+<!doctype html>
+<!-- Minimal working deck: one stepper slide driven by presenter clicks, KaTeX math last.
+     Serve over HTTP (fetch is blocked on file://):  python -m http.server 8000  -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trace stepper demo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/white.css">
+  <link rel="stylesheet" href="css/theme.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+  <section id="slide-minfill" data-trace="data/F06.json">
+    <h2>MinFill peels the grid from the outside in</h2>
+    <div class="fig">
+      <div class="graph"></div>
+      <div class="readouts">
+        <div class="stat"><span class="k">Step</span><span data-readout="step"></span></div>
+        <div class="stat"><span class="k">Bag size</span><span data-readout="bag"></span></div>
+        <div class="stat"><span class="k">Width so far</span><span data-readout="width"></span></div>
+        <div class="stat"><span class="k">log₂ cost</span><span data-readout="log2cost"></span></div>
+        <div class="spark-wrap"><svg class="spark"></svg></div>
+      </div>
+    </div>
+    <!-- step fragments are appended here by bindReveal(); the formula comes last -->
+    <aside class="notes">Corners go first: fill 1 is the global minimum. VERIFY numbers against tests before rehearsal.</aside>
+  </section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/math/math.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/notes/notes.js"></script>
+<script src="js/stepper.js"></script>
+<script>
+  (async () => {
+    // Build every stepper and its fragments BEFORE Reveal.initialize, so fragment order is final.
+    for (const sec of document.querySelectorAll("section[data-trace]")) {
+      const trace = await (await fetch(sec.dataset.trace)).json();
+      const fig = new TraceStepper(sec.querySelector(".graph"), trace, {
+        readouts: sec.querySelector(".readouts"), spark: sec.querySelector(".spark") });
+      sec._fig = fig;
+      for (let i = 1; i <= fig.length; i++) {
+        const f = document.createElement("span");
+        f.className = "fragment step-fragment"; f.dataset.step = i; sec.appendChild(f);
+      }
+      const math = document.createElement("div");           // picture first, formula last
+      math.className = "fragment math-anchor";
+      math.innerHTML = String.raw`\[ v^\star=\arg\min_v \operatorname{fill}(v) \]`;
+      sec.appendChild(math);
+    }
+    await Reveal.initialize({ hash: true, width: 1600, height: 900, pdfSeparateFragments: true,
+                              plugins: [RevealMath.KaTeX, RevealNotes] });
+    for (const sec of document.querySelectorAll("section[data-trace]")) sec._fig.bindReveal(Reveal, sec);
+  })();
+</script>
+</body>
+</html>

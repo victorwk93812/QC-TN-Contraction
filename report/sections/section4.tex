@@ -1,0 +1,11 @@
+\section{Summary}
+
+\begin{frame}{Summary}
+    \begin{itemize}
+        \item \textbf{Paper.} Classical simulation cost of any bounded-arity circuit is $T^{O(1)}\exp[O(\tw(\GC))]$, via $\cc(G)=\tw(G^*)$ and near-optimal orders from tree decompositions. Sharp: depth 3 easy, depth 4 can be $\Omega(n)$. MBQC on $\ket{G}$ costs $\exp[O(\tw(G))]$.
+        \item \textbf{Direction 1.} Treewidth is not tight: rank-width and linear rank-width methods (FeynmanDD, ZX, sums-of-powers) beat it on structured circuits. Build the parameter hierarchy and a rewrite engine; revisit modular exponentiation.
+        \item \textbf{Direction 2.} Contraction ordering still has topology-specific slack (local refinement, learned rankers). Quantify the optimality gap with exact solvers; exploit circuit-derived decompositions.
+        \item \textbf{Direction 3.} Bridge exact contraction with BP corrections and Pauli-path truncation through an effective contraction complexity under noise.
+        \item \textbf{Benchmark idea.} Worth doing as a predictive two-axis study with a common deliverable and measured hardness parameters; the deliverable is a decision rule for compilers and simulator front-ends.
+    \end{itemize}
+\end{frame}

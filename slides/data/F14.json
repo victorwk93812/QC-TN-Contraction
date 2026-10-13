@@ -1,0 +1,36 @@
+{
+ "schema": 1,
+ "id": "F14",
+ "kind": "static",
+ "meta": {
+  "title": "Separator tree, 7x7 nested dissection"
+ },
+ "nodes": {},
+ "edges": [],
+ "levels": [
+  {
+   "depth": 0,
+   "count": 1,
+   "own": 7,
+   "bag": 7,
+   "inherited": 0
+  },
+  {
+   "depth": 1,
+   "count": 2,
+   "own": 3,
+   "bag": 10,
+   "inherited": 7
+  },
+  {
+   "depth": 2,
+   "count": 4,
+   "own": 3,
+   "bag": 9,
+   "inherited": 6
+  }
+ ],
+ "leaf_max_bag": 8,
+ "n_leaf_blocks": 8,
+ "width": 9
+}

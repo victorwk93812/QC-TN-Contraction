@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F15 · Corner cut vs balanced middle column on 7×7</title>
+<link rel="stylesheet" href="shim.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+</head><body>
+<div class="proto-note">Chat prototype for F15. Reference for layout, colour roles and interaction only: numbers here are hand-placed or computed in the browser; the deck must read them from traces.</div>
+<h2 class="sr-only">Two separators of a 7 by 7 grid: a 2-vertex corner cut and a 7-vertex middle column.</h2>
+<svg id="sepA" width="100%" viewBox="0 0 680 300" role="img" aria-label="Corner cut versus middle column cut on a 7 by 7 grid"></svg>
+<script>
+const NS="http://www.w3.org/2000/svg",svg=document.getElementById("sepA");
+function el(n,a,p){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e}
+function panel(ox,oy,roleOf,title,sub){
+ const L=7,d=30,P=(r,c)=>[ox+c*d,oy+r*d];
+ for(let r=0;r<L;r++)for(let c=0;c<L;c++){
+  if(c<L-1){const[a,b]=P(r,c),[x,y]=P(r,c+1);el("line",{x1:a,y1:b,x2:x,y2:y,stroke:"#B4B2A9","stroke-width":1})}
+  if(r<L-1){const[a,b]=P(r,c),[x,y]=P(r+1,c);el("line",{x1:a,y1:b,x2:x,y2:y,stroke:"#B4B2A9","stroke-width":1})}}
+ for(let r=0;r<L;r++)for(let c=0;c<L;c++){const[x,y]=P(r,c),role=roleOf(r,c);
+  const cls=role==="S"?"c-coral":role==="A"?"c-purple":"c-teal";el("circle",{cx:x,cy:y,r:8,class:cls,"stroke-width":0.5})}
+ const t=el("text",{x:ox+90,y:oy-24,class:"th","text-anchor":"middle"});t.textContent=title;
+ const s=el("text",{x:ox+90,y:oy+6*d+34,class:"ts","text-anchor":"middle"});s.textContent=sub;
+}
+panel(80,60,(r,c)=>(r===0&&c===1)||(r===1&&c===0)?"S":(r===0&&c===0)?"A":"B","Small but useless","|S| = 2, parts of 1 and 46");
+panel(420,60,(r,c)=>c===3?"S":c<3?"A":"B","Balanced","|S| = 7, parts of 21 and 21");
+const lg=[["c-coral","separator S"],["c-purple","part A"],["c-teal","part B"]];
+lg.forEach(([cls,lab],i)=>{const x=190+i*120;el("circle",{cx:x,cy:285,r:6,class:cls,"stroke-width":0.5});const t=el("text",{x:x+12,y:289,class:"ts"});t.textContent=lab});
+</script>
+
+</body></html>

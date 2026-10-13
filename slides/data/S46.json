@@ -1,0 +1,17 @@
+{
+ "schema": 1,
+ "id": "S46",
+ "kind": "static",
+ "meta": {
+  "title": "From orders to pairwise plans"
+ },
+ "nodes": {},
+ "edges": [],
+ "n_orders": 5040,
+ "n_trees": 208,
+ "parallel": {
+  "bonds": 2,
+  "chi": 2,
+  "merged_dim": 4
+ }
+}

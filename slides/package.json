@@ -1,0 +1,19 @@
+{
+  "name": "tn-contraction-talk",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "serve": "python3 tools/serve.py 8001",
+    "vendor": "sh export/vendor.sh",
+    "shots": "node export/shots.mjs",
+    "pdf": "decktape reveal --fragments --chrome-path /usr/bin/chromium --size 1600x900 --pause 400 --load-pause 3000 \"http://localhost:8001/deck/index.html?export\" export/out/deck.pdf"
+  },
+  "devDependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "decktape": "^3.16.1",
+    "katex": "^0.18.10",
+    "playwright": "^1.63.0",
+    "reveal.js": "^5.2.1"
+  }
+}

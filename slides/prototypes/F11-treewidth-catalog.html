@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F11 · Treewidth catalog of graph families</title>
+<link rel="stylesheet" href="shim.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+</head><body>
+<div class="proto-note">Chat prototype for F11. Reference for layout, colour roles and interaction only: numbers here are hand-placed or computed in the browser; the deck must read them from traces.</div>
+<h3>Treewidth catalog</h3>
+<table class="catalog">
+<tr><th>Graph family</th><th>Treewidth</th><th>Why</th></tr>
+<tr><td>Forest</td><td>1</td><td>any edge is a separator</td></tr>
+<tr><td>Cycle, series-parallel, outerplanar</td><td>≤ 2</td><td>tw ≤ 2 ⟺ no K₄ minor</td></tr>
+<tr><td>tw ≤ 3</td><td></td><td>⟺ no K₅, octahedron, Wagner V₈ or pentagonal-prism minor</td></tr>
+<tr><td>k-tree, chordal</td><td>ω − 1</td><td>tight clique bound</td></tr>
+<tr><td>Kₙ, K_{m,n}</td><td>n − 1, min(m, n)</td><td>clique / bipartite cut</td></tr>
+<tr><td>L × L grid</td><td>L</td><td>cut a column</td></tr>
+<tr class="hl"><td>L<sup>d</sup> lattice</td><td>Θ(L<sup>d−1</sup>)</td><td>cut a hyperplane: treewidth ≈ boundary area</td></tr>
+<tr><td>Planar, n vertices</td><td>O(√n)</td><td>Lipton–Tarjan separator</td></tr>
+<tr><td>Genus g</td><td>O(√(gn))</td><td>separator theorem for surfaces</td></tr>
+<tr><td>Hypercube Q_d</td><td>Θ(2<sup>d</sup>/√d)</td><td>isoperimetry on the cube</td></tr>
+<tr><td>Expander, random d-regular</td><td>Θ(n)</td><td>no small balanced cut</td></tr>
+<tr><td>Complete binary tree</td><td>1 (pathwidth ~ log n)</td><td>a branching sweep beats a linear one</td></tr>
+</table>
+
+</body></html>

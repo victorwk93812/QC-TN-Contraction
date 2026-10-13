@@ -1,0 +1,46 @@
+\section{Evaluation: benchmarking general contraction vs.\ DMRG/TDVP}
+
+\begin{frame}{The proposal and why the naive version is apples vs.\ oranges}
+    \textbf{Proposal.} Benchmark treewidth-based general contraction against circuit-specific compressed-state algorithms (DMRG, TDVP, TEBD, TTN).
+    \begin{block}{Problem 1: the two families answer different questions}
+        \begin{itemize}
+            \item Exact contraction (Prop.~3.5) returns \emph{one} amplitude, probability or expectation value with zero error; cost set by $\tw(\GC)$.
+            \item MPS-family methods return a \emph{whole} approximate state with per-gate fidelity loss; cost set by entanglement across cuts. Sampling and many observables come for free afterwards.
+        \end{itemize}
+    \end{block}
+    \begin{block}{Problem 2: parts already exist}
+        \begin{itemize}
+            \item MPS fidelity limits \parencite{zhou2020limits}; DMRG circuit simulator on Sycamore and QAOA \parencite{ayral2023dmrg}; TTN-DMRG \parencite{ttndmrg2025}; local TDVP, compared only against TEBD \parencite{localtdvp2025}; 2D tensor-network sampling \parencite{rudolph2025sampling}.
+            \item None places exact contraction and compressed-state methods on common axes.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Where the two families should diverge (predictions from the paper)}
+    \begin{center}
+    \begin{tabular}{L{3.2cm} C{2.4cm} C{2.4cm} C{2.6cm}}
+        \textbf{Circuit family} & $\tw(\GC)$ & cut entanglement & \textbf{expected winner} \\ \hline
+        Log-depth, local, 1D or 2D (Cor.~1.5) & small & can saturate & contraction \\
+        Deep 1D, slow entanglement growth & large & small & MPS / TDVP \\
+        Deep dense 2D (Quantum Echoes) & large & large & neither \\
+        Tree-like or clustered connectivity & small & moderate & contraction or TTN \\
+        Depth-4 expander layout (Thm.~1.7) & $\Omega(n)$ & large & neither
+    \end{tabular}
+    \end{center}
+    \begin{itemize}
+        \item The two hardness parameters are independent: a single layer of two-qubit gates saturates entanglement across a cut yet has $\tw=O(1)$ (the paper's own remark), while a deep 1D circuit with slow growth has large treewidth yet small $\chi$.
+        \item A 2025 study using a quantum annealer as ground truth found classical scaling extrapolations wrong \parencite{evalqpu2025}: the decision rule is not obvious and needs data.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Verdict and recommended design}
+    \textbf{Verdict.} Valuable, but only if it is framed as a \emph{predictive} two-axis study, not a leaderboard.
+    \begin{enumerate}
+        \item \textbf{Common deliverable.} Fix the task: an expectation value, or a sample set at target fidelity or XEB. Report time, peak memory and FLOPs to reach it.
+        \item \textbf{Two measured hardness axes.} $\tw$ or $\cc$ of $\GC$ (this paper) vs.\ maximal cut entanglement or required $\chi$. Test whether they predict the winner; the output is a decision rule.
+        \item \textbf{Circuit families along both axes}, not only random circuits and QAOA: shallow 2D local, deep 1D, Trotter circuits, expander layouts.
+        \item \textbf{One hardware budget.} GPU backends for both sides (cuTensorNet, CUDA-Q MPS \parencite{cudaqmps2025}); slicing and memory as costs.
+        \item \textbf{Include hybrids.} Cluster-TEBD contracts sub-blocks exactly before compressing \parencite{clustertebd2025}; a tree decomposition could choose which blocks to contract exactly.
+    \end{enumerate}
+    \textbf{Risks.} Heavy engineering; results depend on implementation quality; conclusions may reduce to \enquote{it depends} unless the parameter axes are measured and reported.
+\end{frame}

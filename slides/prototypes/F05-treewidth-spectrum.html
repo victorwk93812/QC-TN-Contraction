@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F05 · Tree, cycle, grid, clique with their best cuts</title>
+<link rel="stylesheet" href="shim.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+</head><body>
+<div class="proto-note">Chat prototype for F05. Reference for layout, colour roles and interaction only: numbers here are hand-placed or computed in the browser; the deck must read them from traces.</div>
+<svg width="100%" viewBox="0 0 680 240" role="img">
+<title>Treewidth as the size of the cut you must carry</title>
+<desc>Four graphs of increasing treewidth: a tree cut by one edge, a cycle cut by two, an L by L grid cut by L, and a complete graph where every cut is large.</desc>
+<text class="th" x="340" y="24" text-anchor="middle">Treewidth ≈ smallest frontier a sweep must carry</text>
+<g stroke="#888780" stroke-width="1">
+<line x1="100" y1="62" x2="70" y2="100"/><line x1="100" y1="62" x2="130" y2="100"/>
+<line x1="70" y1="100" x2="55" y2="140"/><line x1="70" y1="100" x2="85" y2="140"/>
+<line x1="130" y1="100" x2="115" y2="140"/><line x1="130" y1="100" x2="145" y2="140"/>
+</g>
+<line x1="88" y1="52" x2="88" y2="94" stroke="#534AB7" stroke-width="1.25" stroke-dasharray="4 3"/>
+<g class="c-gray">
+<circle cx="100" cy="62" r="5"/><circle cx="70" cy="100" r="5"/><circle cx="130" cy="100" r="5"/>
+<circle cx="55" cy="140" r="5"/><circle cx="85" cy="140" r="5"/><circle cx="115" cy="140" r="5"/><circle cx="145" cy="140" r="5"/>
+</g>
+<text class="t" x="100" y="200" text-anchor="middle">tree · tw = 1</text>
+<text class="ts" x="100" y="218" text-anchor="middle">every cut: 1 edge</text>
+<g stroke="#888780" stroke-width="1" fill="none">
+<polygon points="311,112 297.5,144.5 265,158 232.5,144.5 219,112 232.5,79.5 265,66 297.5,79.5"/>
+</g>
+<line x1="250" y1="58" x2="250" y2="166" stroke="#534AB7" stroke-width="1.25" stroke-dasharray="4 3"/>
+<g class="c-gray">
+<circle cx="311" cy="112" r="5"/><circle cx="297.5" cy="144.5" r="5"/><circle cx="265" cy="158" r="5"/><circle cx="232.5" cy="144.5" r="5"/>
+<circle cx="219" cy="112" r="5"/><circle cx="232.5" cy="79.5" r="5"/><circle cx="265" cy="66" r="5"/><circle cx="297.5" cy="79.5" r="5"/>
+</g>
+<text class="t" x="265" y="200" text-anchor="middle">cycle · tw = 2</text>
+<text class="ts" x="265" y="218" text-anchor="middle">any cut: 2 edges</text>
+<g stroke="#888780" stroke-width="1">
+<line x1="380" y1="65" x2="470" y2="65"/><line x1="380" y1="95" x2="470" y2="95"/><line x1="380" y1="125" x2="470" y2="125"/><line x1="380" y1="155" x2="470" y2="155"/>
+<line x1="380" y1="65" x2="380" y2="155"/><line x1="410" y1="65" x2="410" y2="155"/><line x1="440" y1="65" x2="440" y2="155"/><line x1="470" y1="65" x2="470" y2="155"/>
+</g>
+<line x1="425" y1="50" x2="425" y2="170" stroke="#534AB7" stroke-width="1.25" stroke-dasharray="4 3"/>
+<g class="c-gray">
+<circle cx="380" cy="65" r="4"/><circle cx="410" cy="65" r="4"/><circle cx="440" cy="65" r="4"/><circle cx="470" cy="65" r="4"/>
+<circle cx="380" cy="95" r="4"/><circle cx="410" cy="95" r="4"/><circle cx="440" cy="95" r="4"/><circle cx="470" cy="95" r="4"/>
+<circle cx="380" cy="125" r="4"/><circle cx="410" cy="125" r="4"/><circle cx="440" cy="125" r="4"/><circle cx="470" cy="125" r="4"/>
+<circle cx="380" cy="155" r="4"/><circle cx="410" cy="155" r="4"/><circle cx="440" cy="155" r="4"/><circle cx="470" cy="155" r="4"/>
+</g>
+<text class="t" x="425" y="200" text-anchor="middle">L×L grid · tw = L</text>
+<text class="ts" x="425" y="218" text-anchor="middle">best cut: L edges</text>
+<g stroke="#888780" stroke-width="0.75">
+<line x1="595" y1="66" x2="555" y2="89"/><line x1="595" y1="66" x2="555" y2="135"/><line x1="595" y1="66" x2="595" y2="158"/><line x1="595" y1="66" x2="635" y2="135"/><line x1="595" y1="66" x2="635" y2="89"/>
+<line x1="555" y1="89" x2="555" y2="135"/><line x1="555" y1="89" x2="595" y2="158"/><line x1="555" y1="89" x2="635" y2="135"/><line x1="555" y1="89" x2="635" y2="89"/>
+<line x1="555" y1="135" x2="595" y2="158"/><line x1="555" y1="135" x2="635" y2="135"/><line x1="555" y1="135" x2="635" y2="89"/>
+<line x1="595" y1="158" x2="635" y2="135"/><line x1="595" y1="158" x2="635" y2="89"/>
+<line x1="635" y1="135" x2="635" y2="89"/>
+</g>
+<line x1="578" y1="52" x2="578" y2="172" stroke="#534AB7" stroke-width="1.25" stroke-dasharray="4 3"/>
+<g class="c-gray">
+<circle cx="595" cy="66" r="5"/><circle cx="555" cy="89" r="5"/><circle cx="555" cy="135" r="5"/><circle cx="595" cy="158" r="5"/><circle cx="635" cy="135" r="5"/><circle cx="635" cy="89" r="5"/>
+</g>
+<text class="t" x="595" y="200" text-anchor="middle">Kₙ / expander · tw ∝ n</text>
+<text class="ts" x="595" y="218" text-anchor="middle">no small cut exists</text>
+</svg>
+
+</body></html>

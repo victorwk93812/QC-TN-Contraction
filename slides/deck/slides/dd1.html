@@ -1,0 +1,181 @@
+<!-- Deep dive 1 — Greedy elimination: MinFill and its PACE 2017 variants (slides 21–26) -->
+
+<section id="s21">
+  <div class="act-label">Deep dive 1 · Greedy elimination</div>
+  <h2>The rule: eliminate the vertex that adds the fewest fill edges</h2>
+  <div class="fig">
+    <div data-fig="stepper" data-trace="F06" data-label-mode="fill" data-max-steps="5" class="fig-h540" style="width: 520px">
+      <div class="graph"></div>
+    </div>
+    <div class="readouts">
+      <div class="stat"><span class="k">Step</span><span data-readout="step"></span></div>
+      <div class="stat"><span class="k">Fill added</span><span data-readout="fill"></span></div>
+      <div class="stat"><span class="k">Bag size</span><span data-readout="bag"></span></div>
+      <div class="stat"><span class="k">Width so far</span><span data-readout="width"></span></div>
+      <div class="spark-wrap"><svg class="spark"></svg></div>
+      <div class="small" style="grid-column: 1 / 3">6×6 grid. Label = current fill count. Corners have fill 1: their two neighbours are not adjacent.</div>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    \[ v^\star=\arg\min_v\ \fillin(v)\qquad(\text{ties: smaller degree, then random}) \]
+  </div>
+  <aside class="notes">
+    MinFill looks at every live vertex, counts the edges it would add, and takes the smallest. Ties go to the smaller degree, then a seeded random value.
+    On the grid the four corners have fill 1 and go first; then vertices next to removed corners. Trace data/F06.json, seed 0
+    (the first seed in 0–9 reaching the best width). One click = one elimination.
+    Three of the paper's seven candidates are in this family: MinFill itself (via QXTools) and two MinFill-based PACE 2017 entries by
+    Jégou, Kanso and Terrioux (minfill_mrs: ties broken by a "neighbour future degree" rule; minfillbg_mrs: their H-TD-WT framework).
+    Their PACE-specific refinements are not documented; present them as "MinFill plus tie-breaking refinements".
+  </aside>
+</section>
+
+<section id="s22">
+  <div class="act-label">Deep dive 1 · Greedy elimination</div>
+  <h2>Why it is reasonable: on chordal graphs it never adds an edge</h2>
+  <div class="fig">
+    <div data-fig="stepper" data-trace="F06_chordal" data-label-mode="fill" data-stride="2" class="fig-h360" style="width: 560px">
+      <div class="graph"></div>
+    </div>
+    <div class="readouts">
+      <div class="stat"><span class="k">Step</span><span data-readout="step"></span></div>
+      <div class="stat"><span class="k">Fill added</span><span data-readout="fill"></span></div>
+      <div class="stat"><span class="k">Bag size</span><span data-readout="bag"></span></div>
+      <div class="stat"><span class="k">Width so far</span><span data-readout="width"></span></div>
+      <div class="small" style="grid-column: 1 / 3">A triangulated ladder is chordal: total fill <b data-bind="F06_chordal:total_fill"></b>,
+        width <b data-bind="F06_chordal:width"></b> = largest clique − 1.</div>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    <span class="theorem-name">Simplicial rule (Bodlaender–Koster–van den Eijkhof 2005).</span>
+    \( N(v)\ \text{a clique}\ \Rightarrow\ \tw(G)=\max\big(|N(v)|,\ \tw(G-v)\big) \)
+  </div>
+  <div class="fragment math-anchor">
+    <span class="theorem-name">Fulkerson–Gross (1965).</span>
+    \( G \) is chordal \(\iff\) \(G\) has a perfect elimination ordering (zero fill).
+  </div>
+  <aside class="notes">
+    A vertex whose neighbourhood is already a clique (simplicial) has fill 0, and eliminating it first is always safe: it cannot hurt the optimum.
+    Chordal graphs are exactly the graphs that can be emptied this way, and MinFill finds such an order because fill 0 is the global minimum
+    whenever a simplicial vertex exists. So MinFill is exact on chordal graphs and a one-step-lookahead approximation elsewhere.
+    Two eliminations per click on this slide (12 vertices). Data: data/F06_chordal.json (nx.is_chordal confirms chordality).
+    Sources: Bodlaender, Koster, van den Eijkhof, Computational Intelligence 21(3) 2005, Rule 1; Fulkerson–Gross, Pacific J. Math. 15(3) 1965 §7
+    (the term "perfect elimination" is Rose 1970).
+  </aside>
+</section>
+
+<section id="s23">
+  <div class="act-label">Deep dive 1 · Greedy elimination</div>
+  <h2>MinFill works from the corners inward, on average</h2>
+  <div class="cols">
+    <div class="fig" style="flex-direction: column; align-items: center; gap: 10px">
+      <div data-fig="stepper" data-trace="F06" data-label-mode="fill" data-stride="6" class="fig-h480" style="width: 480px">
+        <div class="graph"></div>
+      </div>
+      <div class="readouts" style="grid-template-columns: repeat(3, 1fr); min-width: 0">
+        <div class="stat"><span class="k">Step</span><span data-readout="step"></span></div>
+        <div class="stat"><span class="k">Width so far</span><span data-readout="width"></span></div>
+        <div class="stat"><span class="k">log₂ cost</span><span data-readout="log2cost"></span></div>
+      </div>
+    </div>
+    <div class="fragment">
+      <div class="panel-title">Elimination time on the 10×10 grid</div>
+      <div data-fig="heatmap" data-trace="F08" class="fig-h480"></div>
+      <div class="panel-sub">mean step by ring, outside → centre:
+        <span data-bind="F08:ring_mean" data-fmt="list"></span> · width <b class="acc" data-bind="F08:width"></b> against the optimum 10</div>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    MinFill width on L×L grids:
+    <span data-bind="F07:minfill.6.0"></span> at L = 20, <span data-bind="F07:minfill.8.0"></span> at L = 24
+    \(\;\approx 1.3\,L\;\) against \(\tw = L\) (column sweep).
+  </div>
+  <aside class="notes">
+    Six eliminations per click on the 6×6 grid; the labels left behind are elimination times. Corners go first, then MinFill takes
+    alternating vertices (a checkerboard: removing every other vertex creates the least fill), and the boundary is used up earlier than the centre.
+    The heat map (data/F08.json, seed 0) shows the trend on 10×10: mean elimination step by ring 32, 54, 62, 66, 67 from the boundary in,
+    but with wide spread — one boundary vertex is the very last. The live region that remains at the end is eliminated as a large clique:
+    the bags grow at the end (slide 27).
+    Measured (tests/test_acceptance.py, first seed in 0–9 reaching the minimum): width 26 at L = 20 and 32 at L = 24, against L for the sweep.
+  </aside>
+</section>
+
+<section id="s24">
+  <div class="act-label">Deep dive 1 · Greedy elimination</div>
+  <h2>Width and cost disagree: MinFill is wider but cheaper, until L = <span data-bind="F07:first_L_minfill_costlier"></span></h2>
+  <div class="cols">
+    <div>
+      <div class="panel-title">Width (memory exponent)</div>
+      <div data-fig="chart" data-trace="F07" data-key="width_chart" data-w="720" data-h="420"></div>
+    </div>
+    <div class="fragment">
+      <div class="panel-title">Total cost (time): MinFill minus sweep</div>
+      <div data-fig="chart" data-trace="F07" data-key="cost_chart" data-w="720" data-h="420"></div>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    \[ \log_2 \text{cost} \;\approx\; \max_t |\mathrm{bag}_t| \;+\; \log_2 \#\{t : |\mathrm{bag}_t| \text{ near the max}\} \]
+  </div>
+  <aside class="notes">
+    Width is the exponent of the largest intermediate; cost sums over all steps. The column sweep hits its maximum bag L+1 at almost every one of its L² steps;
+    MinFill's large bags come in a short burst at the end. So below L ≈ 22 MinFill is cheaper in total time despite being wider:
+    at L = 20 log₂ cost 29.29 vs 29.51. From L = 22 on the sweep wins (32.12 vs 31.79), and at L = 24 MinFill's largest intermediate is
+    2^32 entries against 2^24 for the sweep: a 256× memory gap. Values: data/F07.json, acceptance tests for L = 8, 12, 16, 20, 24.
+  </aside>
+</section>
+
+<section id="s25">
+  <div class="act-label">Deep dive 1 · Greedy elimination</div>
+  <h2>Ties and a late chain: MinFill only sees two steps ahead</h2>
+  <div class="cols">
+    <div>
+      <div class="panel-title">Width over 40 tie-break seeds, 20×20 grid</div>
+      <div data-fig="bars" data-trace="S25" data-key="tie_hist" data-x="x" data-y="count" data-xlabel="width" data-ylabel="seeds" data-w="640" data-h="330"></div>
+    </div>
+    <div class="fragment">
+      <div class="panel-title">Bag size per step, best run (400 steps)</div>
+      <div data-fig="bars" data-trace="S25" data-key="bags" data-profile="on" data-accent-from="357" data-xlabel="elimination step" data-ylabel="bag size" data-w="640" data-h="330"></div>
+      <div class="panel-sub">the last <b class="acc" data-bind="S25:late_chain_len"></b> steps carry bags within 4 of the maximum <b data-bind="S25:bags_max"></b></div>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    <span class="theorem-name">Yannakakis (1981).</span> Minimum fill-in is NP-complete; MinFill is its one-step greedy approximation.
+  </div>
+  <aside class="notes">
+    Tie-breaking alone moves the width from 26 to 30 across 40 seeds at L = 20 (median 28). The rule decides from distance-2 information:
+    each update only touches vertices within distance 2 of the eliminated one, O(|U|Δ²), but Δ grows to about the width once fill accumulates.
+    The bag profile shows the late sequential chain: the expensive steps all come at the end, one after another, which is bad for GPU parallelism (Act IV).
+    On a random cubic graph (n = 320, graph seed 1, 20 tie seeds) MinFill is strong: best 56, median 59.5, against MinDegree median 62 (best 59);
+    nested dissection with our separator finders gives 57 (spectral), 64 (FlowCutter-lite), 67 (BFS levels), 78 (Kernighan–Lin, seed 0) — data/S25.json.
+    The proposal's "naive ND 68" did not specify the separator rule; these four are the defined variants we can reproduce.
+    Yannakakis, SIAM J. Alg. Disc. Meth. 2(1) 1981.
+  </aside>
+</section>
+
+<section id="s26">
+  <div class="act-label">Deep dive 1 · Greedy elimination</div>
+  <h2>Verdict from the paper: MinFill is rarely the fastest plan</h2>
+  <div class="cols c-wide-left">
+    <div data-fig="groupbars" data-trace="P26" data-groups="id,ood" data-group-labels="test circuits (N = 25)|held-out QFT family (N = 62)"
+         data-models="mf_ndcg,random,opt_ndcg" data-model-labels="MinFill ranked first|random ranker|learned ranker (opt_ndcg)"
+         data-classes="muted,side-b,accent" data-metric="top1" data-reveal="models"></div>
+    <div style="font-size: 0.66em; padding-top: 30px">
+      <p>Top-1: how often the plan ranked first is the fastest of the seven.</p>
+      <p>Putting MinFill first: <b><span data-bind="P26:id.mf_ndcg.top1"></span>%</b>.</p>
+      <p>A random ranker's top pick beats the MinFill plan in <b><span data-bind="P26:id.random.win"></span>%</b> of groups.</p>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    <table class="tbl" style="font-size: 0.9em; width: 100%">
+      <tr><th>technique</th><th>graph</th><th>build</th><th class="r">width 7×7 / 20×20 / circuit</th><th class="r">circuit log₂ cost</th><th>plan shape</th><th>guarantee</th></tr>
+      <tr><td>MinFill</td><td>index graph</td><td>bottom-up</td>
+        <td class="r"><span data-bind="SC:rows.minfill.w7"></span> / <span data-bind="SC:rows.minfill.w20"></span> / <span data-bind="SC:rows.minfill.wc"></span></td>
+        <td class="r" data-bind="SC:rows.minfill.cost_c"></td><td>corners first, late chain</td><td>exact on chordal only</td></tr>
+    </table>
+  </div>
+  <aside class="notes">
+    arXiv 2608.05819, Table 6 (ID test, 25 circuit groups) and Table 7 (OOD QFT family, 62 groups). Baselines that force MinFill to rank 1
+    (mf_ndcg, mf_rand) have Top-1 12.00% in distribution and 8.06% on QFT; the learned opt_ndcg ranker has 60.00% and 38.71%; random 22.95% and 27.87%.
+    Win rate counts ties as half: random 70.16% (ID), 70.97% (OOD). "MinFill is rarely the true optimum in this setting" (Sec 6.2.1, p.14).
+    Scorecard row: widths on our shared graphs (7×7 grid, 20×20 grid, the circuit's index graph) and the circuit's log₂ cost, from data/SC.json.
+  </aside>
+</section>

@@ -1,0 +1,238 @@
+<!-- Deep dive 2 — Separators, nested dissection and FlowCutter (slides 27–35) -->
+
+<section id="s27">
+  <div class="act-label">Deep dive 2 · Separators</div>
+  <h2>A separator is only useful if it is balanced</h2>
+  <div class="cols">
+    <div>
+      <div class="panel-title">Small but useless</div>
+      <div data-fig="graph" data-trace="F15" data-from="panels.corner" data-labels="off" data-r="9" class="fig-h420"></div>
+      <div class="panel-sub">|S| = <b class="acc" data-bind="F15:panels.corner.size"></b>, parts of
+        <span data-bind="F15:panels.corner.sizes.1"></span> and <span data-bind="F15:panels.corner.sizes.0"></span></div>
+    </div>
+    <div class="fragment">
+      <div class="panel-title">Balanced</div>
+      <div data-fig="graph" data-trace="F15" data-from="panels.middle" data-labels="off" data-r="9" class="fig-h420"></div>
+      <div class="panel-sub">|S| = <b class="acc" data-bind="F15:panels.middle.size"></b>, parts of
+        <span data-bind="F15:panels.middle.sizes.0"></span> and <span data-bind="F15:panels.middle.sizes.1"></span></div>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    \[ V = A \sqcup S \sqcup B,\ \ \text{no edge between } A \text{ and } B; \qquad S \text{ is } \alpha\text{-balanced if } |A|,|B| \le \alpha n \]
+  </div>
+  <aside class="notes">
+    Coral S, purple part A, teal part B. Cutting off a corner costs only 2 vertices but leaves a 46-vertex problem; the middle column costs 7 and
+    halves the grid. MinFill only ever sees the cheap local cut. Separator methods pick the vertices to eliminate last from global structure.
+    Data: data/F15.json (separator_report).
+  </aside>
+</section>
+
+<section id="s28">
+  <div class="act-label">Deep dive 2 · Separators</div>
+  <h2>Minimal, minimum, balanced: three different words</h2>
+  <div data-fig="playground" data-trace="F16" data-sequence="c,xy,cd,efg,xyz"></div>
+  <div class="fragment math-anchor">
+    \(S\) is a <em>minimal</em> separator \(\iff\) \(G-S\) has at least two <em>full</em> components (components \(C\) with \(N(C) = S\)).
+  </div>
+  <aside class="notes">
+    Five presets, one per click. {c}: not a separator. {x, y}: separates a from h, minimal, and minimum (size 2). {c, d}: minimal but leaves 7 vs 2, not ½-balanced.
+    {e, f, g}: minimal (both sides touch all of S) but not minimum, size 3. {x, y, z}: a separator but not minimal — z has no neighbour on a's side.
+    Every value in the panel is looked up from data/F16.json, which stores separator_report for all 2^11 subsets; clicking vertices (for questions) also only looks up.
+  </aside>
+</section>
+
+<section id="s29">
+  <div class="act-label">Deep dive 2 · Separators</div>
+  <h2>Two disjoint paths prove that no single vertex separates a from h</h2>
+  <div data-fig="playground" data-trace="F16" data-sequence="xy" data-menger-at="2"></div>
+  <div class="fragment math-anchor">
+    <span class="theorem-name">Menger (1927).</span>
+    \[ \min\{|S|: S \text{ separates } u,v\}=\max\{\#\text{ internally vertex-disjoint } u\text{--}v \text{ paths}\} \]
+    computed by max-flow min-cut (Ford–Fulkerson 1956) with unit vertex capacities.
+  </div>
+  <aside class="notes">
+    {x, y} has size 2. Is there a separator of size 1? The two coral paths a–c–x–e–h and a–d–y–z–f–h share no inner vertex,
+    so any separator must hit both: size ≥ 2. Menger says this certificate always exists, and max-flow finds both the cut and the paths.
+    That is the engine inside FlowCutter (slide 36). Sources: Menger, Fund. Math. 10 (1927); Ford–Fulkerson, Canad. J. Math. 8 (1956).
+  </aside>
+</section>
+
+<section id="s30">
+  <div class="act-label">Deep dive 2 · Separators</div>
+  <h2>Eliminate the separator last, and the two sides never interact</h2>
+  <div class="fig">
+    <div data-fig="stepper" data-trace="F12_sideA" data-label-mode="none" data-max-steps="21" data-stride="7" data-sides="on" class="fig-h480" style="width: 500px">
+      <div class="graph"></div>
+    </div>
+    <div class="readouts">
+      <div class="stat"><span class="k">Step</span><span data-readout="step"></span></div>
+      <div class="stat"><span class="k">Width so far</span><span data-readout="width"></span></div>
+      <div class="small" style="grid-column: 1 / 3">Purple A is eliminated column by column while coral S (middle column) stays.
+        Every fill edge lands inside A ∪ S; teal B is untouched. Width on A: <b data-bind="F12_sideA:width_A"></b>.</div>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    <span class="theorem-name">Separator-last lemma.</span>
+    \[ \text{eliminate } A \text{ before } S\cup B \ \Rightarrow\ \text{no fill edge joins } A \text{ and } B; \qquad \width(\pi)=\max\big(w_A,\,w_B,\,|S|-1\big) \]
+  </div>
+  <aside class="notes">
+    Invariant: there is never an edge between a live A vertex and a B vertex. Eliminating a ∈ A only connects neighbours of a, which lie in A ∪ S.
+    So the two sides are independent subproblems and their widths do not add; the separator itself is a clique at the end and costs |S| − 1.
+    Seven eliminations (one column) per click. data/F12_sideA.json; side_a_fill_inside is asserted in tests.
+  </aside>
+</section>
+
+<section id="s31">
+  <div class="act-label">Deep dive 2 · Separators</div>
+  <h2>Nested dissection: each bag inherits its parent's boundary</h2>
+  <div class="cols c-wide-left">
+    <div class="fig" style="justify-content: flex-start">
+      <div data-fig="stepper" data-trace="F12" data-label-mode="separator" data-stride="7" class="fig-h480" style="width: 480px">
+        <div class="graph"></div>
+      </div>
+      <div class="readouts" style="min-width: 260px; grid-template-columns: 1fr">
+        <div class="stat"><span class="k">Step</span><span data-readout="step"></span></div>
+        <div class="stat"><span class="k">Bag size</span><span data-readout="bag"></span></div>
+        <div class="stat"><span class="k">Width so far</span><span data-readout="width"></span></div>
+        <div class="spark-wrap"><svg class="spark"></svg></div>
+      </div>
+    </div>
+    <div style="font-size: 0.68em; padding-top: 20px">
+      <table class="tbl" style="font-size: 1em">
+        <tr><th>level</th><th class="r">own</th><th class="r">inherited</th><th class="r">bag</th></tr>
+        <tr><td>middle column</td><td class="r" data-bind="F14:levels.0.own"></td><td class="r" data-bind="F14:levels.0.inherited"></td><td class="r" data-bind="F14:levels.0.bag"></td></tr>
+        <tr class="hl"><td>half rows</td><td class="r" data-bind="F14:levels.1.own"></td><td class="r" data-bind="F14:levels.1.inherited"></td><td class="r" data-bind="F14:levels.1.bag"></td></tr>
+        <tr><td>columns</td><td class="r" data-bind="F14:levels.2.own"></td><td class="r" data-bind="F14:levels.2.inherited"></td><td class="r" data-bind="F14:levels.2.bag"></td></tr>
+        <tr><td>leaves</td><td></td><td></td><td class="r">≤ <span data-bind="F14:leaf_max_bag"></span></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    \[ \mathrm{bag}(\text{separator at depth } d) \;=\; S_d \,\cup\, \big(\text{boundary inherited from } S_0,\dots,S_{d-1}\big), \qquad \width \le \sum_{d} |S_d| \]
+  </div>
+  <aside class="notes">
+    Balanced ND on 7×7: split the longer side at its middle, recurse, eliminate separators last. Labels on coral vertices = separator depth.
+    Seven eliminations per click. A separator at depth d is eliminated while its ancestors' separators are still alive,
+    so its bag holds its own vertices plus the part of the ancestors' separators it touches: 3 + 7 = 10 for the half rows.
+    Width 9 (data/F12.json, data/F14.json). George (1973) proved this order is asymptotically optimal on the mesh for sparse Cholesky:
+    O(N^{3/2}) operations and O(N log N) storage, N = L².
+  </aside>
+</section>
+
+<section id="s32">
+  <div class="act-label">Deep dive 2 · Separators</div>
+  <h2>Theory: small balanced separators ⟺ small treewidth</h2>
+  <div class="cols c-wide-right">
+    <div>
+      <div data-fig="graph" data-trace="F15" data-from="panels.middle" data-labels="off" data-r="9" class="fig-h420"></div>
+      <div class="panel-sub">7×7 grid: n = <span data-bind="S32:n"></span>, treewidth <span data-bind="S32:tw"></span>,
+        middle column <span data-bind="S32:middle_column"></span> = √n</div>
+    </div>
+    <div>
+      <div class="fragment math-anchor" style="margin-top: 0">
+        <span class="theorem-name">Robertson–Seymour (1986).</span>
+        \( \tw(G)\le k \Rightarrow \exists S,\ |S|\le k+1 \): every component of \(G-S\) has \(\le (n-|S|)/2\) vertices.
+      </div>
+      <div class="fragment math-anchor">
+        <span class="theorem-name">Dvořák–Norin (2019).</span>
+        Every subgraph has a \(\tfrac23\)-balanced separator of size \(\le s\ \Rightarrow\ \tw(G)\le 15s\).
+      </div>
+      <div class="fragment math-anchor">
+        <span class="theorem-name">Lipton–Tarjan (1979).</span>
+        \(G\) planar \(\Rightarrow\) a \(\tfrac23\)-balanced separator with \(|S| \le 2\sqrt2\,\sqrt n\) \(\Rightarrow \tw(G)=O(\sqrt n)\).
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    The two directions: bounded treewidth gives balanced separators of size tw + 1 (here 8, components ≤ 20; the middle column already does it with 7);
+    conversely, if every subgraph has balanced separators of size s, treewidth is at most 15s (Dvořák–Norin, JCTB 137, 2019; balanced = both sides ≤ 2n/3).
+    Planar graphs have separators of size ≤ 2√2·√n (Lipton–Tarjan, SIAM J. Appl. Math. 36, 1979; for n = 49 that bound is 19.8 while the grid needs only 7),
+    so tw = O(√n); the treewidth consequence came later (Fomin–Thilikos give 3.182√n).
+    Robertson–Seymour, Graph Minors II, J. Algorithms 7 (1986). So "find small balanced separators" is the right target, up to constants.
+  </aside>
+</section>
+
+<section id="s33">
+  <div class="act-label">Deep dive 2 · Separators</div>
+  <h2>Balance has a price: perfect halves cost a factor 1.5 in width</h2>
+  <div class="cols c-wide-left">
+    <div data-fig="chart" data-trace="F13" data-key="chart" data-w="900" data-h="460" data-mr="270" data-reveal="series" data-first="on"></div>
+    <div style="font-size: 0.66em; padding-top: 30px">
+      <p>At L = 31: balanced ND <b class="acc" data-bind="F13:nd.3"></b>, MinFill <b data-bind="F13:minfill.3"></b>,
+        sweep and one-cut-plus-sweeps <b class="sideb" data-bind="F13:hybrid.3"></b>.</p>
+      <p>Carving picture, L = 32 balanced bisection: intermediates up to rank <b data-bind="F13:bisection32.max_rank"></b> (1.25 L),
+        top merges cost 2<sup data-bind="F13:bisection32.max_exp"></sup> (1.5 L).</p>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    \[ \width_{\text{balanced ND}} \approx 1.5\,L, \qquad \width_{\text{one cut + inward sweeps}} = L = \tw \]
+  </div>
+  <aside class="notes">
+    Balanced ND reaches width 45 at L = 31 (9, 21, 33, 45 at L = 7, 15, 23, 31), MinFill 41, the column sweep 31,
+    and one balanced cut followed by inward sweeps 31. Inherited boundaries stack up: a quarter block carries its own separator plus
+    pieces of two ancestors. George's optimality is for polynomial costs (FLOPs of sparse Cholesky); in tensor networks the width is an exponent,
+    so a factor 1.5 in width is a factor 2^{0.5 L} in time and memory. Data: data/F13.json; acceptance tests cover every value.
+  </aside>
+</section>
+
+<section id="s34">
+  <div class="act-label">Deep dive 2 · Separators</div>
+  <h2>FlowCutter: grow both sides and record every cut on the way</h2>
+  <div data-fig="flowcutter" data-trace="F18" data-stride="4" class="fig-h480"></div>
+  <div class="fc-readout"></div>
+  <div class="fragment math-anchor">
+    Max-flow \(S \to T\) gives a min cut; the smaller side absorbs its region and pierces one cut vertex.
+    Cuts grow in size while balance improves: the Pareto front \((k,\ k(k{-}1)/2),\ k=2,\dots,7\).
+  </div>
+  <aside class="notes">
+    Hamann and Strasser, "Graph bisection with Pareto optimization", ACM J. Exp. Algorithmics 23 (2018) (ALENEX 2016).
+    Source = top-left corner, target = bottom-right corner, four cuts per click. Purple = source region, teal = target region, coral = current cut.
+    The front on the 7×7 grid is the diagonal cuts: size k cuts off k(k−1)/2 vertices; the last cut, the anti-diagonal of size 7, splits 21 | 21 —
+    as balanced as the middle column, found without asking for balance. Our version recomputes max-flow each step (traces/flowcutter_lite.py);
+    the real tool augments incrementally (O(c·m) total), runs ~20 random s–t pairs, and for ordering does nested dissection with the
+    minimum-expansion cut among those with ≤ 60% imbalance. In PACE 2017 the treewidth heuristic track was won by Tamaki et al.; FlowCutter was second.
+    On the circuit's index graph (data/F19.json) the front is (3, 1), (5, 2), (6, 23): one cut of 6 bonds splits the 54 indices almost in half.
+  </aside>
+</section>
+
+<section id="s35">
+  <div class="act-label">Deep dive 2 · Separators</div>
+  <h2>From cuts to a plan: one width, many contraction trees</h2>
+  <div class="cols c3" style="grid-template-columns: 0.8fr 1fr 1fr">
+    <div>
+      <div class="panel-title">Order c a b d e p q: bags</div>
+      <div data-fig="bags" data-trace="S35" data-key="nd.bags"></div>
+      <div class="panel-sub">width <span data-bind="S35:nd.width"></span> — separator {p, q} last</div>
+    </div>
+    <div>
+      <div class="panel-title">Its tree: cost <b data-bind="S35:nd.cost"></b></div>
+      <div data-fig="tree" data-trace="S35" data-key="nd.tree" data-flag-max="off" data-edge-labels="off" class="fig-h360"></div>
+    </div>
+    <div class="fragment">
+      <div class="panel-title">Order a b p e c d q: cost <b class="acc" data-bind="S35:alt.cost"></b></div>
+      <div data-fig="tree" data-trace="S35" data-key="alt.tree" data-flag-max="off" data-edge-labels="off" class="fig-h360"></div>
+      <div class="panel-sub">same width <span data-bind="S35:alt.width"></span></div>
+    </div>
+  </div>
+  <div class="fragment small" style="text-align: center; margin-top: 6px">All <span data-bind="S35:width3_orders" data-fmt="int"></span> width-3 orders of this network give trees costing
+    <span data-bind="S35:width3_cost_min"></span> to <span data-bind="S35:width3_cost_max"></span>.</div>
+  <div class="fragment math-anchor">
+    <table class="tbl" style="font-size: 0.85em; width: 100%">
+      <tr><th>technique</th><th>graph</th><th>build</th><th class="r">width 7×7 / 20×20 / circuit</th><th class="r">circuit log₂ cost</th><th>plan shape</th><th>guarantee</th></tr>
+      <tr><td>MinFill</td><td>index graph</td><td>bottom-up</td>
+        <td class="r"><span data-bind="SC:rows.minfill.w7"></span> / <span data-bind="SC:rows.minfill.w20"></span> / <span data-bind="SC:rows.minfill.wc"></span></td>
+        <td class="r" data-bind="SC:rows.minfill.cost_c"></td><td>corners first, late chain</td><td>exact on chordal only</td></tr>
+      <tr><td>ND / FlowCutter</td><td>index graph</td><td>top-down</td>
+        <td class="r"><span data-bind="SC:rows.nd_fc.w7"></span> / <span data-bind="SC:rows.nd_fc.w20"></span> / <span data-bind="SC:rows.nd_fc.wc"></span></td>
+        <td class="r" data-bind="SC:rows.nd_fc.cost_c"></td><td>balanced, separators last</td><td>width ≤ Σ separators on a root path</td></tr>
+    </table>
+  </div>
+  <aside class="notes">
+    The 2×3 tensor grid from slide 9. An elimination order of the indices gives a tree decomposition (one bag per step) and, by merging
+    the tensors that carry each eliminated index, a pairwise contraction tree (carving.order_to_tree). The conversion fixes the width but not the shape:
+    the 3168 orders of width 3 give trees whose cost ranges from 52 to 72 (χ = 2), and they differ in how the expensive merges are arranged.
+    That is the gap Act IV exploits: plans of equal width are not equal on a GPU.
+    Scorecard: measured on 7×7, 20×20 and the circuit's index graph (data/SC.json). Note that on this circuit FlowCutter-lite ND (width 13) is worse than MinFill (10):
+    balance is not the objective that matters on a small, irregular network. The ND guarantee: every bag lies inside the union of the separators on its root path.
+  </aside>
+</section>

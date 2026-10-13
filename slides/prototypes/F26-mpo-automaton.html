@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F26 · MPO site tensor as a finite automaton</title>
+<link rel="stylesheet" href="shim.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+</head><body>
+<div class="proto-note">Chat prototype for F26. Reference for layout, colour roles and interaction only: numbers here are hand-placed or computed in the browser; the deck must read them from traces.</div>
+<svg width="100%" viewBox="0 0 680 285" role="img">
+<title>The MPO site tensor as a finite automaton</title>
+<desc>Start, intermediate and final states; C starts a term, A continues it, B finishes it, D handles single-site terms; identity loops on start and final.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+<path d="M125 116 Q340 10 555 116" fill="none" stroke="#5F5E5A" stroke-width="1" marker-end="url(#arrow)"/>
+<text class="ts" x="340" y="88" text-anchor="middle">Dₙ: on-site term, start straight to final</text>
+<line x1="138" y1="140" x2="308" y2="140" stroke="#5F5E5A" stroke-width="1" marker-end="url(#arrow)"/>
+<text class="ts" x="223" y="124" text-anchor="middle">Cₙ: start a term</text>
+<line x1="368" y1="140" x2="538" y2="140" stroke="#5F5E5A" stroke-width="1" marker-end="url(#arrow)"/>
+<text class="ts" x="453" y="124" text-anchor="middle">Bₙ: finish a term</text>
+<path d="M95 165 C70 230 150 230 125 165" fill="none" stroke="#5F5E5A" stroke-width="1" marker-end="url(#arrow)"/>
+<text class="ts" x="110" y="238" text-anchor="middle">𝟙 (nothing yet)</text>
+<path d="M325 165 C300 230 380 230 355 165" fill="none" stroke="#534AB7" stroke-width="1" marker-end="url(#arrow)"/>
+<text class="ts" x="340" y="238" text-anchor="middle">Aₙ: continue a term</text>
+<path d="M555 165 C530 230 610 230 585 165" fill="none" stroke="#5F5E5A" stroke-width="1" marker-end="url(#arrow)"/>
+<text class="ts" x="570" y="238" text-anchor="middle">𝟙 (already done)</text>
+<circle class="c-gray" cx="110" cy="140" r="28" stroke-width="0.5"/>
+<text class="th" x="110" y="140" text-anchor="middle" dominant-baseline="central">s</text>
+<circle class="c-purple" cx="340" cy="140" r="28" stroke-width="0.5"/>
+<text class="th" x="340" y="140" text-anchor="middle" dominant-baseline="central">1…rₙ</text>
+<circle class="c-gray" cx="570" cy="140" r="28" stroke-width="0.5"/>
+<text class="th" x="570" y="140" text-anchor="middle" dominant-baseline="central">f</text>
+<text class="ts" x="340" y="272" text-anchor="middle">Row index = state at bond n−1, column index = state at bond n</text>
+</svg>
+
+</body></html>

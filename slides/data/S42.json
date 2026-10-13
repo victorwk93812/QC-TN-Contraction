@@ -1,0 +1,249 @@
+{
+ "schema": 1,
+ "id": "S42",
+ "kind": "chart",
+ "meta": {
+  "title": "Anytime treewidth heuristics",
+  "instance": {
+   "rows": 5,
+   "cols": 5,
+   "cycles": 16,
+   "seed": 0
+  }
+ },
+ "nodes": {},
+ "edges": [],
+ "n": 295,
+ "m": 830,
+ "runs": [
+  {
+   "solver": "tamaki",
+   "budget": 1,
+   "seed": 1,
+   "width": 36,
+   "valid": true,
+   "elapsed": 1.06
+  },
+  {
+   "solver": "tamaki",
+   "budget": 1,
+   "seed": 2,
+   "width": 36,
+   "valid": true,
+   "elapsed": 1.08
+  },
+  {
+   "solver": "tamaki",
+   "budget": 1,
+   "seed": 3,
+   "width": 36,
+   "valid": true,
+   "elapsed": 1.06
+  },
+  {
+   "solver": "tamaki",
+   "budget": 10,
+   "seed": 1,
+   "width": 32,
+   "valid": true,
+   "elapsed": 10.09
+  },
+  {
+   "solver": "tamaki",
+   "budget": 10,
+   "seed": 2,
+   "width": 32,
+   "valid": true,
+   "elapsed": 10.07
+  },
+  {
+   "solver": "tamaki",
+   "budget": 10,
+   "seed": 3,
+   "width": 32,
+   "valid": true,
+   "elapsed": 10.08
+  },
+  {
+   "solver": "tamaki",
+   "budget": 60,
+   "seed": 1,
+   "width": 26,
+   "valid": true,
+   "elapsed": 60.07
+  },
+  {
+   "solver": "tamaki",
+   "budget": 60,
+   "seed": 2,
+   "width": 26,
+   "valid": true,
+   "elapsed": 60.06
+  },
+  {
+   "solver": "tamaki",
+   "budget": 60,
+   "seed": 3,
+   "width": 26,
+   "valid": true,
+   "elapsed": 60.08
+  },
+  {
+   "solver": "jdrasil",
+   "budget": 1,
+   "seed": 1,
+   "width": 33,
+   "valid": true,
+   "elapsed": 1.05
+  },
+  {
+   "solver": "jdrasil",
+   "budget": 1,
+   "seed": 2,
+   "width": 33,
+   "valid": true,
+   "elapsed": 1.04
+  },
+  {
+   "solver": "jdrasil",
+   "budget": 1,
+   "seed": 3,
+   "width": 33,
+   "valid": true,
+   "elapsed": 1.07
+  },
+  {
+   "solver": "jdrasil",
+   "budget": 10,
+   "seed": 1,
+   "width": 32,
+   "valid": true,
+   "elapsed": 10.09
+  },
+  {
+   "solver": "jdrasil",
+   "budget": 10,
+   "seed": 2,
+   "width": 32,
+   "valid": true,
+   "elapsed": 10.09
+  },
+  {
+   "solver": "jdrasil",
+   "budget": 10,
+   "seed": 3,
+   "width": 32,
+   "valid": true,
+   "elapsed": 10.09
+  },
+  {
+   "solver": "jdrasil",
+   "budget": 60,
+   "seed": 1,
+   "width": 32,
+   "valid": true,
+   "elapsed": 60.12
+  },
+  {
+   "solver": "jdrasil",
+   "budget": 60,
+   "seed": 2,
+   "width": 32,
+   "valid": true,
+   "elapsed": 60.14
+  },
+  {
+   "solver": "jdrasil",
+   "budget": 60,
+   "seed": 3,
+   "width": 31,
+   "valid": true,
+   "elapsed": 60.16
+  }
+ ],
+ "best": {
+  "tamaki": {
+   "1": 36,
+   "10": 32,
+   "60": 26
+  },
+  "jdrasil": {
+   "1": 33,
+   "10": 32,
+   "60": 31
+  }
+ },
+ "minfill": 35,
+ "lower_bound": 9,
+ "budgets": [
+  1,
+  10,
+  60
+ ],
+ "seeds": [
+  1,
+  2,
+  3
+ ],
+ "chart": {
+  "xlabel": "time budget per run (s, log scale)",
+  "ylabel": "best width over 3 seeds",
+  "xticks": [
+   0.0,
+   1.0,
+   1.778
+  ],
+  "xticklabels": [
+   "1",
+   "10",
+   "60"
+  ],
+  "xmin": -0.1,
+  "xmax": 1.8780000000000001,
+  "ymin": 20,
+  "ymax": 40,
+  "series": [
+   {
+    "name": "Tamaki",
+    "x": [
+     0.0,
+     1.0,
+     1.778
+    ],
+    "y": [
+     36,
+     32,
+     26
+    ],
+    "cls": "accent"
+   },
+   {
+    "name": "Jdrasil",
+    "x": [
+     0.0,
+     1.0,
+     1.778
+    ],
+    "y": [
+     33,
+     32,
+     31
+    ],
+    "cls": "side-b"
+   },
+   {
+    "name": "MinFill (instant)",
+    "x": [
+     0.0,
+     1.778
+    ],
+    "y": [
+     35,
+     35
+    ],
+    "cls": "muted",
+    "dashed": true
+   }
+  ]
+ }
+}

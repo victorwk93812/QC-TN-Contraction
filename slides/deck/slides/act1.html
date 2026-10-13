@@ -1,0 +1,236 @@
+<!-- Act I — Why contraction order matters (slides 1–6) -->
+
+<section class="title-slide" id="s01">
+  <div class="cols c-wide-left">
+    <div>
+      <h1>Finding good contraction orders</h1>
+      <div class="sub">From treewidth heuristics to a learned ranker for GPU tensor-network simulation</div>
+      <div class="byline">Victor Liu and Claude · October 2026</div>
+    </div>
+    <div style="margin-top: 140px">
+      <div data-fig="graph" data-trace="F03" data-key="tensor_graph" data-shape="square" data-r="22" class="fig-h420"></div>
+    </div>
+  </div>
+  <aside class="notes">
+    One network, four tensors in a ring. By the end of the talk we will have seen seven ways to decide the order in which
+    to contract it, and how arXiv 2608.05819 learns which of them runs fastest on a GPU.
+  </aside>
+</section>
+
+<section id="s02">
+  <div class="act-label">I · Why order matters</div>
+  <h2>One network, two orders: rank <span data-bind="F04:trees.good.max_rank"></span> against rank <span data-bind="F04:trees.bad.max_rank"></span></h2>
+  <div class="cols">
+    <div>
+      <div class="panel-title">((A B)(C D))</div>
+      <div data-fig="tree" data-trace="F04" data-key="trees.good" data-flag-max="off" class="fig-h420"></div>
+      <div class="panel-sub">max intermediate rank <b class="num" data-bind="F04:trees.good.max_rank"></b> ·
+        total cost <b class="num" data-bind="F04:trees.good.cost"></b></div>
+    </div>
+    <div>
+      <div class="panel-title">((A C)(B D))</div>
+      <div data-fig="tree" data-trace="F04" data-key="trees.bad" class="fig-h420"></div>
+      <div class="panel-sub">max intermediate rank <b class="num acc" data-bind="F04:trees.bad.max_rank"></b> ·
+        total cost <b class="num" data-bind="F04:trees.bad.cost"></b></div>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    Merging \(A\) and \(B\) with \(m\) legs only on \(A\), \(n\) only on \(B\) and \(k\) shared:
+    \[ \text{step cost} = \chi^{\,m+n+k}, \qquad \text{result rank} = m+n \]
+  </div>
+  <aside class="notes">
+    Same four tensors, same answer, two orders. Contracting neighbours keeps every intermediate at rank 2;
+    contracting opposite corners first takes an outer product and creates rank-4 intermediates.
+    Costs are with bond dimension χ = 2 and come from data/F04.json (carving.tree_stats): ((AB)(CD)) costs 8 + 8 + 4 = 20,
+    ((AC)(BD)) costs 16 + 16 + 16 = 48. On real circuits the gap is exponential, not a factor of 2.4.
+  </aside>
+</section>
+
+<section id="s03">
+  <div class="act-label">I · Why order matters</div>
+  <h2>Contracting a bond = summing out one index</h2>
+  <div class="cols">
+    <div>
+      <div class="panel-title">Tensor graph: tensors are vertices</div>
+      <div data-fig="graph" data-trace="F03" data-key="tensor_graph" data-shape="square" data-r="20" class="fig-h360"></div>
+    </div>
+    <div>
+      <div class="panel-title">Index graph: indices are vertices</div>
+      <div data-fig="stepper" data-trace="F03" data-label-mode="name" data-max-steps="1" data-radius="16" class="fig-h360">
+        <div class="graph"></div>
+      </div>
+      <div class="panel-sub">Eliminating \(i\) joins its neighbours \(j\) and \(l\): the dashed fill edge is the new tensor \(T(l, j)\)</div>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    \[ T_{lj} \;=\; \sum_{i} A_{li}\, B_{ij} \qquad\Longleftrightarrow\qquad \text{eliminate vertex } i,\ \text{connect } N(i)=\{j,l\} \]
+  </div>
+  <aside class="notes">
+    Two pictures of the same network. In the index graph two indices are adjacent when one tensor carries both.
+    Summing over i merges A and B into T(l, j); in the index graph, i disappears and its neighbours j and l become adjacent,
+    because T carries both. That new edge is called fill. One click = one elimination.
+  </aside>
+</section>
+
+<section id="s03a">
+  <div class="act-label">I · Why order matters</div>
+  <h2>Bags and width: one graph, two elimination orders</h2>
+  <div class="cols">
+    <div class="fig panel-fig">
+      <div class="panel-title">Hub first</div>
+      <div data-fig="stepper" data-trace="PR1_hub" data-label-mode="name" data-radius="18" data-shared-steps class="fig-h360">
+        <div class="graph"></div>
+      </div>
+      <div class="readouts mini">
+        <div class="stat"><span class="k">Bag size</span><span data-readout="bag"></span></div>
+        <div class="stat"><span class="k">Width so far</span><span data-readout="width"></span></div>
+      </div>
+    </div>
+    <div class="fig panel-fig">
+      <div class="panel-title">Leaves first</div>
+      <div data-fig="stepper" data-trace="PR1_leaves" data-label-mode="name" data-radius="18" data-shared-steps class="fig-h360">
+        <div class="graph"></div>
+      </div>
+      <div class="readouts mini">
+        <div class="stat"><span class="k">Bag size</span><span data-readout="bag"></span></div>
+        <div class="stat"><span class="k">Width so far</span><span data-readout="width"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-sub">coral: vertex being eliminated · purple rings: the rest of its bag · dashed: fill edges it creates · faint: already gone</div>
+  <div class="fragment math-anchor">
+    \[ \mathrm{bag}_t=\{v_t\}\cup N_t(v_t)\ \ (\text{neighbours still present, fill included}), \qquad \width(\pi)=\max_t|\mathrm{bag}_t|-1 \]
+  </div>
+  <aside class="notes">
+    Eliminating a vertex means: connect all of its current neighbours to each other (dashed purple fill edges), then delete it.
+    Its bag is the vertex plus those neighbours (purple rings): everything that one step has to look at together.
+    Same star, two orders. Hub first: the first bag holds all 7 vertices and the 6 leaves become a clique (15 fill edges), width 6.
+    Leaves first: every bag is just {leaf, hub}, width 1. Width belongs to the order, not to the graph.
+    For a tensor network the vertices are indices and a bag is the set of indices one summation touches, so a step costs χ^|bag| (next slides).
+    Data: data/PR1_hub.json, data/PR1_leaves.json; tests/test_figures.py::test_primer_star_two_orders.
+  </aside>
+</section>
+
+<section id="s03b">
+  <div class="act-label">I · Why order matters</div>
+  <h2>Treewidth: the best width any order can reach</h2>
+  <div class="cols c4">
+    <div class="fig panel-fig">
+      <div class="panel-title">Tree</div>
+      <div data-fig="stepper" data-trace="PR2_tree" data-label-mode="none" data-radius="15" data-shared-steps class="fig-h240"><div class="graph"></div></div>
+      <div class="readouts mini one"><div class="stat"><span class="k">Width so far</span><span data-readout="width"></span></div></div>
+      <div class="panel-sub" data-show-at="9">tw = <b class="acc" data-bind="PR2_tree:tw_exact"></b></div>
+    </div>
+    <div class="fig panel-fig">
+      <div class="panel-title">Cycle</div>
+      <div data-fig="stepper" data-trace="PR2_cycle" data-label-mode="none" data-radius="15" data-shared-steps class="fig-h240"><div class="graph"></div></div>
+      <div class="readouts mini one"><div class="stat"><span class="k">Width so far</span><span data-readout="width"></span></div></div>
+      <div class="panel-sub" data-show-at="9">tw = <b class="acc" data-bind="PR2_cycle:tw_exact"></b></div>
+    </div>
+    <div class="fig panel-fig">
+      <div class="panel-title">3×3 grid</div>
+      <div data-fig="stepper" data-trace="PR2_grid" data-label-mode="none" data-radius="15" data-shared-steps class="fig-h240"><div class="graph"></div></div>
+      <div class="readouts mini one"><div class="stat"><span class="k">Width so far</span><span data-readout="width"></span></div></div>
+      <div class="panel-sub" data-show-at="9">tw = <b class="acc" data-bind="PR2_grid:tw_exact"></b></div>
+    </div>
+    <div class="fig panel-fig">
+      <div class="panel-title">Clique K<sub>5</sub></div>
+      <div data-fig="stepper" data-trace="PR2_clique" data-label-mode="none" data-radius="15" data-shared-steps class="fig-h240"><div class="graph"></div></div>
+      <div class="readouts mini one"><div class="stat"><span class="k">Width so far</span><span data-readout="width"></span></div></div>
+      <div class="panel-sub" data-show-at="9">tw = <b class="acc" data-bind="PR2_clique:tw_exact"></b></div>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    \[ \tw(G)=\min_\pi \width(\pi) \]
+    Treewidth is the smallest frontier you must hold while taking the graph apart.
+  </div>
+  <aside class="notes">
+    Four graphs, each eliminated in a best possible order, all advancing on the same click.
+    Tree: peel leaves, every bag is an edge, width 1. Cycle: the first elimination must join two non-adjacent neighbours, so some bag has 3 vertices, width 2.
+    3×3 grid: sweep column by column; the live frontier is a column of 3, width 3. Clique: whatever goes first sees all other 4, width 4.
+    Each shown width equals the exact treewidth computed by subset dynamic programming (traces/exact.py), so no order does better
+    (tests/test_figures.py::test_primer_four_families_optimal). Intuition to keep for the whole talk: treewidth measures how big a
+    frontier you are forced to carry; for tensor networks that frontier is the largest tensor you must store, χ^tw.
+    The formal definitions with fill and tree decompositions come back in Act II.
+  </aside>
+</section>
+
+<section id="s04">
+  <div class="act-label">I · Why order matters</div>
+  <h2>Each step costs χ<sup>|bag|</sup>; the largest bag sets the memory</h2>
+  <div class="fig">
+    <div data-fig="stepper" data-trace="F03" data-label-mode="name" data-radius="16" class="fig-h420" style="width: 440px">
+      <div class="graph"></div>
+    </div>
+    <div>
+      <table class="tbl">
+        <tr><th>step</th><th>eliminate</th><th>N(v)</th><th class="r">bag</th><th class="r">cost χ<sup>bag</sup></th><th class="r">new tensor χ<sup>|N(v)|</sup></th></tr>
+        <tr data-show-at="1"><td>1</td><td data-bind="F03:table.0.elim"></td><td data-bind="F03:table.0.nbrs" data-fmt="set"></td><td class="r" data-bind="F03:table.0.bag"></td><td class="r" data-bind="F03:table.0.cost"></td><td class="r" data-bind="F03:table.0.size"></td></tr>
+        <tr data-show-at="2"><td>2</td><td data-bind="F03:table.1.elim"></td><td data-bind="F03:table.1.nbrs" data-fmt="set"></td><td class="r" data-bind="F03:table.1.bag"></td><td class="r" data-bind="F03:table.1.cost"></td><td class="r" data-bind="F03:table.1.size"></td></tr>
+        <tr data-show-at="3"><td>3</td><td data-bind="F03:table.2.elim"></td><td data-bind="F03:table.2.nbrs" data-fmt="set"></td><td class="r" data-bind="F03:table.2.bag"></td><td class="r" data-bind="F03:table.2.cost"></td><td class="r" data-bind="F03:table.2.size"></td></tr>
+        <tr data-show-at="4"><td>4</td><td data-bind="F03:table.3.elim"></td><td data-bind="F03:table.3.nbrs" data-fmt="set"></td><td class="r" data-bind="F03:table.3.bag"></td><td class="r" data-bind="F03:table.3.cost"></td><td class="r" data-bind="F03:table.3.size"></td></tr>
+        <tr data-show-at="4" class="total"><td colspan="3">total, width</td><td class="r">width <span data-bind="F03:width"></span></td><td class="r" data-bind="F03:total_cost"></td><td class="r">peak <span data-bind="F03:peak_size"></span></td></tr>
+      </table>
+      <div class="readouts" style="margin-top: 24px; grid-template-columns: repeat(4, 1fr); min-width: 0">
+        <div class="stat"><span class="k">Step</span><span data-readout="step"></span></div>
+        <div class="stat"><span class="k">Bag size</span><span data-readout="bag"></span></div>
+        <div class="stat"><span class="k">Width so far</span><span data-readout="width"></span></div>
+        <div class="stat"><span class="k">log₂ cost</span><span data-readout="log2cost"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    \[ \text{step cost} = \chi^{\,|N(v)|+1}, \qquad \text{intermediate size} = \chi^{\,|N(v)|}, \qquad \text{total} = \sum_t \chi^{\,|\mathrm{bag}_t|} \]
+  </div>
+  <aside class="notes">
+    The bag of a step is the eliminated index plus its neighbours: every index the summation touches.
+    With χ = 2 the ring costs 8 + 8 + 4 + 2 = 22 and never stores more than 2² = 4 numbers (width 2).
+    These four rows are data/F03.json, written by traces/figures.py and asserted in tests/test_figures.py::test_F03_ring_table.
+  </aside>
+</section>
+
+<section id="s05">
+  <div class="act-label">I · Why order matters</div>
+  <h2>Too many orders to search, and finding the best is NP-hard</h2>
+  <div class="cols c-wide-left">
+    <div data-fig="chart" data-trace="S05" data-key="chart" data-w="820" data-h="440"></div>
+    <div style="font-size: 0.66em; padding-top: 40px">
+      <p>Our circuit network: <b class="num" data-bind="S05:named.circuit.tensors"></b> tensors,
+        <b class="num" data-bind="S05:named.circuit.indices"></b> indices</p>
+      <p><span data-bind="S05:named.circuit.trees_m"></span> × 10<sup data-bind="S05:named.circuit.trees_e"></sup> contraction trees,<br>
+         <span data-bind="S05:named.circuit.orders_m"></span> × 10<sup data-bind="S05:named.circuit.orders_e"></sup> elimination orders</p>
+      <p class="muted-text">The bowtie (<span data-bind="S05:named.bowtie.tensors"></span> tensors) already has
+        <span data-bind="S05:named.bowtie.trees_m"></span> × 10<sup data-bind="S05:named.bowtie.trees_e"></sup> trees.</p>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    <span class="theorem-name">Markov–Shi (2008).</span>
+    \[ \cc(G) = \tw\big(L(G)\big), \qquad \text{a circuit with } T \text{ gates is simulable in } T^{O(1)}\exp\!\big[O(\tw(G_C))\big] \]
+  </div>
+  <div class="fragment math-anchor">
+    <span class="theorem-name">Arnborg–Corneil–Proskurowski (1987).</span>
+    Deciding \(\tw(G) \le k\) is NP-complete.
+  </div>
+  <aside class="notes">
+    Counting: n indices have n! elimination orders; n tensors have (2n−3)!! rooted binary contraction trees.
+    Values from data/S05.json. The circuit is the talk's recurring network: a seeded 3×4 brickwork circuit with 8 cycles (traces/circuits.py).
+    Markov and Shi: the best contraction complexity of a circuit's network equals the treewidth of its line graph, which is our index graph;
+    simulation is polynomial times exponential in that width. Arnborg, Corneil and Proskurowski: deciding treewidth ≤ k is NP-complete.
+    So exact search is out, and this is a heuristics talk. Bodlaender's linear-time algorithm for fixed k exists,
+    but its constants grow so fast in k that it is impractical beyond very small widths.
+    Sources: Markov–Shi, SIAM J. Comput. 38(3) 2008 (arXiv quant-ph/0511069v7): Prop. 4.2 cc(G) = tw(G*), G* the line graph;
+    Thm 1.1/4.6 runtime with tw of the circuit graph G_C (the two differ by degree factors, Lemma 4.4: (tw−1)/2 ≤ tw(G*) ≤ Δ(tw+1)−1).
+    Arnborg–Corneil–Proskurowski, SIAM J. Alg. Disc. Meth. 8(2) 1987 (k part of the input). See notes/theorem-facts.md.
+  </aside>
+</section>
+
+<section id="s06">
+  <div class="act-label">I · Why order matters</div>
+  <h2>Roadmap: from a cost problem to a learned ranker</h2>
+  <div data-fig="arc" data-trace="F00" style="margin-top: 60px"></div>
+  <aside class="notes">
+    Five acts. A cost problem; a shared vocabulary (fill, width, cost) to judge every technique; a map of the seven
+    plan generators the paper uses; four deep dives that each answer the same five questions (rule, why it works, run it,
+    measured limits, verdict); then the head-to-head and the learned ranker; then open questions.
+  </aside>
+</section>

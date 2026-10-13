@@ -1,0 +1,21 @@
+{
+ "schema": 1,
+ "id": "F01",
+ "kind": "static",
+ "meta": {
+  "title": "The paper's pipeline",
+  "source": "arXiv 2608.05819"
+ },
+ "nodes": {},
+ "edges": [],
+ "groups": 225,
+ "families": 11,
+ "family_groups_sum": 225,
+ "generators": 7,
+ "features_initial": 18,
+ "features_discarded": 4,
+ "features_per_model": 13,
+ "metric": "NDCG@3",
+ "gpu": "RTX A6000",
+ "gpu_transfer": "Tesla V100"
+}

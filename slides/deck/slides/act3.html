@@ -1,0 +1,178 @@
+<!-- Act III — The seven techniques at a glance (deck slides 17–22; proposal 15–20) -->
+
+<section id="s15">
+  <div class="act-label">III · Seven techniques</div>
+  <h2>The paper's pipeline: generate seven plans, then rank them</h2>
+  <svg viewBox="0 0 1500 400" class="figsvg big-svg" role="img" aria-label="pipeline: circuit, seven generators, plan features, learned ranker">
+    <defs><marker id="ah15" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted-2)"/></marker></defs>
+    <rect x="20" y="40" width="300" height="110" rx="12" class="s-box is-side-b"/>
+    <text class="s-th" x="170" y="85" text-anchor="middle">Circuit → tensor network</text>
+    <text class="s-t" x="170" y="118" text-anchor="middle"><tspan data-bind="F01:groups"></tspan> circuits, <tspan data-bind="F01:families"></tspan> families</text>
+    <rect x="400" y="40" width="300" height="110" rx="12" class="s-box"/>
+    <text class="s-th" x="550" y="85" text-anchor="middle"><tspan data-bind="F01:generators"></tspan> generators</text>
+    <text class="s-t" x="550" y="118" text-anchor="middle">one candidate plan each</text>
+    <rect x="780" y="40" width="300" height="110" rx="12" class="s-box is-derived"/>
+    <text class="s-th" x="930" y="85" text-anchor="middle">Plan features</text>
+    <text class="s-t" x="930" y="118" text-anchor="middle">per GEMM step: m, n, k</text>
+    <rect x="1160" y="40" width="320" height="110" rx="12" class="s-box is-accent"/>
+    <text class="s-th" x="1320" y="85" text-anchor="middle">Learned ranker</text>
+    <text class="s-t" x="1320" y="118" text-anchor="middle">XGBoost, <tspan data-bind="F01:metric"></tspan></text>
+    <line x1="325" y1="95" x2="395" y2="95" class="s-line" marker-end="url(#ah15)"/>
+    <line x1="705" y1="95" x2="775" y2="95" class="s-line" marker-end="url(#ah15)"/>
+    <line x1="1085" y1="95" x2="1155" y2="95" class="s-line" marker-end="url(#ah15)"/>
+    <path d="M550 150 V190 H170 V225 M550 190 H430 V225 M550 190 H690 V225 M550 190 H950 V225" class="s-line"/>
+    <rect x="40" y="225" width="260" height="90" rx="10" class="s-box"/><text class="s-th" x="170" y="262" text-anchor="middle">Greedy elimination</text><text class="s-t" x="170" y="292" text-anchor="middle">MinFill ×3</text>
+    <rect x="320" y="225" width="220" height="90" rx="10" class="s-box"/><text class="s-th" x="430" y="262" text-anchor="middle">Separators</text><text class="s-t" x="430" y="292" text-anchor="middle">FlowCutter</text>
+    <rect x="560" y="225" width="260" height="90" rx="10" class="s-box"/><text class="s-th" x="690" y="262" text-anchor="middle">Communities</text><text class="s-t" x="690" y="292" text-anchor="middle">Girvan–Newman</text>
+    <rect x="840" y="225" width="220" height="90" rx="10" class="s-box"/><text class="s-th" x="950" y="262" text-anchor="middle">Solvers</text><text class="s-t" x="950" y="292" text-anchor="middle">Jdrasil, Tamaki</text>
+    <text class="s-ts" x="1160" y="200">trained on an <tspan data-bind="F01:gpu"></tspan>;</text>
+    <text class="s-ts" x="1160" y="225">tested zero-shot on a <tspan data-bind="F01:gpu_transfer"></tspan></text>
+  </svg>
+  <div class="fragment math-anchor">
+    For each circuit: candidate plans \(P_1,\dots,P_7\), runtimes \(T(P_i)\); learn a score \(f(\phi(P_i))\) whose order matches the runtimes —
+    the fastest plan should come first. Label \( y_i=\log\big(1+T(P_{\text{MinFill}})/T(P_i)\big) \).
+  </div>
+  <aside class="notes">
+    arXiv 2608.05819 (Pastor, Castillo, Badia, Aug 2026). 225 circuit groups from MQTBench and QXTools in 11 families (Table 10);
+    seven candidate plans per circuit (Sec 5.1): MinFill and FlowCutter via QXTools, a Girvan–Newman heuristic, the Jdrasil heuristic,
+    the Tamaki local-improvement heuristic and two MinFill-based PACE 2017 entries (Jégou–Kanso–Terrioux). Each plan runs 50 times on an
+    RTX A6000 (Julia, OMEinsum.jl, CUDA, Float32); the label is y = log(1 + speedup over the MinFill plan) (Eq. 12–13).
+    Features: 18 plan-level features from the GEMM shape of each step, 13 per selected model (Table 2). Ranker: XGBoost with rank:ndcg or
+    rank:pairwise, validated on NDCG@3. This act puts the seven on one map before the deep dives.
+  </aside>
+</section>
+
+<section id="s16">
+  <div class="act-label">III · Seven techniques</div>
+  <h2>Seven candidates on one map: which graph, which direction</h2>
+  <div data-fig="lit" data-hide-future="on">
+    <svg viewBox="0 0 1500 470" class="figsvg map-svg big-svg" role="img" aria-label="the seven generators by graph and build direction">
+      <text class="s-th" x="430" y="40" text-anchor="middle">bottom-up</text>
+      <text class="s-th" x="840" y="40" text-anchor="middle">top-down</text>
+      <text class="s-th" x="1250" y="40" text-anchor="middle">search / refine</text>
+      <text class="s-th" x="20" y="170">index graph</text><text class="s-ts" x="20" y="198">(indices; elimination,</text><text class="s-ts" x="20" y="222">tree decompositions)</text>
+      <text class="s-th" x="20" y="390">tensor graph</text><text class="s-ts" x="20" y="418">(tensors; pairwise trees)</text>
+      <line x1="230" y1="300" x2="1480" y2="300" class="s-line" stroke-dasharray="4 4"/>
+      <g data-lit="1">
+        <rect x="250" y="70" width="360" height="200" rx="14" class="s-box"/>
+        <text class="s-th" x="430" y="120" text-anchor="middle">MinFill</text>
+        <text class="s-t" x="430" y="160" text-anchor="middle">+ 2 MinFill variants</text>
+        <text class="s-t" x="430" y="188" text-anchor="middle">(Jégou–Kanso–Terrioux)</text>
+        <text class="s-ts" x="430" y="240" text-anchor="middle">deep dive 1</text>
+      </g>
+      <g data-lit="2">
+        <rect x="660" y="70" width="360" height="200" rx="14" class="s-box"/>
+        <text class="s-th" x="840" y="120" text-anchor="middle">FlowCutter</text>
+        <text class="s-t" x="840" y="160" text-anchor="middle">nested dissection</text>
+        <text class="s-ts" x="840" y="240" text-anchor="middle">deep dive 2</text>
+        <rect x="660" y="320" width="360" height="130" rx="14" class="s-box"/>
+        <text class="s-th" x="840" y="370" text-anchor="middle">Girvan–Newman</text>
+        <text class="s-ts" x="840" y="420" text-anchor="middle">deep dive 3</text>
+      </g>
+      <g data-lit="3">
+        <rect x="1070" y="70" width="360" height="200" rx="14" class="s-box"/>
+        <text class="s-th" x="1250" y="120" text-anchor="middle">Tamaki</text>
+        <text class="s-th" x="1250" y="160" text-anchor="middle">Jdrasil</text>
+        <text class="s-ts" x="1250" y="240" text-anchor="middle">deep dive 4</text>
+      </g>
+    </svg>
+  </div>
+  <aside class="notes">
+    One column per click, bottom-up first because the elimination game is fresh. Rows: which graph the method works on.
+    MinFill, FlowCutter and the solvers order the indices (index graph = line graph of the tensor graph), so their output is an elimination
+    order or tree decomposition that must be converted into a pairwise plan; Girvan–Newman cuts the tensor graph and its dendrogram is already a pairwise plan.
+    Columns: bottom-up = decide the first contraction first; top-down = decide the last cut first; search = spend time improving a decomposition.
+    The classification is ours; the paper lists the seven (Sec 5.1) without a taxonomy. Seven = 3 + 1 + 1 + 2.
+  </aside>
+</section>
+
+<section id="s17">
+  <div class="act-label">III · Seven techniques</div>
+  <h2>Bottom-up against top-down on the same 7×7 grid</h2>
+  <div class="cols">
+    <div class="fig panel-fig">
+      <div class="panel-title">MinFill: cheapest local step first</div>
+      <div data-fig="stepper" data-trace="F06_7" data-label-mode="none" data-stride="7" data-shared-steps class="fig-h420"><div class="graph"></div></div>
+      <div class="readouts mini"><div class="stat"><span class="k">Step</span><span data-readout="step"></span></div><div class="stat"><span class="k">Width so far</span><span data-readout="width"></span></div></div>
+    </div>
+    <div class="fig panel-fig">
+      <div class="panel-title">Nested dissection: separators last</div>
+      <div data-fig="stepper" data-trace="F12" data-label-mode="separator" data-stride="7" data-shared-steps class="fig-h420"><div class="graph"></div></div>
+      <div class="readouts mini"><div class="stat"><span class="k">Step</span><span data-readout="step"></span></div><div class="stat"><span class="k">Width so far</span><span data-readout="width"></span></div></div>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    \[ \underbrace{v^\star=\arg\min_v \fillin(v)}_{\text{local: distance-2 information}} \qquad\text{vs}\qquad \underbrace{S^\star=\arg\min_S |S|\ \text{s.t. balance}\ge\beta,\ \ S\ \text{eliminated last}}_{\text{global: the whole cut}} \]
+  </div>
+  <aside class="notes">
+    Seven eliminations per click on both sides. MinFill starts at the corners and works with local information; nested dissection decides the
+    middle column first (coral, depth 0) and eliminates it last, then recurses. Final widths: MinFill 8 (seed protocol as everywhere),
+    balanced ND 9, treewidth 7. Data: data/F06_7.json, data/F12.json.
+  </aside>
+</section>
+
+<section id="s18">
+  <div class="act-label">III · Seven techniques</div>
+  <h2>Four families, four different objectives</h2>
+  <table class="tbl" style="font-size: 0.68em; width: 100%">
+    <tr><th>family</th><th>what it optimizes</th><th>what it sees</th><th>output</th></tr>
+    <tr><td>Greedy elimination</td><td>fill of the next step</td><td>distance 2 around each vertex</td><td>elimination order</td></tr>
+    <tr><td>Separators (FlowCutter)</td><td>cut size, subject to balance</td><td>the whole graph, one cut at a time</td><td>separator tree → order</td></tr>
+    <tr><td>Communities (Girvan–Newman)</td><td>modularity, via betweenness</td><td>all shortest paths</td><td>dendrogram = pairwise tree</td></tr>
+    <tr><td>Treewidth solvers</td><td>the width itself</td><td>the current decomposition</td><td>tree decomposition</td></tr>
+  </table>
+  <div class="fragment math-anchor">
+    \[ \underbrace{\min_v \fillin(v)}_{\text{greedy}}\qquad \underbrace{\min |S| \text{ s.t. balance} \ge \beta}_{\text{separators}}\qquad \underbrace{\max\ Q}_{\text{communities}}\qquad \underbrace{\min \width(T)}_{\text{solvers}} \]
+  </div>
+  <aside class="notes">
+    None of the four optimizes GPU runtime. Only the solvers target width directly; the other three optimize proxies that often, but not always,
+    correlate with it. This is the gap the learned ranker fills: generate structurally different plans, then pick using features of the plan itself.
+  </aside>
+</section>
+
+<section id="s19">
+  <div class="act-label">III · Seven techniques</div>
+  <h2>Why rank instead of choose: equal width, different plans</h2>
+  <div class="cols c3">
+    <div><div class="panel-title">cheapest (seed <span data-bind="S21:plans.cheapest.seed"></span>)</div>
+      <div data-fig="bars" data-trace="S21" data-key="plans.cheapest" data-y="c" data-profile="on" data-yscale="14" data-xlabel="step" data-ylabel="c = m+n+k" data-w="480" data-h="300"></div>
+      <div class="panel-sub">log₂ cost <b data-bind="S21:plans.cheapest.log2cost"></b> · tiny steps <span data-bind="S21:plans.cheapest.frac_tiny_steps"></span></div></div>
+    <div><div class="panel-title">costliest (seed <span data-bind="S21:plans.costliest.seed"></span>)</div>
+      <div data-fig="bars" data-trace="S21" data-key="plans.costliest" data-y="c" data-profile="on" data-yscale="14" data-xlabel="step" data-ylabel="c = m+n+k" data-w="480" data-h="300"></div>
+      <div class="panel-sub">log₂ cost <b data-bind="S21:plans.costliest.log2cost"></b> · tiny steps <span data-bind="S21:plans.costliest.frac_tiny_steps"></span></div></div>
+    <div><div class="panel-title">most lopsided (seed <span data-bind="S21:plans.most lopsided.seed"></span>)</div>
+      <div data-fig="bars" data-trace="S21" data-key="plans.most lopsided" data-y="c" data-profile="on" data-yscale="14" data-xlabel="step" data-ylabel="c = m+n+k" data-w="480" data-h="300"></div>
+      <div class="panel-sub">mean shape imbalance <b data-bind="S21:plans.most lopsided.avg_asym"></b></div></div>
+  </div>
+  <div class="small" style="text-align: center">MinFill, 200 tie-break seeds on the circuit: <span data-bind="S21:n_same"></span> plans share max rank
+    <span data-bind="S21:max_rank"></span>, yet log₂ cost spans <span data-bind="S21:log2cost_range.0"></span>–<span data-bind="S21:log2cost_range.1"></span>.</div>
+  <div class="fragment math-anchor">
+    \[ \text{runtime} \neq f(\width): \quad \text{runtime} = F\big(\{(m_i, n_i, k_i)\}_i,\ \text{hardware}\big) \]
+    "Plans with similar theoretical complexity may perform very differently" (arXiv 2608.05819, abstract).
+  </div>
+  <aside class="notes">
+    Our own measurement, not the paper's: 200 MinFill plans for the talk's circuit, differing only in tie-breaking (data/S21.json).
+    193 of them have the same max intermediate rank 8, but the bars — the GEMM work exponent c_i of each step in execution order — are arranged
+    differently: total cost differs by 2^0.75 ≈ 1.7× in FLOPs, the share of tiny steps and the shape imbalance differ too.
+    The paper gives no table of equal-width runtimes; it states the point qualitatively (abstract; Sec 3.2; App. A.1 "Why width alone is not sufficient";
+    App. A.7 "runtime is not a monotone function of FLOPs"). That is the case for ranking a diverse pool instead of trusting one score.
+  </aside>
+</section>
+
+<section id="s20">
+  <div class="act-label">III · Seven techniques</div>
+  <h2>The scorecard every deep dive fills in</h2>
+  <table class="tbl" style="font-size: 0.66em; width: 100%">
+    <tr><th>axis</th><th>measured as</th><th>greedy</th><th>separators</th><th>communities</th><th>solvers</th></tr>
+    <tr><td>graph it works on</td><td>index or tensor graph</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+    <tr><td>build direction</td><td>bottom-up, top-down, search</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+    <tr><td>width on shared graphs</td><td>exact value from the traces</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+    <tr><td>cost and peak memory</td><td>log₂ cost, largest intermediate, χ = 2</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+    <tr><td>plan shape</td><td>tree depth, where the expensive steps sit</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+    <tr><td>guarantee</td><td>theorem it carries, if any</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+  </table>
+  <aside class="notes">
+    Each deep dive ends with a verdict filling one column: slides 28 (MinFill), 37 (ND / FlowCutter), 41 (Girvan–Newman) and 44 (solvers);
+    Act IV (slide 45) sets the four plan shapes side by side on the same circuit.
+  </aside>
+</section>

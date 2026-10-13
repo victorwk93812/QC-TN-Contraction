@@ -1,0 +1,326 @@
+{
+ "schema": 1,
+ "id": "F04",
+ "kind": "contraction_tree",
+ "meta": {
+  "title": "Ring: two contraction trees"
+ },
+ "nodes": {},
+ "edges": [],
+ "trees": {
+  "good": {
+   "nodes": [
+    {
+     "id": "LA",
+     "kind": "leaf",
+     "label": "A",
+     "x": 65,
+     "y": 196,
+     "legs": [
+      "i",
+      "l"
+     ],
+     "rank": 2
+    },
+    {
+     "id": "LB",
+     "kind": "leaf",
+     "label": "B",
+     "x": 135,
+     "y": 196,
+     "legs": [
+      "i",
+      "j"
+     ],
+     "rank": 2
+    },
+    {
+     "id": "N2",
+     "kind": "internal",
+     "x": 100.0,
+     "y": 129,
+     "legs": [
+      "j",
+      "l"
+     ],
+     "rank": 2,
+     "m": 1,
+     "n": 1,
+     "k": 1,
+     "exp": 3
+    },
+    {
+     "id": "LC",
+     "kind": "leaf",
+     "label": "C",
+     "x": 205,
+     "y": 196,
+     "legs": [
+      "j",
+      "k"
+     ],
+     "rank": 2
+    },
+    {
+     "id": "LD",
+     "kind": "leaf",
+     "label": "D",
+     "x": 275,
+     "y": 196,
+     "legs": [
+      "k",
+      "l"
+     ],
+     "rank": 2
+    },
+    {
+     "id": "N5",
+     "kind": "internal",
+     "x": 240.0,
+     "y": 129,
+     "legs": [
+      "j",
+      "l"
+     ],
+     "rank": 2,
+     "m": 1,
+     "n": 1,
+     "k": 1,
+     "exp": 3
+    },
+    {
+     "id": "N6",
+     "kind": "root",
+     "x": 170.0,
+     "y": 62,
+     "legs": [],
+     "rank": 0,
+     "m": 0,
+     "n": 0,
+     "k": 2,
+     "exp": 2
+    }
+   ],
+   "edges": [
+    {
+     "parent": "N2",
+     "child": "LA",
+     "legs": [
+      "i",
+      "l"
+     ]
+    },
+    {
+     "parent": "N2",
+     "child": "LB",
+     "legs": [
+      "i",
+      "j"
+     ]
+    },
+    {
+     "parent": "N5",
+     "child": "LC",
+     "legs": [
+      "j",
+      "k"
+     ]
+    },
+    {
+     "parent": "N5",
+     "child": "LD",
+     "legs": [
+      "k",
+      "l"
+     ]
+    },
+    {
+     "parent": "N6",
+     "child": "N2",
+     "legs": [
+      "j",
+      "l"
+     ]
+    },
+    {
+     "parent": "N6",
+     "child": "N5",
+     "legs": [
+      "j",
+      "l"
+     ]
+    }
+   ],
+   "root": "N6",
+   "max_rank": 2,
+   "max_exp": 3,
+   "cost": 20,
+   "log2cost": 4.321928094887363,
+   "carving_width": 2
+  },
+  "bad": {
+   "nodes": [
+    {
+     "id": "LA",
+     "kind": "leaf",
+     "label": "A",
+     "x": 405,
+     "y": 196,
+     "legs": [
+      "i",
+      "l"
+     ],
+     "rank": 2
+    },
+    {
+     "id": "LC",
+     "kind": "leaf",
+     "label": "C",
+     "x": 475,
+     "y": 196,
+     "legs": [
+      "j",
+      "k"
+     ],
+     "rank": 2
+    },
+    {
+     "id": "N2",
+     "kind": "internal",
+     "x": 440.0,
+     "y": 129,
+     "legs": [
+      "i",
+      "j",
+      "k",
+      "l"
+     ],
+     "rank": 4,
+     "m": 2,
+     "n": 2,
+     "k": 0,
+     "exp": 4
+    },
+    {
+     "id": "LB",
+     "kind": "leaf",
+     "label": "B",
+     "x": 545,
+     "y": 196,
+     "legs": [
+      "i",
+      "j"
+     ],
+     "rank": 2
+    },
+    {
+     "id": "LD",
+     "kind": "leaf",
+     "label": "D",
+     "x": 615,
+     "y": 196,
+     "legs": [
+      "k",
+      "l"
+     ],
+     "rank": 2
+    },
+    {
+     "id": "N5",
+     "kind": "internal",
+     "x": 580.0,
+     "y": 129,
+     "legs": [
+      "i",
+      "j",
+      "k",
+      "l"
+     ],
+     "rank": 4,
+     "m": 2,
+     "n": 2,
+     "k": 0,
+     "exp": 4
+    },
+    {
+     "id": "N6",
+     "kind": "root",
+     "x": 510.0,
+     "y": 62,
+     "legs": [],
+     "rank": 0,
+     "m": 0,
+     "n": 0,
+     "k": 4,
+     "exp": 4
+    }
+   ],
+   "edges": [
+    {
+     "parent": "N2",
+     "child": "LA",
+     "legs": [
+      "i",
+      "l"
+     ]
+    },
+    {
+     "parent": "N2",
+     "child": "LC",
+     "legs": [
+      "j",
+      "k"
+     ]
+    },
+    {
+     "parent": "N5",
+     "child": "LB",
+     "legs": [
+      "i",
+      "j"
+     ]
+    },
+    {
+     "parent": "N5",
+     "child": "LD",
+     "legs": [
+      "k",
+      "l"
+     ]
+    },
+    {
+     "parent": "N6",
+     "child": "N2",
+     "legs": [
+      "i",
+      "j",
+      "k",
+      "l"
+     ]
+    },
+    {
+     "parent": "N6",
+     "child": "N5",
+     "legs": [
+      "i",
+      "j",
+      "k",
+      "l"
+     ]
+    }
+   ],
+   "root": "N6",
+   "max_rank": 4,
+   "max_exp": 4,
+   "cost": 48,
+   "log2cost": 5.584962500721156,
+   "carving_width": 4
+  }
+ },
+ "best": {
+  "max_rank": 2,
+  "cost": 20
+ },
+ "carving_width": 2,
+ "max_degree": 2
+}

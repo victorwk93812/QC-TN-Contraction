@@ -1,0 +1,87 @@
+{
+ "schema": 1,
+ "id": "S48",
+ "kind": "chart",
+ "meta": {
+  "title": "A ranking group",
+  "proxy": "FLOPs, \u03c7 = 2"
+ },
+ "nodes": {},
+ "edges": [],
+ "plans": {
+  "MinFill": {
+   "log2cost": 13.28,
+   "max_rank": 8,
+   "y": 0.693
+  },
+  "MinDegree": {
+   "log2cost": 13.28,
+   "max_rank": 8,
+   "y": 0.693
+  },
+  "ND / FlowCutter": {
+   "log2cost": 15.01,
+   "max_rank": 12,
+   "y": 0.263
+  },
+  "Girvan\u2013Newman": {
+   "log2cost": 13.67,
+   "max_rank": 9,
+   "y": 0.567
+  },
+  "Tamaki": {
+   "log2cost": 13.02,
+   "max_rank": 8,
+   "y": 0.787
+  },
+  "Jdrasil": {
+   "log2cost": 12.64,
+   "max_rank": 7,
+   "y": 0.939
+  }
+ },
+ "ideal": [
+  "Jdrasil",
+  "Tamaki",
+  "MinFill",
+  "MinDegree",
+  "Girvan\u2013Newman",
+  "ND / FlowCutter"
+ ],
+ "by_width": [
+  "Jdrasil",
+  "MinDegree",
+  "MinFill",
+  "Tamaki",
+  "Girvan\u2013Newman",
+  "ND / FlowCutter"
+ ],
+ "mf_first": [
+  "MinFill",
+  "Jdrasil",
+  "MinDegree",
+  "Tamaki",
+  "Girvan\u2013Newman",
+  "ND / FlowCutter"
+ ],
+ "ndcg3_by_width": 0.959,
+ "ndcg3_mf_first": 0.893,
+ "bars": {
+  "x": [
+   "Jdrasil",
+   "Tamaki",
+   "MinFill",
+   "MinDegree",
+   "Girvan\u2013Newman",
+   "ND / FlowCutter"
+  ],
+  "y": [
+   0.939,
+   0.787,
+   0.693,
+   0.693,
+   0.567,
+   0.263
+  ]
+ }
+}

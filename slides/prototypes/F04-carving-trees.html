@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F04 · Two contraction trees for the ring: rank 2 vs rank 4</title>
+<link rel="stylesheet" href="shim.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+</head><body>
+<div class="proto-note">Chat prototype for F04. Reference for layout, colour roles and interaction only: numbers here are hand-placed or computed in the browser; the deck must read them from traces.</div>
+<svg width="100%" viewBox="0 0 680 270" role="img">
+<title>Two pairwise contraction trees for the four-tensor ring</title>
+<desc>Left: contracting A with B and C with D gives intermediates of rank 2. Right: contracting A with C and B with D gives intermediates of rank 4.</desc>
+<text class="th" x="170" y="26" text-anchor="middle">((A B)(C D)): max rank 2</text>
+<text class="th" x="510" y="26" text-anchor="middle">((A C)(B D)): max rank 4</text>
+<g stroke="#888780" stroke-width="1.5">
+<line x1="170" y1="62" x2="100" y2="130"/><line x1="170" y1="62" x2="240" y2="130"/>
+<line x1="100" y1="130" x2="65" y2="196"/><line x1="100" y1="130" x2="135" y2="196"/>
+<line x1="240" y1="130" x2="205" y2="196"/><line x1="240" y1="130" x2="275" y2="196"/>
+<line x1="510" y1="62" x2="440" y2="130"/><line x1="510" y1="62" x2="580" y2="130"/>
+<line x1="440" y1="130" x2="405" y2="196"/><line x1="440" y1="130" x2="475" y2="196"/>
+<line x1="580" y1="130" x2="545" y2="196"/><line x1="580" y1="130" x2="615" y2="196"/>
+</g>
+<text class="ts" x="126" y="90" text-anchor="end">{j, l}</text>
+<text class="ts" x="214" y="90">{j, l}</text>
+<text class="ts" x="466" y="90" text-anchor="end" fill="#993C1D">{i, j, k, l}</text>
+<text class="ts" x="554" y="90" fill="#993C1D">{i, j, k, l}</text>
+<g class="c-gray"><circle cx="170" cy="62" r="8" stroke-width="0.5"/><circle cx="510" cy="62" r="8" stroke-width="0.5"/></g>
+<g class="c-purple">
+<circle cx="100" cy="130" r="14" stroke-width="0.5"/><circle cx="240" cy="130" r="14" stroke-width="0.5"/>
+<text class="ts" x="100" y="130" text-anchor="middle" dominant-baseline="central">2</text>
+<text class="ts" x="240" y="130" text-anchor="middle" dominant-baseline="central">2</text>
+</g>
+<g class="c-coral">
+<circle cx="440" cy="130" r="14" stroke-width="0.5"/><circle cx="580" cy="130" r="14" stroke-width="0.5"/>
+<text class="ts" x="440" y="130" text-anchor="middle" dominant-baseline="central">4</text>
+<text class="ts" x="580" y="130" text-anchor="middle" dominant-baseline="central">4</text>
+</g>
+<g class="c-gray">
+<rect x="51" y="196" width="28" height="28" rx="4" stroke-width="0.5"/><rect x="121" y="196" width="28" height="28" rx="4" stroke-width="0.5"/>
+<rect x="191" y="196" width="28" height="28" rx="4" stroke-width="0.5"/><rect x="261" y="196" width="28" height="28" rx="4" stroke-width="0.5"/>
+<rect x="391" y="196" width="28" height="28" rx="4" stroke-width="0.5"/><rect x="461" y="196" width="28" height="28" rx="4" stroke-width="0.5"/>
+<rect x="531" y="196" width="28" height="28" rx="4" stroke-width="0.5"/><rect x="601" y="196" width="28" height="28" rx="4" stroke-width="0.5"/>
+<text class="th" x="65" y="210" text-anchor="middle" dominant-baseline="central">A</text>
+<text class="th" x="135" y="210" text-anchor="middle" dominant-baseline="central">B</text>
+<text class="th" x="205" y="210" text-anchor="middle" dominant-baseline="central">C</text>
+<text class="th" x="275" y="210" text-anchor="middle" dominant-baseline="central">D</text>
+<text class="th" x="405" y="210" text-anchor="middle" dominant-baseline="central">A</text>
+<text class="th" x="475" y="210" text-anchor="middle" dominant-baseline="central">C</text>
+<text class="th" x="545" y="210" text-anchor="middle" dominant-baseline="central">B</text>
+<text class="th" x="615" y="210" text-anchor="middle" dominant-baseline="central">D</text>
+</g>
+<text class="ts" x="340" y="254" text-anchor="middle">Number in node = open bonds of that intermediate = bonds crossing the cut above it</text>
+</svg>
+
+</body></html>

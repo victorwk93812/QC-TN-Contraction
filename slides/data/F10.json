@@ -1,0 +1,630 @@
+{
+ "schema": 1,
+ "id": "F10",
+ "kind": "contraction_tree",
+ "meta": {
+  "title": "Bowtie: tree vs list"
+ },
+ "nodes": {},
+ "edges": [],
+ "tree": {
+  "nodes": [
+   {
+    "id": "LH",
+    "kind": "leaf",
+    "label": "H",
+    "x": 40,
+    "y": 288,
+    "legs": [
+     "p",
+     "q",
+     "r",
+     "s"
+    ],
+    "rank": 4
+   },
+   {
+    "id": "LR",
+    "kind": "leaf",
+    "label": "R",
+    "x": 110,
+    "y": 350,
+    "legs": [
+     "r",
+     "t"
+    ],
+    "rank": 2
+   },
+   {
+    "id": "LS",
+    "kind": "leaf",
+    "label": "S",
+    "x": 180,
+    "y": 350,
+    "legs": [
+     "s",
+     "t"
+    ],
+    "rank": 2
+   },
+   {
+    "id": "N3",
+    "kind": "internal",
+    "x": 145.0,
+    "y": 288,
+    "legs": [
+     "r",
+     "s"
+    ],
+    "rank": 2,
+    "m": 1,
+    "n": 1,
+    "k": 1,
+    "exp": 3
+   },
+   {
+    "id": "N4",
+    "kind": "internal",
+    "x": 92.5,
+    "y": 226,
+    "legs": [
+     "p",
+     "q"
+    ],
+    "rank": 2,
+    "m": 2,
+    "n": 0,
+    "k": 2,
+    "exp": 4
+   },
+   {
+    "id": "LP",
+    "kind": "leaf",
+    "label": "P",
+    "x": 250,
+    "y": 288,
+    "legs": [
+     "p",
+     "u",
+     "x"
+    ],
+    "rank": 3
+   },
+   {
+    "id": "LU",
+    "kind": "leaf",
+    "label": "U",
+    "x": 320,
+    "y": 288,
+    "legs": [
+     "u"
+    ],
+    "rank": 1
+   },
+   {
+    "id": "N7",
+    "kind": "internal",
+    "x": 285.0,
+    "y": 226,
+    "legs": [
+     "p",
+     "x"
+    ],
+    "rank": 2,
+    "m": 2,
+    "n": 0,
+    "k": 1,
+    "exp": 3
+   },
+   {
+    "id": "N8",
+    "kind": "internal",
+    "x": 188.75,
+    "y": 164,
+    "legs": [
+     "q",
+     "x"
+    ],
+    "rank": 2,
+    "m": 1,
+    "n": 1,
+    "k": 1,
+    "exp": 3
+   },
+   {
+    "id": "LQ",
+    "kind": "leaf",
+    "label": "Q",
+    "x": 390,
+    "y": 164,
+    "legs": [
+     "q",
+     "v",
+     "x"
+    ],
+    "rank": 3
+   },
+   {
+    "id": "N10",
+    "kind": "internal",
+    "x": 289.375,
+    "y": 102,
+    "legs": [
+     "v"
+    ],
+    "rank": 1,
+    "m": 0,
+    "n": 1,
+    "k": 2,
+    "exp": 3
+   },
+   {
+    "id": "LV",
+    "kind": "leaf",
+    "label": "V",
+    "x": 460,
+    "y": 102,
+    "legs": [
+     "v"
+    ],
+    "rank": 1
+   },
+   {
+    "id": "N12",
+    "kind": "root",
+    "x": 374.6875,
+    "y": 40,
+    "legs": [],
+    "rank": 0,
+    "m": 0,
+    "n": 0,
+    "k": 1,
+    "exp": 1
+   }
+  ],
+  "edges": [
+   {
+    "parent": "N3",
+    "child": "LR",
+    "legs": [
+     "r",
+     "t"
+    ]
+   },
+   {
+    "parent": "N3",
+    "child": "LS",
+    "legs": [
+     "s",
+     "t"
+    ]
+   },
+   {
+    "parent": "N4",
+    "child": "LH",
+    "legs": [
+     "p",
+     "q",
+     "r",
+     "s"
+    ]
+   },
+   {
+    "parent": "N4",
+    "child": "N3",
+    "legs": [
+     "r",
+     "s"
+    ]
+   },
+   {
+    "parent": "N7",
+    "child": "LP",
+    "legs": [
+     "p",
+     "u",
+     "x"
+    ]
+   },
+   {
+    "parent": "N7",
+    "child": "LU",
+    "legs": [
+     "u"
+    ]
+   },
+   {
+    "parent": "N8",
+    "child": "N4",
+    "legs": [
+     "p",
+     "q"
+    ]
+   },
+   {
+    "parent": "N8",
+    "child": "N7",
+    "legs": [
+     "p",
+     "x"
+    ]
+   },
+   {
+    "parent": "N10",
+    "child": "N8",
+    "legs": [
+     "q",
+     "x"
+    ]
+   },
+   {
+    "parent": "N10",
+    "child": "LQ",
+    "legs": [
+     "q",
+     "v",
+     "x"
+    ]
+   },
+   {
+    "parent": "N12",
+    "child": "N10",
+    "legs": [
+     "v"
+    ]
+   },
+   {
+    "parent": "N12",
+    "child": "LV",
+    "legs": [
+     "v"
+    ]
+   }
+  ],
+  "root": "N12",
+  "max_rank": 2,
+  "max_exp": 4,
+  "cost": 50,
+  "log2cost": 5.643856189774724,
+  "carving_width": 4
+ },
+ "tree_opt": {
+  "max_rank": 2,
+  "cost": 50
+ },
+ "list_rec": {
+  "nodes": [
+   {
+    "id": "LR",
+    "kind": "leaf",
+    "label": "R",
+    "x": 0.0,
+    "y": 360.0,
+    "legs": [
+     "r",
+     "t"
+    ],
+    "rank": 2
+   },
+   {
+    "id": "LS",
+    "kind": "leaf",
+    "label": "S",
+    "x": 60.0,
+    "y": 360.0,
+    "legs": [
+     "s",
+     "t"
+    ],
+    "rank": 2
+   },
+   {
+    "id": "N2",
+    "kind": "internal",
+    "x": 30.0,
+    "y": 300.0,
+    "legs": [
+     "r",
+     "s"
+    ],
+    "rank": 2,
+    "m": 1,
+    "n": 1,
+    "k": 1,
+    "exp": 3
+   },
+   {
+    "id": "LH",
+    "kind": "leaf",
+    "label": "H",
+    "x": 120.0,
+    "y": 300.0,
+    "legs": [
+     "p",
+     "q",
+     "r",
+     "s"
+    ],
+    "rank": 4
+   },
+   {
+    "id": "N4",
+    "kind": "internal",
+    "x": 75.0,
+    "y": 240.0,
+    "legs": [
+     "p",
+     "q"
+    ],
+    "rank": 2,
+    "m": 0,
+    "n": 2,
+    "k": 2,
+    "exp": 4
+   },
+   {
+    "id": "LP",
+    "kind": "leaf",
+    "label": "P",
+    "x": 180.0,
+    "y": 240.0,
+    "legs": [
+     "p",
+     "u",
+     "x"
+    ],
+    "rank": 3
+   },
+   {
+    "id": "N6",
+    "kind": "internal",
+    "x": 127.5,
+    "y": 180.0,
+    "legs": [
+     "q",
+     "u",
+     "x"
+    ],
+    "rank": 3,
+    "m": 1,
+    "n": 2,
+    "k": 1,
+    "exp": 4
+   },
+   {
+    "id": "LU",
+    "kind": "leaf",
+    "label": "U",
+    "x": 240.0,
+    "y": 180.0,
+    "legs": [
+     "u"
+    ],
+    "rank": 1
+   },
+   {
+    "id": "N8",
+    "kind": "internal",
+    "x": 183.75,
+    "y": 120.0,
+    "legs": [
+     "q",
+     "x"
+    ],
+    "rank": 2,
+    "m": 2,
+    "n": 0,
+    "k": 1,
+    "exp": 3
+   },
+   {
+    "id": "LQ",
+    "kind": "leaf",
+    "label": "Q",
+    "x": 300.0,
+    "y": 120.0,
+    "legs": [
+     "q",
+     "v",
+     "x"
+    ],
+    "rank": 3
+   },
+   {
+    "id": "N10",
+    "kind": "internal",
+    "x": 241.875,
+    "y": 60.0,
+    "legs": [
+     "v"
+    ],
+    "rank": 1,
+    "m": 0,
+    "n": 1,
+    "k": 2,
+    "exp": 3
+   },
+   {
+    "id": "LV",
+    "kind": "leaf",
+    "label": "V",
+    "x": 360.0,
+    "y": 60.0,
+    "legs": [
+     "v"
+    ],
+    "rank": 1
+   },
+   {
+    "id": "N12",
+    "kind": "root",
+    "x": 300.9375,
+    "y": 0.0,
+    "legs": [],
+    "rank": 0,
+    "m": 0,
+    "n": 0,
+    "k": 1,
+    "exp": 1
+   }
+  ],
+  "edges": [
+   {
+    "parent": "N2",
+    "child": "LR",
+    "legs": [
+     "r",
+     "t"
+    ]
+   },
+   {
+    "parent": "N2",
+    "child": "LS",
+    "legs": [
+     "s",
+     "t"
+    ]
+   },
+   {
+    "parent": "N4",
+    "child": "N2",
+    "legs": [
+     "r",
+     "s"
+    ]
+   },
+   {
+    "parent": "N4",
+    "child": "LH",
+    "legs": [
+     "p",
+     "q",
+     "r",
+     "s"
+    ]
+   },
+   {
+    "parent": "N6",
+    "child": "N4",
+    "legs": [
+     "p",
+     "q"
+    ]
+   },
+   {
+    "parent": "N6",
+    "child": "LP",
+    "legs": [
+     "p",
+     "u",
+     "x"
+    ]
+   },
+   {
+    "parent": "N8",
+    "child": "N6",
+    "legs": [
+     "q",
+     "u",
+     "x"
+    ]
+   },
+   {
+    "parent": "N8",
+    "child": "LU",
+    "legs": [
+     "u"
+    ]
+   },
+   {
+    "parent": "N10",
+    "child": "N8",
+    "legs": [
+     "q",
+     "x"
+    ]
+   },
+   {
+    "parent": "N10",
+    "child": "LQ",
+    "legs": [
+     "q",
+     "v",
+     "x"
+    ]
+   },
+   {
+    "parent": "N12",
+    "child": "N10",
+    "legs": [
+     "v"
+    ]
+   },
+   {
+    "parent": "N12",
+    "child": "LV",
+    "legs": [
+     "v"
+    ]
+   }
+  ],
+  "root": "N12",
+  "max_rank": 3,
+  "max_exp": 4,
+  "cost": 58,
+  "log2cost": 5.857980995127572,
+  "carving_width": 4
+ },
+ "list": {
+  "order": [
+   "R",
+   "S",
+   "H",
+   "P",
+   "U",
+   "Q",
+   "V"
+  ],
+  "max_rank": 3,
+  "cost": 58,
+  "ranks": [
+   2,
+   2,
+   3,
+   2,
+   1,
+   0
+  ],
+  "legs": [
+   [
+    "r",
+    "s"
+   ],
+   [
+    "p",
+    "q"
+   ],
+   [
+    "q",
+    "u",
+    "x"
+   ],
+   [
+    "q",
+    "x"
+   ],
+   [
+    "v"
+   ],
+   []
+  ]
+ },
+ "list_opt": {
+  "max_rank": 3,
+  "cost": 58
+ },
+ "n_lists": 5040,
+ "min_list_rank": 3,
+ "n_trees": 10395,
+ "carving_width": 4
+}

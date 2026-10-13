@@ -1,0 +1,126 @@
+{
+ "schema": 1,
+ "id": "F21",
+ "kind": "table",
+ "meta": {
+  "title": "GN against the other generators"
+ },
+ "nodes": {},
+ "edges": [],
+ "rows": {
+  "ring": {
+   "tensors": 4,
+   "gn": [
+    2,
+    4.32
+   ],
+   "minfill": [
+    2,
+    4.32
+   ],
+   "nd": [
+    2,
+    4.32
+   ],
+   "opt": [
+    2,
+    4.32
+   ]
+  },
+  "bowtie": {
+   "tensors": 7,
+   "gn": [
+    2,
+    5.7
+   ],
+   "minfill": [
+    2,
+    5.7
+   ],
+   "nd": [
+    4,
+    6.25
+   ],
+   "opt": [
+    2,
+    5.64
+   ]
+  },
+  "two wheels": {
+   "tensors": 10,
+   "gn": [
+    6,
+    9.53
+   ],
+   "minfill": [
+    4,
+    8.64
+   ],
+   "nd": [
+    6,
+    9.65
+   ],
+   "opt": [
+    4,
+    8.6
+   ]
+  },
+  "3\u00d73 grid": {
+   "tensors": 9,
+   "gn": [
+    5,
+    7.86
+   ],
+   "minfill": [
+    4,
+    7.7
+   ],
+   "nd": [
+    5,
+    7.86
+   ],
+   "opt": [
+    4,
+    7.61
+   ]
+  },
+  "7\u00d77 grid": {
+   "tensors": 49,
+   "gn": [
+    10,
+    14.59
+   ],
+   "minfill": [
+    8,
+    13.91
+   ],
+   "nd": [
+    10,
+    14.7
+   ]
+  },
+  "circuit": {
+   "tensors": 33,
+   "gn": [
+    9,
+    13.67
+   ],
+   "minfill": [
+    8,
+    13.28
+   ],
+   "nd": [
+    12,
+    15.01
+   ]
+  }
+ },
+ "order": [
+  "ring",
+  "bowtie",
+  "two wheels",
+  "3\u00d73 grid",
+  "7\u00d77 grid",
+  "circuit"
+ ]
+}

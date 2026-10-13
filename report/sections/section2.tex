@@ -1,0 +1,46 @@
+\section{Three research directions and recent progress}
+
+\begin{frame}{Direction 1: is treewidth the right parameter?}
+    \textbf{Observation.} Thm.~1.1 gives an \emph{upper} bound $\exp[O(\tw)]$. Nothing in the paper says treewidth is tight for the best classical algorithm, and 2025--2026 work shows it is not.
+    \begin{itemize}
+        \item \textbf{FeynmanDD} \parencite{feynmandd2025}: decision-diagram size is exponential in the \emph{linear rank-width} of the circuit graph, which can be much smaller than treewidth and is at most a $\log$ factor larger.
+        \item \textbf{ZX rank-width contraction} \parencite{zxrankwidth2026}: a graph-like ZX diagram with a rank decomposition of width $R$ is evaluated in $\tilde O(4^R)$; several orders of magnitude fewer FLOPs than quimb on structured non-Clifford circuits.
+        \item \textbf{Quadratic sums-of-powers} \parencite{sumsofpowers2026}: $O(4^k\poly n)$ in rank-width $k$; exhibits non-Clifford families with bounded rank-width but divergent treewidth. Treewidth bucket elimination remains the strongest baseline elsewhere.
+        \item \textbf{ZX rewriting as treewidth reduction} \parencite{zxspeedup2023}: local complementation and pivoting on ZX diagrams cut contraction cost by $\sim10^3$ on Sycamore depth-20 circuits, answering the paper's first open question in practice.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Direction 1: proposed work}
+    \begin{enumerate}
+        \item \textbf{Parameter hierarchy for circuit graphs.} Prove tight relations among $\cc$, $\tw$, rank-width and linear rank-width \emph{restricted to} bounded-degree circuit graphs, in the spirit of Lemma 4.4. Where can the gap be exponential?
+        \item \textbf{Rewrite engine that targets the tightest parameter.} Combine ZX rewrites with rank-decomposition heuristics; report the parameter reached, not only FLOPs.
+        \item \textbf{Attack the modular-exponentiation conjecture.} Use the new parameters to either lower-bound arithmetic circuits or find a low-width realization; the QFT surprise suggests the answer is not obvious.
+        \item \textbf{Composition theorems.} Characterize when $\tw(\C_1\circ\C_2)\le f(\tw(\C_1),\tw(\C_2))$; the depth-3/depth-4 jump (Thms.~1.7, 1.8) shows no such theorem can be unconditional.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Direction 2: contraction ordering as a structured problem}
+    \textbf{Observation.} Prop.~5.1 constructs an explicit path decomposition from the qubit ordering. Production tools instead treat the circuit as a generic hypergraph.
+    \begin{itemize}
+        \item \textbf{cotengra} \parencite{gray2021hyper}: hyper-optimized partitioning, simulated annealing, dynamic slicing; the de facto standard, orders of magnitude over greedy orders.
+        \item \textbf{Optimal trees} \parencite{optimaltrees2022}: exact contraction trees for moderate sizes give ground truth for heuristics.
+        \item \textbf{Local refinement} \parencite{localrefine2026}: a nearest-neighbour-interchange pass after cotengra gains $15$ to $116$ bits of cost on Sycamore-like topologies ($\chi=2$ to $16$, $n=500$), but $\le 0.7$ bits on random 3-regular or QAOA graphs. Hyper-optimization misses topology-specific structure.
+        \item \textbf{Learned rankers} \parencite{learnrank2026}: learning to rank contraction plans for GPU execution.
+    \end{itemize}
+    \textbf{Proposed work.}
+    \begin{enumerate}
+        \item Circuit classes for which a circuit-derived decomposition (Prop.~5.1 style) is provably within a constant of optimal; when do heuristics miss it?
+        \item Exact treewidth solvers (PACE) on line graphs of real circuits to quantify the optimality gap of cotengra on named benchmarks.
+        \item Multi-objective orders: slicing, memory and GPU throughput as first-class costs.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Direction 3: approximate and noisy contraction at high treewidth}
+    \textbf{Observation.} The paper is exact and already lives in the density-matrix picture (index dimension $4$). Noise channels are free to include; what changes is which components of the 4-dimensional indices matter.
+    \begin{itemize}
+        \item \textbf{Belief propagation with corrections.} Loop series \parencite{loopseries2024} and cluster corrections \parencite{clustercorr2025} converge exponentially under a loop-decay condition; rigorous limits show breakdown at criticality \parencite{bprigorous2026}.
+        \item \textbf{No-go for dense 2D.} BP tensor networks cannot feasibly reproduce Google's Quantum Echoes OTOC experiment \parencite{echoesnogo2026}: high entanglement plus dense connectivity defeats both compression and BP.
+        \item \textbf{Pauli-path methods.} Polynomial-time expectation values for noisy circuits with arbitrary topology \parencite{schuster2025prx,paulilocalnoise2025,paulibeyondavg2025}: noise damps high-weight Pauli components, i.e.\ it shrinks the effective index dimension.
+    \end{itemize}
+    \textbf{Proposed work.} Define an \emph{effective contraction complexity under noise}: truncate each 4-dimensional index to low-weight Pauli components inside a treewidth-ordered contraction, and prove an error bound that interpolates between exact $\exp[O(\tw)]$ contraction and Pauli-path truncation. Test on circuits where BP fails but treewidth is moderate.
+\end{frame}

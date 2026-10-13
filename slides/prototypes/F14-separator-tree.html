@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F14 · Separator tree with bags 7, 10, 9, ≤ 8</title>
+<link rel="stylesheet" href="shim.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+</head><body>
+<div class="proto-note">Chat prototype for F14. Reference for layout, colour roles and interaction only: numbers here are hand-placed or computed in the browser; the deck must read them from traces.</div>
+<svg width="100%" viewBox="0 0 680 350" role="img">
+<title>Separator tree of nested dissection on the 7 by 7 grid</title>
+<desc>Root separator bag 7; half-row separators inherit the 7-vertex column, bag 10; column separators inherit 6, bag 9; leaves at most 8.</desc>
+<g stroke="#888780" stroke-width="1">
+<line x1="340" y1="72" x2="170" y2="118"/><line x1="340" y1="72" x2="510" y2="118"/>
+<line x1="170" y1="172" x2="85" y2="208"/><line x1="170" y1="172" x2="255" y2="208"/>
+<line x1="510" y1="172" x2="425" y2="208"/><line x1="510" y1="172" x2="595" y2="208"/>
+<line x1="85" y1="262" x2="42" y2="290"/><line x1="85" y1="262" x2="127" y2="290"/>
+<line x1="255" y1="262" x2="212" y2="290"/><line x1="255" y1="262" x2="297" y2="290"/>
+<line x1="425" y1="262" x2="382" y2="290"/><line x1="425" y1="262" x2="467" y2="290"/>
+<line x1="595" y1="262" x2="552" y2="290"/><line x1="595" y1="262" x2="637" y2="290"/>
+</g>
+<g class="c-gray">
+<rect x="265" y="18" width="150" height="54" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="38" text-anchor="middle" dominant-baseline="central">Middle column</text>
+<text class="ts" x="340" y="56" text-anchor="middle" dominant-baseline="central">bag 7</text>
+</g>
+<g class="c-coral">
+<rect x="95" y="118" width="150" height="54" rx="8" stroke-width="0.5"/>
+<text class="th" x="170" y="138" text-anchor="middle" dominant-baseline="central">Half-row (3)</text>
+<text class="ts" x="170" y="156" text-anchor="middle" dominant-baseline="central">3 + 7 inherited = 10</text>
+<rect x="435" y="118" width="150" height="54" rx="8" stroke-width="0.5"/>
+<text class="th" x="510" y="138" text-anchor="middle" dominant-baseline="central">Half-row (3)</text>
+<text class="ts" x="510" y="156" text-anchor="middle" dominant-baseline="central">3 + 7 inherited = 10</text>
+</g>
+<g class="c-purple">
+<rect x="22" y="208" width="126" height="54" rx="8" stroke-width="0.5"/>
+<text class="th" x="85" y="228" text-anchor="middle" dominant-baseline="central">Column (3)</text>
+<text class="ts" x="85" y="246" text-anchor="middle" dominant-baseline="central">3 + 6 = 9</text>
+<rect x="192" y="208" width="126" height="54" rx="8" stroke-width="0.5"/>
+<text class="th" x="255" y="228" text-anchor="middle" dominant-baseline="central">Column (3)</text>
+<text class="ts" x="255" y="246" text-anchor="middle" dominant-baseline="central">3 + 6 = 9</text>
+<rect x="362" y="208" width="126" height="54" rx="8" stroke-width="0.5"/>
+<text class="th" x="425" y="228" text-anchor="middle" dominant-baseline="central">Column (3)</text>
+<text class="ts" x="425" y="246" text-anchor="middle" dominant-baseline="central">3 + 6 = 9</text>
+<rect x="532" y="208" width="126" height="54" rx="8" stroke-width="0.5"/>
+<text class="th" x="595" y="228" text-anchor="middle" dominant-baseline="central">Column (3)</text>
+<text class="ts" x="595" y="246" text-anchor="middle" dominant-baseline="central">3 + 6 = 9</text>
+</g>
+<g class="c-gray">
+<rect x="14" y="290" width="56" height="30" rx="4" stroke-width="0.5"/><rect x="99" y="290" width="56" height="30" rx="4" stroke-width="0.5"/>
+<rect x="184" y="290" width="56" height="30" rx="4" stroke-width="0.5"/><rect x="269" y="290" width="56" height="30" rx="4" stroke-width="0.5"/>
+<rect x="354" y="290" width="56" height="30" rx="4" stroke-width="0.5"/><rect x="439" y="290" width="56" height="30" rx="4" stroke-width="0.5"/>
+<rect x="524" y="290" width="56" height="30" rx="4" stroke-width="0.5"/><rect x="609" y="290" width="56" height="30" rx="4" stroke-width="0.5"/>
+<text class="ts" x="42" y="305" text-anchor="middle" dominant-baseline="central">≤ 8</text>
+<text class="ts" x="127" y="305" text-anchor="middle" dominant-baseline="central">≤ 8</text>
+<text class="ts" x="212" y="305" text-anchor="middle" dominant-baseline="central">≤ 8</text>
+<text class="ts" x="297" y="305" text-anchor="middle" dominant-baseline="central">≤ 8</text>
+<text class="ts" x="382" y="305" text-anchor="middle" dominant-baseline="central">≤ 8</text>
+<text class="ts" x="467" y="305" text-anchor="middle" dominant-baseline="central">≤ 8</text>
+<text class="ts" x="552" y="305" text-anchor="middle" dominant-baseline="central">≤ 8</text>
+<text class="ts" x="637" y="305" text-anchor="middle" dominant-baseline="central">≤ 8</text>
+</g>
+<text class="ts" x="340" y="342" text-anchor="middle">Bag = own separator + inherited boundary. Coral = widest (width 9).</text>
+</svg>
+
+</body></html>

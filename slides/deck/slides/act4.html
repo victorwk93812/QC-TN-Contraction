@@ -1,0 +1,154 @@
+<!-- Act IV — Head-to-head: from plan shapes to a learned ranker (deck slides 45–50; proposal 43–48) -->
+
+<section id="s43">
+  <div class="act-label">IV · Head-to-head</div>
+  <h2>One circuit, four generators, four plan shapes</h2>
+  <div class="cols c4">
+    <div><div class="panel-title">MinFill</div><div data-fig="plantree" data-trace="F23" data-key="plans.MinFill.tree" data-cmin="2" data-cmax="14" class="fig-h420"></div>
+      <div class="panel-sub">rank <b data-bind="F23:plans.MinFill.max_rank"></b> · log₂ cost <b data-bind="F23:plans.MinFill.log2cost"></b><br>depth <span data-bind="F23:plans.MinFill.depth"></span> · critical path <span data-bind="F23:plans.MinFill.critical_path"></span></div></div>
+    <div><div class="panel-title">ND / FlowCutter</div><div data-fig="plantree" data-trace="F23" data-key="plans.ND / FlowCutter.tree" data-cmin="2" data-cmax="14" class="fig-h420"></div>
+      <div class="panel-sub">rank <b data-bind="F23:plans.ND / FlowCutter.max_rank"></b> · log₂ cost <b data-bind="F23:plans.ND / FlowCutter.log2cost"></b><br>depth <span data-bind="F23:plans.ND / FlowCutter.depth"></span> · critical path <span data-bind="F23:plans.ND / FlowCutter.critical_path"></span></div></div>
+    <div><div class="panel-title">Girvan–Newman</div><div data-fig="plantree" data-trace="F23" data-key="plans.Girvan–Newman.tree" data-cmin="2" data-cmax="14" class="fig-h420"></div>
+      <div class="panel-sub">rank <b data-bind="F23:plans.Girvan–Newman.max_rank"></b> · log₂ cost <b data-bind="F23:plans.Girvan–Newman.log2cost"></b><br>depth <span data-bind="F23:plans.Girvan–Newman.depth"></span> · critical path <span data-bind="F23:plans.Girvan–Newman.critical_path"></span></div></div>
+    <div><div class="panel-title">Tamaki</div><div data-fig="plantree" data-trace="F23" data-key="plans.Tamaki.tree" data-cmin="2" data-cmax="14" class="fig-h420"></div>
+      <div class="panel-sub">rank <b data-bind="F23:plans.Tamaki.max_rank"></b> · log₂ cost <b data-bind="F23:plans.Tamaki.log2cost"></b><br>depth <span data-bind="F23:plans.Tamaki.depth"></span> · critical path <span data-bind="F23:plans.Tamaki.critical_path"></span></div></div>
+  </div>
+  <div class="panel-sub">node colour = step exponent c = m + n + k (light → dark); coral = the plan's most expensive steps</div>
+  <div class="fragment math-anchor">
+    \[ \text{total work } W=\sum_i 2^{c_i}, \qquad \text{critical path } C=\max_{\text{root-to-leaf } \gamma}\ \sum_{i\in\gamma} 2^{c_i} \qquad (\log_2 \text{ shown}) \]
+  </div>
+  <aside class="notes">
+    The talk's circuit (33 gate tensors), four of our generators, each converted to a pairwise tree (data/F23.json). MinFill and Tamaki have the same
+    max rank 8 but Tamaki's tree is almost twice as deep (18 vs 10): one long chain of mid-sized steps. ND is shallow (7) but its top merges are
+    expensive (rank 12). On a GPU, total work sets throughput, but the critical path bounds what can overlap and the step shapes decide efficiency.
+    Same network, different plans, and no single number orders them.
+  </aside>
+</section>
+
+<section id="s44">
+  <div class="act-label">IV · Head-to-head</div>
+  <h2>From orders to pairwise plans: many orders, one tree</h2>
+  <div class="cols c3" style="grid-template-columns: 0.8fr 1fr 0.9fr">
+    <div><div class="panel-title">Elimination order → bags</div><div data-fig="bags" data-trace="S35" data-key="nd.bags"></div></div>
+    <div><div class="panel-title">→ pairwise contraction tree</div>
+      <div data-fig="tree" data-trace="S35" data-key="nd.tree" data-flag-max="off" data-edge-labels="off" class="fig-h360"></div></div>
+    <div style="font-size: 0.62em; padding-top: 30px">
+      <p>All <b data-bind="S46:n_orders" data-fmt="int"></b> index orders of the 2×3 grid give only
+        <b class="acc" data-bind="S46:n_trees"></b> different trees.</p>
+      <svg viewBox="0 0 360 120" class="figsvg" style="max-height: 130px">
+        <rect x="10" y="40" width="44" height="44" rx="5" class="s-box"/><rect x="130" y="40" width="44" height="44" rx="5" class="s-box"/>
+        <path d="M54 52 C90 40 95 40 130 52 M54 72 C90 84 95 84 130 72" class="s-line"/>
+        <text class="s-th" x="92" y="28" text-anchor="middle">χ, χ</text>
+        <text class="s-th" x="200" y="70">→</text>
+        <rect x="230" y="40" width="44" height="44" rx="5" class="s-box"/><rect x="310" y="40" width="44" height="44" rx="5" class="s-box"/>
+        <line x1="274" y1="62" x2="310" y2="62" class="s-line" stroke-width="4"/>
+        <text class="s-th" x="292" y="28" text-anchor="middle">χ²</text>
+      </svg>
+      <p>Parallel bonds between two tensors are merged into one bond of dimension χ<sup>2</sup> = <span data-bind="S46:parallel.merged_dim"></span>.</p>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    \[ \text{order } \pi \;\longrightarrow\; \text{tree decomposition} \;\longrightarrow\; \text{pairwise tree} \qquad(\text{many-to-one}) \]
+    here <span data-bind="S46:n_orders" data-fmt="int"></span> orders ↦ <span data-bind="S46:n_trees"></span> trees.
+  </div>
+  <aside class="notes">
+    Eliminating an index merges the (current) tensors that carry it (carving.order_to_tree). Orders that differ only in the sequence of
+    independent eliminations give the same tree, so the map is many-to-one: 5040 orders of the 7 indices of the 2×3 tensor grid, 208 distinct trees
+    (data/S46.json). Generators that output orders or tree decompositions (MinFill, FlowCutter, the solvers) need this conversion; QXTools does it for the
+    paper's pipeline. In circuits, two gates acting on the same pair of qubits produce parallel bonds; merging them is exact (dimension multiplies).
+    The many-to-one map is also why the same width can hide very different plans (slides 21 and 45).
+  </aside>
+</section>
+
+<section id="s45">
+  <div class="act-label">IV · Head-to-head</div>
+  <h2>A step is a GEMM, and a plan is a sequence of GEMMs</h2>
+  <div class="cols c-wide-right" style="grid-template-columns: 1fr 1.4fr">
+    <div>
+      <div class="panel-title">The bottleneck step of the MinFill plan (step <span data-bind="S47:step"></span> of <span data-bind="S47:n_steps"></span>)</div>
+      <div data-fig="gemm" data-trace="S47" class="fig-h360"></div>
+      <div class="panel-sub">m = <b data-bind="S47:m"></b>, n = <b data-bind="S47:n"></b>, k = <b data-bind="S47:k"></b> ·
+        c = <b data-bind="S47:c"></b>, p = <b data-bind="S47:p"></b>, d = <b data-bind="S47:d"></b></div>
+    </div>
+    <div class="fragment">
+      <div class="panel-title">The paper's plan features, by block (Table 2)</div>
+      <div data-fig="features" data-trace="P50" data-mode="plain"></div>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    \[ \text{step } i:\ \big(2^{m_i}\times 2^{k_i}\big)\cdot\big(2^{k_i}\times 2^{n_i}\big),\qquad c_i=m_i+n_i+k_i,\quad p_i=m_i+n_i,\quad k_i,\quad d_i=\frac{|m_i-n_i|}{m_i+n_i+\varepsilon} \]
+  </div>
+  <aside class="notes">
+    Every pairwise contraction is a matrix product after reshaping: m legs only on A, n only on B, k summed. c is the work exponent
+    (FLOPs ≈ 2^{1+c}), p the output size exponent (memory, output parallelism), k the reduction length (reuse, arithmetic intensity),
+    d the shape imbalance: 0 for square products, near 1 for tall-skinny ones (arXiv 2608.05819 Eqs. 5–9, App. A.3).
+    Plan-level features aggregate these over all steps, weighted towards the expensive ones (w_i ∝ 2^{c_i − c_max}), in five blocks.
+    The bottleneck here (data/S47.json) is a square 8×32 · 32×8 product with a long reduction.
+  </aside>
+</section>
+
+<section id="s46">
+  <div class="act-label">IV · Head-to-head</div>
+  <h2>Learning to rank: score a group of plans, put the fastest first</h2>
+  <div data-fig="rankgroup" data-trace="S48" data-reveal="on"></div>
+  <div class="panel-sub" style="margin-top: 14px">our six plans for the talk's circuit · label from a FLOP proxy (χ = 2), not GPU time:
+    \( Sp_i = 2^{L_{\text{MinFill}} - L_i} \)</div>
+  <div class="fragment math-anchor">
+    \[ y=\log\big(1+\text{speedup over the MinFill plan}\big),\qquad \mathrm{NDCG@}k=\frac{1}{\mathrm{IDCG@}k}\sum_{r=1}^{k}\frac{2^{\,y_{(r)}}-1}{\log_2(r+1)} \]
+  </div>
+  <aside class="notes">
+    One training example is a group: all candidate plans of one circuit with their labels. The ranker learns a score per plan from its features;
+    only the order within the group matters. NDCG@3 rewards putting the best plans in the first three places. Training and testing split by circuit,
+    so no circuit is in both (Table 3: 138 development, 25 test, 62 held-out QFT groups).
+    Illustration (data/S48.json): labels here come from FLOP counts of our six plans, since we have no GPU timings; ranking by width already scores 0.959,
+    ranking MinFill first scores 0.893 (Jdrasil, the cheapest plan, drops to second). The paper's labels are measured runtimes (50 runs on an RTX A6000, Eq. 12–13); it uses NDCG@3 as the
+    validation metric with XGBoost's rank:ndcg (LambdaMART) objective but does not print the formula — this is the standard form with gain 2^y − 1.
+  </aside>
+</section>
+
+<section id="s47">
+  <div class="act-label">IV · Head-to-head</div>
+  <h2>Results: the ranker finds the fastest plan 5× more often than MinFill</h2>
+  <div class="cols c-wide-left">
+    <div data-fig="groupbars" data-trace="P49" data-groups="id,ood" data-group-labels="test circuits (N = 25)|held-out QFT family (N = 62)"
+         data-models="mf_ndcg,random,opt_pair,opt_ndcg" data-model-labels="MinFill first|random|pairwise|NDCG ranker"
+         data-classes="muted,side-b,derived,accent" data-metric="top1" data-reveal="models"></div>
+    <div class="fragment">
+      <table class="tbl" style="font-size: 0.62em">
+        <tr><th>NDCG ranker</th><th class="r">Top-1</th><th class="r">Top-3</th><th class="r">Regret₁</th></tr>
+        <tr><td>A6000 (trained)</td><td class="r" data-bind="P49:transfer.opt_ndcg|Ampere.top1"></td><td class="r" data-bind="P49:transfer.opt_ndcg|Ampere.top3"></td><td class="r" data-bind="P49:transfer.opt_ndcg|Ampere.regret1"></td></tr>
+        <tr><td>V100, zero-shot</td><td class="r" data-bind="P49:transfer.opt_ndcg|Volta.top1"></td><td class="r" data-bind="P49:transfer.opt_ndcg|Volta.top3"></td><td class="r" data-bind="P49:transfer.opt_ndcg|Volta.regret1"></td></tr>
+      </table>
+      <p class="small" style="margin-top: 16px">Regret₁ = 1 − Sp(top pick)/Sp(best). Test set: MinFill first <span data-bind="P49:id.mf_ndcg.regret1"></span>,
+        NDCG ranker <span data-bind="P49:id.opt_ndcg.regret1"></span>.</p>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    Top-1 on unseen circuits: <b class="acc"><span data-bind="P49:id.opt_ndcg.top1"></span>%</b> vs <span data-bind="P49:id.mf_ndcg.top1"></span>% for MinFill first;
+    on the held-out QFT family <span data-bind="P49:ood.opt_ndcg.top1"></span>% vs <span data-bind="P49:ood.mf_ndcg.top1"></span>%.
+  </div>
+  <aside class="notes">
+    arXiv 2608.05819 Table 6 (ID test, N = 25), Table 7 (QFT hold-out, N = 62), Table 11 (A6000 → V100 zero-shot, ID test).
+    opt_ndcg Top-1 60.00 / Top-3 96.00 / Regret1 0.0141; opt_pair 60.00 / 92.00 / 0.0211; random 22.95 / 58.44; MinFill-first 12.00 / 84.00 (mf_ndcg).
+    OOD: opt_ndcg 38.71, opt_pair 30.65, random 27.87, MinFill-first 8.06. On the V100 without retraining: Top-1 64.0, Top-3 92.0, Regret1 0.0254.
+    "5×": 60.00 / 12.00. Caveats from the authors: 7 candidates per circuit, one held-out family, two related GPU stacks; the QFT family is also the least
+    stable across GPUs (same best plan in 69.4% of groups vs 84.0% overall, Tables 9–10).
+  </aside>
+</section>
+
+<section id="s48">
+  <div class="act-label">IV · Head-to-head</div>
+  <h2>What the model kept: step-shape features, not the cost totals</h2>
+  <div data-fig="features" data-trace="P50" data-mode="status"></div>
+  <div class="panel-sub" style="margin-top: 10px">purple: kept by both models · teal: kept by one model · struck out: discarded after feature selection</div>
+  <div class="fragment math-anchor">
+    <span data-bind="P50:n_features"></span> features → <span data-bind="P50:n_discarded"></span> discarded, all from the critical-load block
+    (max cost, total FLOPs, near-critical mean, mean cost); each model keeps <span data-bind="P50:n_per_model"></span>.
+  </div>
+  <aside class="notes">
+    arXiv 2608.05819 Table 2 and Sec 5.3: feature selection removed 4 of 18 features as "highly redundant or contributing negligible predictive signal";
+    std_cost is only in opt_ndcg, costw_red_rank only in opt_pair. The paper names gain and Shapley values as its importance methods but reports no
+    importance ranking, so this slide shows what was kept rather than a ranking. Careful reading: max_cost is "the direct descendant of width-based
+    reasoning" (App. A.5); dropping it does not prove width is useless, only that the shape features carry its information and more.
+  </aside>
+</section>

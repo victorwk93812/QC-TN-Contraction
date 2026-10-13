@@ -1,0 +1,90 @@
+<!-- Deep dive 4 — Treewidth solvers: Jdrasil and Tamaki (deck slides 42–44; proposal 40–42) -->
+
+<section id="s40">
+  <div class="act-label">Deep dive 4 · Treewidth solvers</div>
+  <h2>Treewidth as a search problem: spend time, get a narrower plan</h2>
+  <div class="cols c-wide-left">
+    <div data-fig="chart" data-trace="S42" data-key="chart" data-w="860" data-h="440" data-mr="200"></div>
+    <div style="font-size: 0.66em; padding-top: 30px">
+      <p>A larger circuit (<span data-bind="S42:meta.instance.rows"></span>×<span data-bind="S42:meta.instance.cols"></span> qubits,
+        <span data-bind="S42:meta.instance.cycles"></span> cycles): <span data-bind="S42:n"></span> indices.</p>
+      <p>MinFill: width <b data-bind="S42:minfill"></b> instantly.</p>
+      <p>Tamaki after 60 s: <b class="acc" data-bind="S42:best.tamaki.60"></b>; Jdrasil: <b class="sideb" data-bind="S42:best.jdrasil.60"></b>.</p>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    <span class="theorem-name">Exact, for comparison.</span>
+    \( \tw \le k \) decidable in \( 2^{O(k^3)}\, n \) (Bodlaender 1996); exact treewidth in \( O^*(1.7347^{\,n}) \) (Fomin–Todinca–Villanger 2015).
+  </div>
+  <aside class="notes">
+    The two PACE 2017 heuristic-track solvers the paper uses as generators, run here on the index graph of a 5×5-qubit, 16-cycle brickwork circuit
+    (295 indices), each with 1, 10 and 60 seconds and 3 seeds, stopped with SIGTERM as in PACE; every returned decomposition is checked
+    against the three axioms (traces/solvers.py, data/S42.json, measured on this machine — timings are hardware-dependent).
+    Best of 3 seeds: Tamaki 36 → 32 → 26, Jdrasil 33 → 32 → 31; MinFill 35. In PACE 2017 the heuristic track was won by Tamaki et al.;
+    Jdrasil was 4th (Dell et al., IPEC 2017). Bodlaender's bound as stated by Korhonen–Lokshtanov (2023); the 1.7347^n bound is
+    Fomin, Todinca, Villanger, SIAM J. Comput. 44(1) 2015 (Fomin–Villanger 2012 give 1.7549^n). The paper does not state the solvers' time limits.
+  </aside>
+</section>
+
+<section id="s41">
+  <div class="act-label">Deep dive 4 · Treewidth solvers</div>
+  <h2>Local improvement (Tamaki): width is a max, so fix the worst bag</h2>
+  <div class="cols c-wide-left">
+    <div>
+      <div data-fig="tdimprove" data-trace="F22" class="fig-h480"></div>
+      <div class="td-readout"></div>
+    </div>
+    <div style="font-size: 0.66em; padding-top: 30px">
+      <p>Start: a random elimination order on the 5×5 grid, width <b data-bind="F22:start_width"></b>.</p>
+      <p>Repeat: take the widest bag (coral) and its neighbours in the tree; decompose that region (purple) exactly; splice it back.</p>
+      <p>Width <span data-bind="F22:states.0.width"></span> → <span data-bind="F22:states.2.width"></span> →
+        <span data-bind="F22:states.4.width"></span> → <b class="acc" data-bind="F22:final_width"></b> = tw(5×5).</p>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    \[ \width(T)=\max_t |B_t|-1 \;\Rightarrow\; \text{re-solve the region } R \ni \arg\max_t|B_t|:\ \ \text{torso}(R) = G[\textstyle\bigcup_{t\in R}B_t] \;+\; \text{cliques on its separators} \]
+  </div>
+  <aside class="notes">
+    Width is decided by one bag, so improving anything else is wasted. Tamaki's heuristic (PACE 2017 winner) looks at the subtree of the current
+    decomposition around the largest bag and runs exact treewidth, exact pathwidth and a greedy heuristic on the corresponding subgraph, round robin.
+    Our educational version (traces/td.py): region = widest bag plus its tree neighbours (10–12 vertices here); the torso adds a clique on each
+    separator to the rest of the tree, so any decomposition of the torso can be spliced back; we solve it exactly by subset DP.
+    Three rounds take the width from 8 to 5, which is the treewidth of the 5×5 grid. Every intermediate decomposition is validated in tests.
+  </aside>
+</section>
+
+<section id="s42">
+  <div class="act-label">Deep dive 4 · Treewidth solvers</div>
+  <h2>A modular solver (Jdrasil), and the verdict on our circuit</h2>
+  <svg viewBox="0 0 1500 170" class="figsvg big-svg" role="img" aria-label="Jdrasil heuristic pipeline">
+    <defs><marker id="ah42" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted-2)"/></marker></defs>
+    <rect x="10" y="20" width="330" height="120" rx="12" class="s-box"/>
+    <text class="s-th" x="30" y="58">1 · Reduce</text><text class="s-t" x="30" y="92">safe rules: remove simplicial and</text><text class="s-t" x="30" y="118">almost-simplicial vertices</text>
+    <rect x="390" y="20" width="330" height="120" rx="12" class="s-box"/>
+    <text class="s-th" x="410" y="58">2 · Upper bound</text><text class="s-t" x="410" y="92">repeated greedy eliminations</text><text class="s-t" x="410" y="118">(min-degree / min-fill)</text>
+    <rect x="770" y="20" width="330" height="120" rx="12" class="s-box is-accent"/>
+    <text class="s-th" x="790" y="58">3 · Improve until SIGTERM</text><text class="s-t" x="790" y="92">stochastic greedy permutations,</text><text class="s-t" x="790" y="118">local search on the order</text>
+    <rect x="1150" y="20" width="340" height="120" rx="12" class="s-box"/>
+    <text class="s-th" x="1170" y="58">Exact mode (other tools)</text><text class="s-t" x="1170" y="92">minimal separators, potential</text><text class="s-t" x="1170" y="118">maximal cliques, SAT</text>
+    <line x1="345" y1="80" x2="385" y2="80" class="s-line" marker-end="url(#ah42)"/><line x1="725" y1="80" x2="765" y2="80" class="s-line" marker-end="url(#ah42)"/>
+  </svg>
+  <table class="tbl fragment" style="font-size: 0.66em; width: 100%; margin-top: 10px">
+    <tr><th>on the talk's circuit (54 indices)</th><th class="r">width</th><th class="r">tree max rank</th><th class="r">tree log₂ cost</th></tr>
+    <tr><td>MinFill</td><td class="r" data-bind="SC:rows.minfill.wc"></td><td class="r" data-bind="SC:rows.minfill.tree_rank_c"></td><td class="r" data-bind="SC:rows.minfill.tree_cost_c"></td></tr>
+    <tr><td>Tamaki, 10 s (3 seeds)</td><td class="r acc" data-bind="S44:rows.tamaki.best_width"></td><td class="r" data-bind="S44:rows.tamaki.tree_max_rank"></td><td class="r" data-bind="S44:rows.tamaki.tree_log2cost"></td></tr>
+    <tr><td>Jdrasil, 10 s (3 seeds)</td><td class="r" data-bind="S44:rows.jdrasil.best_width"></td><td class="r" data-bind="S44:rows.jdrasil.tree_max_rank"></td><td class="r acc" data-bind="S44:rows.jdrasil.tree_log2cost"></td></tr>
+  </table>
+  <div class="fragment math-anchor">
+    <span class="theorem-name">Why exact solvers enumerate separators.</span>
+    Minimal triangulations are made of minimal separators of \(G\) (Parra–Scheffler 1997); their maximal cliques are the potential maximal cliques,
+    and treewidth is computable wherever those can be listed efficiently (Bouchitté–Todinca 2001).
+  </div>
+  <aside class="notes">
+    Jdrasil (Bannach, Berndt, Ehlers; PACE 2016/2017): a library of reduction rules, upper-bound heuristics and exact algorithms that can be combined;
+    the heuristic mode does up to 30 greedy runs, graph reduction, then stochastic greedy permutations and local search, and prints its best
+    decomposition on SIGTERM. Exact solvers use the separator view from deep dive 2: optimal decompositions are assembled from minimal separators.
+    Verdict on our circuit (data/S44.json, 10 s per run, 3 seeds, decompositions validated, converted to an order by perfect elimination and then
+    to a pairwise tree): Tamaki reaches width 8 against MinFill's 10, but Jdrasil's width-9 decomposition gives the cheapest tree (rank 7, log₂ cost 12.64).
+    Narrower is not always cheaper — the theme of Act IV. The paper runs both solvers as black boxes; their modes and time limits are not stated.
+  </aside>
+</section>

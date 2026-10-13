@@ -1,0 +1,30 @@
+/* shim.css — stands in for the Claude.ai chat stylesheet these prototypes were drawn against.
+   Prototypes only: the real deck uses deck/css/theme.css. Class meanings map as
+   c-coral → accent, c-purple → derived, c-teal → side-b, c-gray → muted. */
+:root { --text-primary:#1f1e1c; --text-secondary:#5f5e5a; --text-success:#0f6e56; --text-danger:#a32d2d;
+        --surface-1:#f6f5f1; --radius:8px; --border:#d3d1c7; }
+body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--text-primary);
+       max-width: 760px; margin: 24px auto; padding: 0 16px; }
+.proto-note { font-size: 13px; color: var(--text-secondary); border-left: 3px solid #d85a30; padding: 4px 10px; margin-bottom: 16px; }
+svg text { font-family: inherit; }
+.t:not([fill])  { font-size: 14px; fill: var(--text-primary); }
+.th:not([fill]) { font-size: 14px; font-weight: 600; fill: var(--text-primary); }
+.ts:not([fill]) { font-size: 12px; fill: var(--text-secondary); }
+.t, .th, .ts { font-size: 14px; } .ts { font-size: 12px; } .th { font-weight: 600; }
+.arr { stroke: #888780; stroke-width: 1.2; fill: none; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+button, select { font: inherit; font-size: 14px; padding: 5px 12px; border: 0.5px solid var(--border);
+                 border-radius: 8px; background: #fff; color: var(--text-primary); cursor: pointer; }
+.c-purple:is(rect,circle,polygon,ellipse), .c-purple :is(rect,circle,polygon,ellipse) { fill:#eeedfe; stroke:#534ab7; }
+.c-purple text:not([fill]) { fill:#3c3489; }
+.c-coral:is(rect,circle,polygon,ellipse),  .c-coral :is(rect,circle,polygon,ellipse)  { fill:#faece7; stroke:#d85a30; }
+.c-coral text:not([fill]) { fill:#712b13; }
+.c-teal:is(rect,circle,polygon,ellipse),   .c-teal :is(rect,circle,polygon,ellipse)   { fill:#e1f5ee; stroke:#1d9e75; }
+.c-teal text:not([fill]) { fill:#085041; }
+.c-gray:is(rect,circle,polygon,ellipse),   .c-gray :is(rect,circle,polygon,ellipse)   { fill:#f1efe8; stroke:#888780; }
+.c-gray text:not([fill]) { fill:#444441; }
+.c-red:is(rect,circle,polygon,ellipse),    .c-red :is(rect,circle,polygon,ellipse)    { fill:#fcebeb; stroke:#e24b4a; }
+.c-blue:is(rect,circle,polygon,ellipse),   .c-blue :is(rect,circle,polygon,ellipse)   { fill:#e6f1fb; stroke:#378add; }
+table.catalog { border-collapse: collapse; font-size: 14px; width: 100%; }
+table.catalog th, table.catalog td { border-bottom: 0.5px solid var(--border); padding: 6px 8px; text-align: left; vertical-align: top; }
+table.catalog tr.hl td { background: #faece7; }

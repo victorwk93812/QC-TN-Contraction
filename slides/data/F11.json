@@ -1,0 +1,20 @@
+{
+ "schema": 1,
+ "id": "F11",
+ "kind": "table",
+ "meta": {
+  "title": "Treewidth catalog"
+ },
+ "nodes": {},
+ "edges": [],
+ "checks": {
+  "forest": 1,
+  "cycle_9": 2,
+  "K_7": 6,
+  "K_3_5": 3,
+  "grid_3": 3,
+  "grid_4": 4,
+  "Q_3": 3,
+  "Q_4": 6
+ }
+}

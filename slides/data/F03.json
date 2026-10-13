@@ -1,0 +1,173 @@
+{
+ "schema": 1,
+ "id": "F03",
+ "meta": {
+  "title": "Ring: eliminating indices i, j, k, l",
+  "label_mode": "name",
+  "chi": 2
+ },
+ "nodes": {
+  "i": [
+   340.0,
+   80.0
+  ],
+  "l": [
+   290.0,
+   130.0
+  ],
+  "j": [
+   390.0,
+   130.0
+  ],
+  "k": [
+   340.0,
+   180.0
+  ]
+ },
+ "edges": [
+  [
+   "i",
+   "l"
+  ],
+  [
+   "i",
+   "j"
+  ],
+  [
+   "l",
+   "k"
+  ],
+  [
+   "j",
+   "k"
+  ]
+ ],
+ "kind": "elimination",
+ "steps": [
+  {
+   "elim": "i",
+   "nbrs": [
+    "j",
+    "l"
+   ],
+   "fill": [
+    [
+     "j",
+     "l"
+    ]
+   ],
+   "bag": 3,
+   "width": 2
+  },
+  {
+   "elim": "j",
+   "nbrs": [
+    "k",
+    "l"
+   ],
+   "fill": [],
+   "bag": 3,
+   "width": 2
+  },
+  {
+   "elim": "k",
+   "nbrs": [
+    "l"
+   ],
+   "fill": [],
+   "bag": 2,
+   "width": 2
+  },
+  {
+   "elim": "l",
+   "nbrs": [],
+   "fill": [],
+   "bag": 1,
+   "width": 2
+  }
+ ],
+ "width": 2,
+ "log2cost": 4.459431618637297,
+ "table": [
+  {
+   "elim": "i",
+   "nbrs": [
+    "j",
+    "l"
+   ],
+   "bag": 3,
+   "cost": 8,
+   "size": 4
+  },
+  {
+   "elim": "j",
+   "nbrs": [
+    "k",
+    "l"
+   ],
+   "bag": 3,
+   "cost": 8,
+   "size": 4
+  },
+  {
+   "elim": "k",
+   "nbrs": [
+    "l"
+   ],
+   "bag": 2,
+   "cost": 4,
+   "size": 2
+  },
+  {
+   "elim": "l",
+   "nbrs": [],
+   "bag": 1,
+   "cost": 2,
+   "size": 1
+  }
+ ],
+ "total_cost": 22,
+ "peak_size": 4,
+ "tensor_graph": {
+  "nodes": {
+   "A": [
+    60.0,
+    60.0
+   ],
+   "B": [
+    220.0,
+    60.0
+   ],
+   "C": [
+    220.0,
+    220.0
+   ],
+   "D": [
+    60.0,
+    220.0
+   ]
+  },
+  "bonds": [
+   [
+    "A",
+    "B",
+    "i"
+   ],
+   [
+    "B",
+    "C",
+    "j"
+   ],
+   [
+    "C",
+    "D",
+    "k"
+   ],
+   [
+    "D",
+    "A",
+    "l"
+   ]
+  ]
+ }
+}

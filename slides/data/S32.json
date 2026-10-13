@@ -1,0 +1,22 @@
+{
+ "schema": 1,
+ "id": "S32",
+ "kind": "static",
+ "meta": {
+  "title": "What theory guarantees"
+ },
+ "nodes": {},
+ "edges": [],
+ "n": 49,
+ "sqrt_n": 7,
+ "lt_bound": 19.8,
+ "tw": 7,
+ "rs_sep": 8,
+ "rs_side": 20,
+ "dn_factor": 15,
+ "middle_column": 7,
+ "middle_sides": [
+  21,
+  21
+ ]
+}

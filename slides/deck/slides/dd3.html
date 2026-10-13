@@ -1,0 +1,91 @@
+<!-- Deep dive 3 — Community detection: Girvan–Newman (deck slides 38–41; proposal 36–39) -->
+
+<section id="s36">
+  <div class="act-label">Deep dive 3 · Girvan–Newman</div>
+  <h2>Communities: blocks of tensors joined by only a few bonds</h2>
+  <div class="cols c-wide-left">
+    <div data-fig="graph" data-trace="F20" data-key="tensor_graph" data-shape="square" data-r="17"
+         data-derived="A0,A1,A2,A3,A4" data-side-b="B0,B1,B2,B3,B4" data-accent-edges="x1,x2" data-edge-labels="off" class="fig-h420"></div>
+    <div style="font-size: 0.66em; padding-top: 30px">
+      <p>Two wheels of <span data-bind="F20:best_partition.0.length"></span> tensors each, joined by two bonds
+        (<span class="acc">x1, x2</span>).</p>
+      <p>Best split found: purple | teal, modularity Q = <b data-bind="F20:best_modularity"></b>.</p>
+      <p class="muted-text">Q compares the bonds inside each block with what random wiring of the same degrees would give.</p>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    \[ Q=\frac{1}{2m}\sum_{i,j}\Big[A_{ij}-\frac{k_ik_j}{2m}\Big]\,\delta(c_i,c_j) \]
+  </div>
+  <aside class="notes">
+    Girvan–Newman also builds the plan top-down, but it splits the network where clusters are weakly linked, not where cuts are small.
+    Q is the fraction of edges inside communities minus the fraction expected if edges were rewired at random keeping degrees (k_i).
+    Here the two-block split has Q = 0.389 (data/F20.json, networkx modularity). Formula in this A_ij form: Clauset, Newman, Moore,
+    PRE 70:066111 (2004), Eq. 4; Newman–Girvan PRE 69:026113 (2004) define the same Q as Tr e − ||e²||.
+    Paper: one of the seven generators is "a Girvan–Newman community-detection heuristic" (arXiv 2608.05819 Sec 5.1);
+    which variant, stopping rule and whether bond dimensions weight betweenness are not stated in the paper.
+  </aside>
+</section>
+
+<section id="s37">
+  <div class="act-label">Deep dive 3 · Girvan–Newman</div>
+  <h2>The algorithm: delete the bond that most shortest paths use, repeat</h2>
+  <div data-fig="gn" data-trace="F20" data-stride="2" class="fig-h420"></div>
+  <div class="gn-readout"></div>
+  <div class="fragment math-anchor">
+    \[ c_B(e)=\sum_{\{s,t\}}\frac{\sigma_{st}(e)}{\sigma_{st}}\qquad(\sigma_{st}=\#\text{ shortest } s\text{--}t \text{ paths},\ \sigma_{st}(e)=\#\text{ of those using } e) \]
+  </div>
+  <aside class="notes">
+    Two removals per click. First removal: bridge A1–B4 (the two bridges share the 25 cross-block pairs, the tie goes to the smaller name);
+    then A2–B3 carries all 25 pairs and its removal splits the network: Q jumps to 0.389. After that the wheels are taken apart.
+    Betweenness is recomputed after every removal (Brandes 2001: O(nm) per pass on unweighted graphs), so Girvan–Newman costs O(m²n)
+    (Girvan–Newman, PNAS 99(12), 2002). The dendrogram on the right gains a node at each split, top-down.
+    Ties are broken by the smallest edge name; the trace is data/F20.json.
+  </aside>
+</section>
+
+<section id="s38">
+  <div class="act-label">Deep dive 3 · Girvan–Newman</div>
+  <h2>Read bottom-up, the dendrogram is a contraction tree</h2>
+  <div class="cols c-wide-left">
+    <div data-fig="tree" data-trace="F20" data-key="tree" data-reveal="merges" data-edge-labels="off" class="fig-h480"></div>
+    <div style="font-size: 0.66em; padding-top: 30px">
+      <p>Each split, read backwards, is one pairwise contraction. Node label = rank of that intermediate.</p>
+      <p>GN tree: max rank <b class="acc" data-bind="F20:tree_max_rank"></b>, cost <b data-bind="F20:tree_cost"></b>.</p>
+      <p>Best possible (subset DP): max rank <b data-bind="F20:opt_max_rank"></b>, cost <b data-bind="F20:opt_cost"></b>.</p>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    \[ \text{GN tree } T_{GN}:\quad \max_{e\in T_{GN}} |\delta(e)| = \text{its carving width} \;\ge\; \cw(G) \]
+  </div>
+  <aside class="notes">
+    Every split of a component into two parts, read from the leaves up, contracts the two parts into one tensor; the dendrogram is
+    directly a pairwise plan, so GN lives in the carving picture (no elimination order needed). One click per merge, bottom-up.
+    On the two wheels the GN tree reaches rank 6 and costs 740 (χ = 2); the optimal tree (carving DP over all trees) reaches rank 4 and costs 388.
+    Splitting the bridges first is the right top-level move; the inner splits of each wheel are not chosen for small cuts.
+  </aside>
+</section>
+
+<section id="s39">
+  <div class="act-label">Deep dive 3 · Girvan–Newman</div>
+  <h2>What it does not optimize: no width guarantee, and it shows</h2>
+  <table class="tbl" style="font-size: 0.66em; width: 100%">
+    <tr><th>network</th><th class="r">tensors</th><th class="r">Girvan–Newman</th><th class="r">MinFill → tree</th><th class="r">ND / FlowCutter → tree</th><th class="r">optimum</th></tr>
+    <tr><td>ring</td><td class="r" data-bind="F21:rows.ring.tensors"></td><td class="r"><span data-bind="F21:rows.ring.gn.0"></span> / <span data-bind="F21:rows.ring.gn.1"></span></td><td class="r"><span data-bind="F21:rows.ring.minfill.0"></span> / <span data-bind="F21:rows.ring.minfill.1"></span></td><td class="r"><span data-bind="F21:rows.ring.nd.0"></span> / <span data-bind="F21:rows.ring.nd.1"></span></td><td class="r"><span data-bind="F21:rows.ring.opt.0"></span> / <span data-bind="F21:rows.ring.opt.1"></span></td></tr>
+    <tr><td>bowtie</td><td class="r" data-bind="F21:rows.bowtie.tensors"></td><td class="r"><span data-bind="F21:rows.bowtie.gn.0"></span> / <span data-bind="F21:rows.bowtie.gn.1"></span></td><td class="r"><span data-bind="F21:rows.bowtie.minfill.0"></span> / <span data-bind="F21:rows.bowtie.minfill.1"></span></td><td class="r"><span data-bind="F21:rows.bowtie.nd.0"></span> / <span data-bind="F21:rows.bowtie.nd.1"></span></td><td class="r"><span data-bind="F21:rows.bowtie.opt.0"></span> / <span data-bind="F21:rows.bowtie.opt.1"></span></td></tr>
+    <tr class="hl"><td>two wheels</td><td class="r" data-bind="F21:rows.two wheels.tensors"></td><td class="r"><span data-bind="F21:rows.two wheels.gn.0"></span> / <span data-bind="F21:rows.two wheels.gn.1"></span></td><td class="r"><span data-bind="F21:rows.two wheels.minfill.0"></span> / <span data-bind="F21:rows.two wheels.minfill.1"></span></td><td class="r"><span data-bind="F21:rows.two wheels.nd.0"></span> / <span data-bind="F21:rows.two wheels.nd.1"></span></td><td class="r"><span data-bind="F21:rows.two wheels.opt.0"></span> / <span data-bind="F21:rows.two wheels.opt.1"></span></td></tr>
+    <tr><td>3×3 grid</td><td class="r" data-bind="F21:rows.3×3 grid.tensors"></td><td class="r"><span data-bind="F21:rows.3×3 grid.gn.0"></span> / <span data-bind="F21:rows.3×3 grid.gn.1"></span></td><td class="r"><span data-bind="F21:rows.3×3 grid.minfill.0"></span> / <span data-bind="F21:rows.3×3 grid.minfill.1"></span></td><td class="r"><span data-bind="F21:rows.3×3 grid.nd.0"></span> / <span data-bind="F21:rows.3×3 grid.nd.1"></span></td><td class="r"><span data-bind="F21:rows.3×3 grid.opt.0"></span> / <span data-bind="F21:rows.3×3 grid.opt.1"></span></td></tr>
+    <tr><td>7×7 grid</td><td class="r" data-bind="F21:rows.7×7 grid.tensors"></td><td class="r"><span data-bind="F21:rows.7×7 grid.gn.0"></span> / <span data-bind="F21:rows.7×7 grid.gn.1"></span></td><td class="r"><span data-bind="F21:rows.7×7 grid.minfill.0"></span> / <span data-bind="F21:rows.7×7 grid.minfill.1"></span></td><td class="r"><span data-bind="F21:rows.7×7 grid.nd.0"></span> / <span data-bind="F21:rows.7×7 grid.nd.1"></span></td><td class="r">—</td></tr>
+    <tr><td>circuit</td><td class="r" data-bind="F21:rows.circuit.tensors"></td><td class="r"><span data-bind="F21:rows.circuit.gn.0"></span> / <span data-bind="F21:rows.circuit.gn.1"></span></td><td class="r"><span data-bind="F21:rows.circuit.minfill.0"></span> / <span data-bind="F21:rows.circuit.minfill.1"></span></td><td class="r"><span data-bind="F21:rows.circuit.nd.0"></span> / <span data-bind="F21:rows.circuit.nd.1"></span></td><td class="r">—</td></tr>
+  </table>
+  <div class="panel-sub">each cell: max intermediate rank / log₂ total cost of the pairwise contraction tree, χ = 2 · optimum by subset DP (≤ 12 tensors)</div>
+  <div class="fragment math-anchor">
+    Betweenness and modularity reward splitting where few shortest paths cross — often a small cut, but not the same objective:
+    no bound on the width of \(T_{GN}\), and \(O(m^2 n)\) time (Brandes 2001 per pass).
+  </div>
+  <aside class="notes">
+    All trees evaluated in the same carving model (tree_stats): GN on the tensor graph; MinFill and FlowCutter-lite ND on the index graph,
+    converted with order_to_tree. GN matches the optimum on the ring and the bowtie, but on the two wheels (its showcase), the grids and the
+    circuit it is wider and costlier than MinFill. Its quality is an empirical question; here it never wins.
+    Data: data/F21.json; tests/test_figures.py asserts every cell.
+  </aside>
+</section>

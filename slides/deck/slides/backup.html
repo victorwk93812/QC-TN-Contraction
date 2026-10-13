@@ -1,0 +1,114 @@
+<!-- Backup slides B1–B6 — low rank across a cut -->
+
+<section id="b1">
+  <div class="act-label">Backup · low rank across a cut</div>
+  <h2>B1. The kernel trick: two routes to the same scalar</h2>
+  <svg viewBox="0 0 680 330" class="figsvg" style="max-height: 520px" role="img" aria-label="explicit feature route and kernel route give the same scalar">
+    <defs><marker id="ahb1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted-2)"/></marker></defs>
+    <text class="s-th" x="210" y="36">Explicit route</text><text class="s-th" x="210" y="210">Kernel route</text>
+    <rect x="40" y="130" width="110" height="60" rx="8" class="s-box"/><text class="s-th" x="95" y="152" text-anchor="middle" dominant-baseline="central">x, x′</text><text class="s-ts" x="95" y="172" text-anchor="middle" dominant-baseline="central">raw inputs</text>
+    <path d="M152 150 H170 V78 H206" class="s-line" marker-end="url(#ahb1)"/><path d="M152 170 H170 V250 H206" class="s-line" marker-end="url(#ahb1)"/>
+    <rect x="210" y="50" width="200" height="56" rx="8" class="s-box is-derived"/><text class="s-th" x="310" y="70" text-anchor="middle" dominant-baseline="central">Λ(x), Λ(x′)</text><text class="s-ts" x="310" y="88" text-anchor="middle" dominant-baseline="central">2ᴺ components each</text>
+    <text class="s-ts" x="310" y="130" text-anchor="middle">intractable to store or contract</text>
+    <rect x="210" y="222" width="200" height="56" rx="8" class="s-box is-side-b"/><text class="s-th" x="310" y="242" text-anchor="middle" dominant-baseline="central">K(x, x′)</text><text class="s-ts" x="310" y="260" text-anchor="middle" dominant-baseline="central">N small dot products</text>
+    <text class="s-ts" x="310" y="306" text-anchor="middle">O(N) per pair, no feature vector built</text>
+    <path d="M412 78 H545 V126" class="s-line" marker-end="url(#ahb1)"/><path d="M412 250 H545 V198" class="s-line" marker-end="url(#ahb1)"/>
+    <rect x="450" y="130" width="190" height="60" rx="8" class="s-box"/><text class="s-th" x="545" y="152" text-anchor="middle" dominant-baseline="central">Same scalar</text><text class="s-ts" x="545" y="172" text-anchor="middle" dominant-baseline="central">Λ(x)ᵀΛ(x′) = K(x, x′)</text>
+  </svg>
+  <div class="fragment math-anchor">
+    \[ K \succeq 0:\ \sum_{j,k}c_jc_kK(x_j,x_k)\ge 0\ \ \forall c,\qquad \Lambda(x)=\bigotimes_{i=1}^N\phi(x_i)\ \Rightarrow\ \Lambda(x)^\top\Lambda(x')=\prod_{i=1}^N\phi(x_i)^\top\phi(x'_i) \]
+  </div>
+  <aside class="notes">A product feature map is a rank-1 tensor network; its inner product factorizes site by site (Mercer: a positive semidefinite kernel is an inner product in some feature space).</aside>
+</section>
+
+<section id="b2">
+  <div class="act-label">Backup · low rank across a cut</div>
+  <h2>B2. Kernel methods pay in the number of samples</h2>
+  <table class="tbl" style="font-size: 0.7em; width: 100%">
+    <tr><th></th><th>linear model, explicit features (dimension D)</th><th>kernel SVM, M training samples</th></tr>
+    <tr><td>training</td><td>O(M D) per pass</td><td>O(M² c<sub>K</sub>) to O(M³)</td></tr>
+    <tr><td>memory</td><td>O(D)</td><td>O(M²) for the Gram matrix</td></tr>
+    <tr><td>prediction</td><td>O(D)</td><td>O(M<sub>SV</sub> c<sub>K</sub>), M<sub>SV</sub> support vectors</td></tr>
+  </table>
+  <div class="fragment math-anchor">With the product map above, D = d<sup>N</sup> is out of reach, while c<sub>K</sub> = O(N d): the kernel route trades feature dimension for sample count.</div>
+  <aside class="notes">c_K = cost of one kernel evaluation. The Gram matrix is the "cut" here: its rank bounds how much the model can express.</aside>
+</section>
+
+<section id="b3">
+  <div class="act-label">Backup · low rank across a cut</div>
+  <h2>B3. AutoMPO, one bond: the bond dimension is a matrix rank</h2>
+  <svg viewBox="0 0 680 275" class="figsvg" style="max-height: 480px" role="img" aria-label="chain cut at bond n; prefixes and suffixes joined by coefficient matrix M">
+    <line x1="330" y1="24" x2="330" y2="100" class="s-cut"/><text class="s-ts" x="330" y="16" text-anchor="middle">bond n</text>
+    <g><rect x="60" y="40" width="50" height="36" rx="4" class="s-box"/><rect x="130" y="40" width="50" height="36" rx="4" class="s-box"/><rect x="200" y="40" width="50" height="36" rx="4" class="s-box"/><rect x="270" y="40" width="50" height="36" rx="4" class="s-box"/>
+      <rect x="340" y="40" width="50" height="36" rx="4" class="s-box"/><rect x="410" y="40" width="50" height="36" rx="4" class="s-box"/><rect x="480" y="40" width="50" height="36" rx="4" class="s-box"/><rect x="550" y="40" width="50" height="36" rx="4" class="s-box"/></g>
+    <text class="s-t" x="85" y="63" text-anchor="middle">1</text><text class="s-t" x="155" y="63" text-anchor="middle">2</text><text class="s-t" x="225" y="63" text-anchor="middle">…</text><text class="s-t" x="295" y="63" text-anchor="middle">n</text>
+    <text class="s-t" x="365" y="63" text-anchor="middle">n+1</text><text class="s-t" x="435" y="63" text-anchor="middle">…</text><text class="s-t" x="505" y="63" text-anchor="middle">N−1</text><text class="s-t" x="575" y="63" text-anchor="middle">N</text>
+    <rect x="60" y="112" width="150" height="30" rx="4" class="s-box is-derived"/><rect x="60" y="152" width="150" height="30" rx="4" class="s-box is-derived"/><rect x="60" y="192" width="150" height="30" rx="4" class="s-box is-derived"/>
+    <text class="s-t" x="135" y="132" text-anchor="middle">prefix L₁</text><text class="s-t" x="135" y="172" text-anchor="middle">prefix L₂</text><text class="s-t" x="135" y="212" text-anchor="middle">prefix Lₐ</text>
+    <rect x="470" y="112" width="150" height="30" rx="4" class="s-box is-side-b"/><rect x="470" y="152" width="150" height="30" rx="4" class="s-box is-side-b"/><rect x="470" y="192" width="150" height="30" rx="4" class="s-box is-side-b"/>
+    <text class="s-t" x="545" y="132" text-anchor="middle">suffix R₁</text><text class="s-t" x="545" y="172" text-anchor="middle">suffix R₂</text><text class="s-t" x="545" y="212" text-anchor="middle">suffix R_b</text>
+    <path d="M212 127 L268 160 M212 167 L268 167 M212 207 L268 174 M392 160 L468 127 M392 167 L468 167 M392 174 L468 207" class="s-line"/>
+    <rect x="270" y="142" width="120" height="50" rx="8" class="s-box"/><text class="s-th" x="330" y="163" text-anchor="middle">M⁽ⁿ⁾ₐ_b</text><text class="s-ts" x="330" y="182" text-anchor="middle">|𝓛ₙ| × |𝓡ₙ|</text>
+  </svg>
+  <div class="fragment math-anchor">
+    \[ H=H_{\le n}\otimes\mathbb 1+\mathbb 1\otimes H_{>n}+\sum_{a,b}M^{(n)}_{ab}\,L_a\otimes R_b,\qquad D_n=2+\operatorname{rank}M^{(n)} \]
+  </div>
+  <aside class="notes">The two extra states carry "nothing started yet" and "already finished". Compressing M by an SVD gives the minimal MPO bond dimension for that cut.</aside>
+</section>
+
+<section id="b4">
+  <div class="act-label">Backup · low rank across a cut</div>
+  <h2>B4. The MPO as a finite automaton</h2>
+  <svg viewBox="0 0 680 285" class="figsvg" style="max-height: 480px" role="img" aria-label="start, intermediate and final states of the MPO automaton">
+    <defs><marker id="ahb4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted-2)"/></marker></defs>
+    <path d="M125 116 Q340 10 555 116" class="s-line" marker-end="url(#ahb4)"/><text class="s-ts" x="340" y="48" text-anchor="middle">Dₙ: on-site term, start straight to final</text>
+    <line x1="138" y1="140" x2="308" y2="140" class="s-line" marker-end="url(#ahb4)"/><text class="s-ts" x="223" y="124" text-anchor="middle">Cₙ: start a term</text>
+    <line x1="368" y1="140" x2="538" y2="140" class="s-line" marker-end="url(#ahb4)"/><text class="s-ts" x="453" y="124" text-anchor="middle">Bₙ: finish a term</text>
+    <path d="M95 165 C70 230 150 230 125 165" class="s-line" marker-end="url(#ahb4)"/><text class="s-ts" x="110" y="248" text-anchor="middle">𝟙 (nothing yet)</text>
+    <path d="M325 165 C300 230 380 230 355 165" class="s-line" marker-end="url(#ahb4)"/><text class="s-ts" x="340" y="248" text-anchor="middle">Aₙ: continue a term</text>
+    <path d="M555 165 C530 230 610 230 585 165" class="s-line" marker-end="url(#ahb4)"/><text class="s-ts" x="570" y="248" text-anchor="middle">𝟙 (already done)</text>
+    <circle cx="110" cy="140" r="28" class="s-box"/><text class="s-th" x="110" y="140" text-anchor="middle" dominant-baseline="central">s</text>
+    <circle cx="340" cy="140" r="28" class="s-box is-derived"/><text class="s-th" x="340" y="140" text-anchor="middle" dominant-baseline="central">1…rₙ</text>
+    <circle cx="570" cy="140" r="28" class="s-box"/><text class="s-th" x="570" y="140" text-anchor="middle" dominant-baseline="central">f</text>
+  </svg>
+  <div class="fragment math-anchor">
+    \[ W_n=\begin{pmatrix}\mathbb 1&0&0\\ C_n&A_n&0\\ D_n&B_n&\mathbb 1\end{pmatrix},\qquad H=\langle f|\,W_1W_2\cdots W_N\,|s\rangle \]
+  </div>
+  <aside class="notes">Rows: state at bond n−1, columns: state at bond n. Every path from s to f through the automaton spells one term of H (environment induction).
+    For exponential couplings the middle block is a single state with A = e^{−1/ξ}·𝟙, so D = 3 at every bond (B5).</aside>
+</section>
+
+<section id="b5">
+  <div class="act-label">Backup · low rank across a cut</div>
+  <h2>B5. Long-range couplings: exponential is rank 1, a power law is not</h2>
+  <div class="cols c-wide-left">
+    <div data-fig="chart" data-trace="B5" data-key="chart" data-w="820" data-h="430"></div>
+    <table class="tbl" style="font-size: 0.66em; align-self: center">
+      <tr><th class="r">N</th><th class="r">D, exponential</th><th class="r">D, power law</th></tr>
+      <tr><td class="r" data-bind="B5:rows.0.N"></td><td class="r" data-bind="B5:rows.0.D_exp"></td><td class="r" data-bind="B5:rows.0.D_pow"></td></tr>
+      <tr><td class="r" data-bind="B5:rows.1.N"></td><td class="r" data-bind="B5:rows.1.D_exp"></td><td class="r" data-bind="B5:rows.1.D_pow"></td></tr>
+      <tr><td class="r" data-bind="B5:rows.2.N"></td><td class="r" data-bind="B5:rows.2.D_exp"></td><td class="r" data-bind="B5:rows.2.D_pow"></td></tr>
+      <tr><td class="r" data-bind="B5:rows.3.N"></td><td class="r" data-bind="B5:rows.3.D_exp"></td><td class="r" data-bind="B5:rows.3.D_pow"></td></tr>
+      <tr><td class="r" data-bind="B5:rows.4.N"></td><td class="r" data-bind="B5:rows.4.D_exp"></td><td class="r" data-bind="B5:rows.4.D_pow"></td></tr>
+    </table>
+  </div>
+  <div class="panel-sub">singular values of J's off-diagonal block at the middle bond, N = 64 · ξ = <span data-bind="B5:xi"></span>, α = <span data-bind="B5:alpha"></span>, cut-off ε = <span data-bind="B5:eps"></span></div>
+  <div class="fragment math-anchor">
+    \[ J_{ij}=e^{-|i-j|/\xi}:\ \operatorname{rank} J_{[\le n],[>n]} = 1 \Rightarrow D_n=3; \qquad J_{ij}=|i-j|^{-\alpha}:\ D_n = 2+O\big(\log(N/\varepsilon)\big) \]
+  </div>
+  <aside class="notes">e^{−|i−j|/ξ} = e^{−(j−n)/ξ} e^{−(n−i)/ξ} for i ≤ n < j: an outer product, rank 1 for every bond. The power law's block has singular values decaying
+    geometrically, so the rank at fixed relative accuracy grows only logarithmically with N (data/B5.json, numpy SVD).</aside>
+</section>
+
+<section id="b6">
+  <div class="act-label">Backup · low rank across a cut</div>
+  <h2>B6. One idea, four places: what crosses the cut sets the cost</h2>
+  <div class="cols" style="grid-template-columns: repeat(4, 1fr); gap: 24px; font-size: 0.62em; text-align: center">
+    <div><div class="b6-icon">K</div><b>Gram matrix</b><p>rank of K across samples</p></div>
+    <div><div class="b6-icon">ψ</div><b>MPS bond</b><p>Schmidt rank across the bond</p></div>
+    <div><div class="b6-icon">W</div><b>MPO bond</b><p>rank of M<sup>(n)</sup>, D = 2 + rank</p></div>
+    <div><div class="b6-icon">S</div><b>Separator</b><p>|S| bonds, cost χ<sup>|S|</sup></p></div>
+  </div>
+  <div class="fragment math-anchor">\[ \text{cost} \;\sim\; \chi^{\,\text{(rank or size across the cut)}} \]</div>
+  <aside class="notes">The thread connecting the earlier parts of the study: in kernels, MPS/MPO bonds and contraction orders, the quantity that decides cost is what has to cross a cut.</aside>
+</section>

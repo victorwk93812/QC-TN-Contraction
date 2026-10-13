@@ -1,0 +1,76 @@
+{
+ "schema": 1,
+ "id": {
+  "opt_ndcg": {
+   "top1": 60.0,
+   "top3": 96.0,
+   "regret1": 0.0141,
+   "win": 92.0
+  },
+  "opt_pair": {
+   "top1": 60.0,
+   "top3": 92.0,
+   "regret1": 0.0211,
+   "win": 88.0
+  },
+  "random": {
+   "top1": 22.95,
+   "top3": 58.44,
+   "regret1": 0.0699,
+   "win": 70.16
+  },
+  "mf_ndcg": {
+   "top1": 12.0,
+   "top3": 84.0,
+   "regret1": 0.0735,
+   "win": 50.0
+  },
+  "mf_rand": {
+   "top1": 12.0,
+   "top3": 28.0,
+   "regret1": 0.0735,
+   "win": 50.0
+  }
+ },
+ "kind": "chart",
+ "meta": {
+  "title": "MinFill as the default plan",
+  "source": "arXiv 2608.05819 Tables 6, 7"
+ },
+ "nodes": {},
+ "edges": [],
+ "ood": {
+  "opt_ndcg": {
+   "top1": 38.71,
+   "top3": 62.9,
+   "regret1": 0.052,
+   "win": 73.39
+  },
+  "opt_pair": {
+   "top1": 30.65,
+   "top3": 62.9,
+   "regret1": 0.08,
+   "win": 87.1
+  },
+  "random": {
+   "top1": 27.87,
+   "top3": 54.65,
+   "regret1": 0.0775,
+   "win": 70.97
+  },
+  "mf_ndcg": {
+   "top1": 8.06,
+   "top3": 61.29,
+   "regret1": 0.0784,
+   "win": 50.0
+  },
+  "mf_rand": {
+   "top1": 8.06,
+   "top3": 43.55,
+   "regret1": 0.0784,
+   "win": 50.0
+  }
+ },
+ "n_id": 25,
+ "n_ood": 62
+}

@@ -1,0 +1,33 @@
+# ---- environments and dependencies (recreate: see slides/README.md) ----
+slides/.venv/
+slides/node_modules/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# ---- vendored / cloned third-party code ----
+# recreate with: sh slides/export/vendor.sh, and the git clones in slides/README.md
+slides/deck/vendor/
+slides/tools/Jdrasil/
+slides/tools/PACE2017-TrackA/
+
+# ---- third-party papers (not ours to redistribute; download links in README.md) ----
+references/*.pdf
+
+# ---- build outputs and blobs ----
+# generated deck: .venv/bin/python export/build_deck.py
+slides/deck/index.html
+# Manim clips and posters: sh export/render_clips.sh
+slides/deck/media/
+# PDF, notes.md, screenshots, Manim build
+slides/export/out/
+# LaTeX build (latexmk)
+report/output/
+*.mp4
+*.synctex.gz
+
+# ---- editors / OS ----
+.DS_Store
+*.swp
+.vscode/
+.idea/
