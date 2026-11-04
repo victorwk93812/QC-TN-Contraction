@@ -26,6 +26,7 @@ QC_TN_Contraction/
 │   ├── notes/           paper facts, verified theorem statements, deviations from the proposal
 │   ├── prototypes/      chat prototypes of the figures (visual reference only)
 │   └── tools/serve.py   static server with HTTP Range support (solver repos are cloned here, not tracked)
+├── container/           toolchain image (Node, Chromium, Manim, TeX, Java) for hosts without them — see container/README.md
 └── src/                 planned: reproduction of the paper's results (layout to be decided)
 ```
 
@@ -55,6 +56,9 @@ sh export/vendor.sh
 .venv/bin/python export/build_deck.py      # generates deck/index.html — required before serving
 python3 tools/serve.py                     # http://localhost:8001/deck/
 ```
+
+No Node, Chromium, Manim or TeX on the host (e.g. a cluster without root)? Pull the toolchain image
+and prefix those steps with `container/run.sh` — see `container/README.md`.
 
 The report:
 

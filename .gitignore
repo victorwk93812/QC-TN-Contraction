@@ -1,6 +1,6 @@
 # ---- environments and dependencies (recreate: see slides/README.md) ----
 slides/.venv/
-slides/node_modules/
+slides/node_modules
 __pycache__/
 *.pyc
 .pytest_cache/
@@ -31,3 +31,6 @@ report/output/
 *.swp
 .vscode/
 .idea/
+
+# Singularity images (pull: sh container/pull.sh)
+*.sif
