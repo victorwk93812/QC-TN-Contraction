@@ -5,6 +5,8 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .venv/
+# per-round predictions: experiments/julia/sweep_rounds.jl
+results/raw/
 
 # ---- vendored / cloned third-party code ----
 # recreate with: sh slides/export/vendor.sh, and the git clones in slides/README.md
