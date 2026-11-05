@@ -4,12 +4,15 @@ slides/node_modules
 __pycache__/
 *.pyc
 .pytest_cache/
+.venv/
 
 # ---- vendored / cloned third-party code ----
 # recreate with: sh slides/export/vendor.sh, and the git clones in slides/README.md
 slides/deck/vendor/
 slides/tools/Jdrasil/
 slides/tools/PACE2017-TrackA/
+# authors' release, solver sources, Julia depot: scripts/README.md
+external/
 
 # ---- third-party papers (not ours to redistribute; download links in README.md) ----
 references/*.pdf
