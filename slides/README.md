@@ -104,3 +104,13 @@ npm run pdf                                     # → export/out/deck.pdf, one p
 ```
 
 `?export` in the URL swaps each Manim clip for its poster frame, so clip pages show the clip's end state.
+
+## Deferred
+
+Postponed by decision on 2026-11-04; nothing here blocks the talk.
+
+- **Clips that play inside the PDF.** The DeckTape PDF shows each Manim clip as its poster frame. A second
+  PDF with embedded movie annotations would let Okular play M1–M5 in place.
+- **Retitle slide 49** (`deck/slides/act4.html`). "Results: the ranker finds the fastest plan 5× more often
+  than MinFill" can be misread as "5× faster". The 5× is the Top-1 rate ratio, 60 % vs 12 % (paper Table 6),
+  and it is the only number on the slides computed by hand instead of bound to a data file.

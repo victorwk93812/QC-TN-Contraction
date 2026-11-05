@@ -8,7 +8,7 @@ BUILD=export/out/manim
 mkdir -p "$OUT" "$BUILD"
 for pair in M1:M1Race M2:M2NDTree M3:M3FlowCutter M4:M4GirvanNewman M5:M5Ring; do
   id=${pair%%:*}; scene=${pair#*:}
-  .venv/bin/manim -r 1920,1080 --fps 30 --disable_caching --media_dir "$BUILD" manim/scenes.py "$scene" > "$BUILD/$id.log" 2>&1
+  "${MANIM:-.venv/bin/manim}" -r 1920,1080 --fps 30 --disable_caching --media_dir "$BUILD" manim/scenes.py "$scene" > "$BUILD/$id.log" 2>&1
   src=$(find "$BUILD/videos" -path "*1080p30/$scene.mp4" | head -1)
   cp "$src" "$OUT/$id.mp4"
   ffmpeg -v error -y -sseof -0.2 -i "$OUT/$id.mp4" -frames:v 1 "$OUT/$id.png"
