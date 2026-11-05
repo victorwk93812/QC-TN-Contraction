@@ -26,11 +26,11 @@ QC_TN_Contraction/
 │   ├── notes/           paper facts, verified theorem statements, deviations from the proposal
 │   ├── prototypes/      chat prototypes of the figures (visual reference only)
 │   └── tools/serve.py   static server with HTTP Range support (solver repos are cloned here, not tracked)
-└── src/                 planned: reproduction of the paper's results (layout to be decided)
+└── src/                 planned: Python reproduction of arXiv 2608.05819 — see src/README.md
 ```
 
-`src/` does not exist yet. It will hold the reproduction of arXiv 2608.05819 (plan generation, GEMM
-features, the ranker). Its relation to `slides/traces/` (shared code or separate package) is still open.
+`src/` will hold the Python reproduction of arXiv 2608.05819 and is the source of truth for the algorithms;
+`slides/traces/` will import it. The agreed layout and phases are in `src/README.md`.
 
 ## Tech stack
 
