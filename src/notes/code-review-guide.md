@@ -105,7 +105,7 @@ JL="env JULIA_DEPOT_PATH=external/julia-depot $HOME/.juliaup/bin/julia +1.9.1 --
 
 - **C1** all phase 1 numbers (several minutes, 8 threads): `$PY experiments/t06_t07.py` → `results/t06_t07.csv`, `results/t06_t07_composition.csv`
 - **C2** tests: `$PY -m pytest -q tests/test_rank.py`
-- **C3** the authors' Julia path, headless (the authors' repo path must be absolute): `$JL experiments/julia/t06_t07.jl $PWD/external/authors /tmp/julia_t06_t07.csv`
+- **C3** the authors' Julia path, headless (a relative authors path is made absolute by `experiments/julia/authors_path.jl`; `""` means `$QCTN_EXTERNAL/authors` or `external/authors`): `$JL experiments/julia/t06_t07.jl $PWD/external/authors /tmp/julia_t06_t07.csv`
 - **C4** Julia vs Python predictions:
 
   ```sh
