@@ -15,8 +15,9 @@ in how the order is found:
 | `minfillbg_mrs` | the same authors' second PACE 2017 heuristic                            |
 
 Tree decompositions become orders with QXGraphDecompositions `order_from_tree_decomposition`. If a solver
-returns no decomposition (killed before its first one), the order falls back to `min_fill`, as
-`flow_cutter_contraction_plan` does (QXTools `contraction_planning.jl`, l. 102–106).
+returns no complete decomposition by the time limit (see `qctn.plans.pace.run`), or one of the two non-anytime
+MinFill heuristics had to be stopped, the order falls back to `min_fill`, as `flow_cutter_contraction_plan` does
+(QXTools `contraction_planning.jl`, l. 102–106).
 """
 from __future__ import annotations
 
@@ -62,7 +63,10 @@ def generate(tn, generator: str, *, time_limit: float = 10.0, seed: int | None =
         r = pace.run(generator, lg.to_gr(), time_limit=time_limit, seed=seed, wait=wait)
         meta.update(solver_elapsed=round(r.elapsed, 3), stopped=r.stopped, returncode=r.returncode)
         td = qx.parse_td(r.td_text)
-        if not qx.valid_td(td, lg):
+        # The two MinFill heuristics aren't anytime: stopped early, minfillbg_mrs prints a near-trivial
+        # decomposition (a few huge bags) and minfill_mrs nothing. The release falls back to MinFill there.
+        interrupted = r.stopped and generator not in pace.ANYTIME
+        if interrupted or not qx.valid_td(td, lg):
             fallback = True
             width, order = qx.min_fill(lg)
         else:

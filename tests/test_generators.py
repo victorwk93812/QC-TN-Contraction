@@ -114,8 +114,9 @@ def test_mf_reproduces_authors_plan(name):
 
 
 @needs_external
-@pytest.mark.parametrize("name", SMALL)
+@pytest.mark.parametrize("name", SMALL + ["pricingcall_nativegates_ibm_qiskit_opt3_7"])
 def test_gn_reproduces_authors_plan_with_both_backends(name):
+    # pricingcall_7 has near-ties: exact float ties (rtol=0) reproduce the release, a tolerance doesn't
     tn = build(authors_gates(circuit_path(name)))
     a, b = gn_plan(tn, backend="rustworkx"), gn_plan(tn, backend="networkx")
     assert a == b == theirs(name, "gn")

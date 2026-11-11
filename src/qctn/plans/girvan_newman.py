@@ -8,8 +8,9 @@ The release contains no code for this generator; the paper (Sec. 5.1) only names
   network order, one edge per pair of tensors sharing at least one bond (parallel bonds collapse).
 - Repeatedly remove the edge of largest (unnormalised) edge betweenness, recomputed after every removal.
   Ties go to the first edge in LightGraphs' edge order, i.e. the smallest (min vertex, max vertex).
-  Values within `RTOL` relative of the maximum count as tied, since libraries sum shortest-path counts in
-  different orders.
+  Ties are exact float equality by default (`rtol=0`): that reproduces the release, with either backend,
+  while any tolerance from 1e-12 up changes some plans (pricingcall_7, portfolioqaoa_10). `rtol > 0` treats
+  values within that relative distance of the maximum as tied.
 - The contraction order is the reverse of the removal order: each removed tensor-graph edge stands for its bonds
   (in bond order), and QXTools' `order_to_contraction_plan` turns that bond order into the plan.
 
@@ -24,7 +25,7 @@ import sys
 
 from qctn.plans import qxtools as qx
 
-RTOL = 1e-9
+RTOL = 0.0  # default tie tolerance, relative
 
 
 def tensor_graph(tn, lg: qx.LineGraph | None = None):
@@ -62,14 +63,15 @@ def _betweenness_nx(nodes, edges, parallel_threshold=None):
     return {e: bc[e] if e in bc else bc[(e[1], e[0])] for e in edges}
 
 
-def _best(bc: dict) -> tuple[float, tuple[int, int]]:
+def _best(bc: dict, rtol: float) -> tuple[float, tuple[int, int]]:
     m = max(bc.values())
-    return m, min(e for e, c in bc.items() if c >= m - RTOL * abs(m))
+    return m, min(e for e, c in bc.items() if c >= m - rtol * abs(m))
 
 
 def removal_order(n: int, edges, backend: str = "rustworkx",
-                  parallel_threshold: int = sys.maxsize) -> list[tuple[int, int]]:
+                  parallel_threshold: int = sys.maxsize, rtol: float | None = None) -> list[tuple[int, int]]:
     """Edges of a graph on vertices 0..n-1 in Girvan–Newman removal order (with the tie rule above)."""
+    rtol = RTOL if rtol is None else rtol
     between = {"rustworkx": _betweenness_rx, "networkx": _betweenness_nx}[backend]
     adj: dict[int, set[int]] = {v: set() for v in range(n)}
     for a, b in edges:
@@ -93,7 +95,7 @@ def removal_order(n: int, edges, backend: str = "rustworkx",
         if not es:
             return
         bc = between(sorted(nodes), es, parallel_threshold)
-        comps[next(ids)] = (nodes, bc, _best(bc))
+        comps[next(ids)] = (nodes, bc, _best(bc, rtol))
 
     done = set()
     for v in range(n):
@@ -104,7 +106,7 @@ def removal_order(n: int, edges, backend: str = "rustworkx",
     out = []
     while comps:
         top = max(b[0] for _, _, b in comps.values())
-        cid, (_, _, (_, e)) = min(((c, x) for c, x in comps.items() if x[2][0] >= top - RTOL * abs(top)),
+        cid, (_, _, (_, e)) = min(((c, x) for c, x in comps.items() if x[2][0] >= top - rtol * abs(top)),
                                   key=lambda cx: cx[1][2][1])
         del comps[cid]
         a, b = e

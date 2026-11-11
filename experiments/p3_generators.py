@@ -56,6 +56,22 @@ def theirs(circuit: str, gen: str):
         return None, f"unparsable: {e}"
 
 
+_MF: dict = {}
+
+
+def minfill_steps(tn):
+    """QXTools min_fill plan on `tn` (the release's `mf` plan where it has one): a release plan of another
+    generator equal to it is a MinFill fallback (solver stopped without a decomposition)."""
+    from qctn.plans import qxtools as qx
+
+    key = id(tn)
+    if key not in _MF:
+        lg = qx.line_graph(tn)
+        _MF.clear()
+        _MF[key] = qx.order_to_contraction_plan(qx.min_fill(lg)[1], lg)
+    return _MF[key]
+
+
 def summary(plan) -> dict:
     f = plan_features(plan)
     return {"steps": len(plan.steps), "log2_flops": f["log2_sum_flops_val"], "max_cost": f["max_cost"],
@@ -91,6 +107,8 @@ def plan_row(circuit: str, tn, gen: str, budget: float | None) -> dict:
         row.update({f"theirs_{k}": v for k, v in st.items()})
         a = [(s.a, s.b, s.c) for s in tp.steps]
         row["identical"] = a == g.steps
+        row["theirs_netcon"] = any(not s.c.startswith("I") for s in tp.steps)
+        row["theirs_is_minfill"] = minfill_steps(tn) == a if gen != "mf" else None
         row["same_tree"] = leaf_sets(a) == leaf_sets(g.steps)
         diffs = [abs(fo[k] - ft[k]) / max(1.0, abs(ft[k])) for k in FEATURE_NAMES
                  if not (np.isnan(fo[k]) and np.isnan(ft[k]))]

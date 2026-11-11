@@ -73,13 +73,17 @@ class SolverRun:
     stopped: bool  # sent SIGTERM at the budget
 
 
+READ_DELAY = 1.0  # seconds between SIGTERM and reading the output
+
+
 def run(solver: str, gr: str, time_limit: float = 10.0, seed: int | None = None,
-        grace: float = 120.0, wait: bool = False) -> SolverRun:
+        grace: float = 30.0, wait: bool = False, read_delay: float | None = READ_DELAY) -> SolverRun:
     """Run `solver` on the `.gr` text and send SIGTERM after `time_limit` seconds, as QXGraphDecompositions'
-    `flow_cutter` does for FlowCutter. The release's plans indicate the same for all five solvers (see
-    deviations.md, Phase 3): a solver still running at the limit gives no usable decomposition and the plan
-    falls back to MinFill. `wait=True` lets the two non-anytime heuristics finish instead (up to
-    `time_limit + grace`)."""
+    `flow_cutter` does for FlowCutter (`sleep(time); kill(proc)`, then it reads the output file at once,
+    `treewidth.jl` l. 62-65). The output is read `read_delay` seconds after the SIGTERM (None: when the process
+    has exited). The release's plans indicate this for all five solvers (deviations.md, Phase 3): a solver that
+    hasn't written its decomposition by then gives none, and the plan falls back to MinFill. `wait=True` lets
+    the two non-anytime heuristics run to `time_limit + grace` instead."""
     with tempfile.TemporaryDirectory() as d:
         fin = Path(d) / "graph.gr"
         fin.write_text(gr)
@@ -87,13 +91,20 @@ def run(solver: str, gr: str, time_limit: float = 10.0, seed: int | None = None,
             t0 = time.time()
             p = subprocess.Popen(command(solver, seed), stdin=stdin, stdout=out, stderr=subprocess.DEVNULL,
                                  cwd=d, start_new_session=True)
-            stopped = False
+            stopped, snapshot = False, None
             budget = time_limit + grace if (wait and solver not in ANYTIME) else time_limit
             try:
                 p.wait(timeout=budget)
             except subprocess.TimeoutExpired:
                 stopped = True
                 os.killpg(p.pid, signal.SIGTERM)
+                if read_delay is not None:
+                    try:
+                        p.wait(timeout=read_delay)
+                    except subprocess.TimeoutExpired:
+                        pass
+                    out.flush()
+                    snapshot = Path(out.name).read_text()
                 try:
                     p.wait(timeout=grace)
                 except subprocess.TimeoutExpired:
@@ -101,5 +112,5 @@ def run(solver: str, gr: str, time_limit: float = 10.0, seed: int | None = None,
                     p.wait()
             elapsed = time.time() - t0
             out.seek(0)
-            text = out.read()
+            text = out.read() if snapshot is None else snapshot
     return SolverRun(solver, text, elapsed, p.returncode, stopped)
