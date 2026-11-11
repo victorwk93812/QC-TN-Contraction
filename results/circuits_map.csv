@@ -1,0 +1,333 @@
+name,family,source,params,status,plans,passed,partial,failed,unparseable,built_as,dropped_by_reader,note
+GHZ_10,GHZ,QXTools create_ghz_circuit,n=10,pass,1,1,0,0,0,QXTools create_ghz_circuit(n=10) x1,,
+GHZ_100,GHZ,QXTools create_ghz_circuit,n=100,pass,8,8,0,0,0,QXTools create_ghz_circuit(n=100) x8,,
+GHZ_200,GHZ,QXTools create_ghz_circuit,n=200,pass,8,8,0,0,0,QXTools create_ghz_circuit(n=200) x8,,
+GHZ_200_gpu,GHZ,QXTools create_ghz_circuit,n=200,pass,1,1,0,0,0,QXTools create_ghz_circuit(n=200) x1,,
+GHZ_300,GHZ,QXTools create_ghz_circuit,n=300,pass,8,8,0,0,0,QXTools create_ghz_circuit(n=300) x8,,
+GHZ_300_gpu,GHZ,QXTools create_ghz_circuit,n=300,pass,1,1,0,0,0,QXTools create_ghz_circuit(n=300) x1,,
+GHZ_400,GHZ,QXTools create_ghz_circuit,n=400,pass,7,7,0,0,0,QXTools create_ghz_circuit(n=400) x7,,
+GHZ_500,GHZ,QXTools create_ghz_circuit,n=500,pass,8,8,0,0,0,QXTools create_ghz_circuit(n=500) x8,,
+GHZ_600,GHZ,QXTools create_ghz_circuit,n=600,pass,7,7,0,0,0,QXTools create_ghz_circuit(n=600) x7,,
+GHZ_700,GHZ,QXTools create_ghz_circuit,n=700,pass,7,7,0,0,0,QXTools create_ghz_circuit(n=700) x7,,
+GHZ_750,GHZ,QXTools create_ghz_circuit,n=750,pass,1,1,0,0,0,QXTools create_ghz_circuit(n=750) x1,,
+GHZ_800,GHZ,QXTools create_ghz_circuit,n=800,pass,7,7,0,0,0,QXTools create_ghz_circuit(n=800) x7,,
+GHZ_898,GHZ,QXTools create_ghz_circuit,n=898,pass,7,7,0,0,0,QXTools create_ghz_circuit(n=898) x7,,
+GHZ_900,GHZ,QXTools create_ghz_circuit,n=900,pass,6,6,0,0,0,QXTools create_ghz_circuit(n=900) x6,,
+GHZ_921,GHZ,QXTools create_ghz_circuit,n=921,pass,7,7,0,0,0,QXTools create_ghz_circuit(n=921) x7,,
+GHZ_950,GHZ,QXTools create_ghz_circuit,n=950,pass,7,7,0,0,0,QXTools create_ghz_circuit(n=950) x7,,
+GHZ_964,GHZ,QXTools create_ghz_circuit,n=964,pass,7,7,0,0,0,QXTools create_ghz_circuit(n=964) x7,,
+GHZ_975,GHZ,QXTools create_ghz_circuit,n=975,pass,7,7,0,0,0,QXTools create_ghz_circuit(n=975) x7,,
+GHZ_981,GHZ,QXTools create_ghz_circuit,n=981,pass,7,7,0,0,0,QXTools create_ghz_circuit(n=981) x7,,
+GHZ_990,GHZ,QXTools create_ghz_circuit,n=990,pass,7,7,0,0,0,QXTools create_ghz_circuit(n=990) x7,,
+GHZ_992,GHZ,QXTools create_ghz_circuit,n=992,pass,7,7,0,0,0,QXTools create_ghz_circuit(n=992) x7,,
+GHZ_999,GHZ,QXTools create_ghz_circuit,n=999,pass,8,8,0,0,0,QXTools create_ghz_circuit(n=999) x8,,
+GHZ_999_gpu,GHZ,QXTools create_ghz_circuit,n=999,pass,1,1,0,0,0,QXTools create_ghz_circuit(n=999) x1,,
+GROVER_11,Grover,grover-v-chain_nativegates_ibm_qiskit_opt3_11.qasm + replace_qasm_registers_grover,,pass,5,5,0,0,0,grover-v-chain_nativegates_ibm_qiskit_opt3_11.qasm + replace_qasm_registers_grover() x5,,
+GROVER_13,Grover,grover-v-chain_nativegates_ibm_qiskit_opt3_13.qasm + replace_qasm_registers_grover,,pass,2,2,0,0,0,grover-v-chain_nativegates_ibm_qiskit_opt3_13.qasm + replace_qasm_registers_grover() x2,,
+GROVER_3,Grover,grover-v-chain_nativegates_ibm_qiskit_opt3_3.qasm + replace_qasm_registers_grover,,pass,7,7,0,0,0,grover-v-chain_nativegates_ibm_qiskit_opt3_3.qasm + replace_qasm_registers_grover() x7,,
+GROVER_4,Grover,grover-v-chain_nativegates_ibm_qiskit_opt3_4.qasm + replace_qasm_registers_grover,,pass,7,7,0,0,0,grover-v-chain_nativegates_ibm_qiskit_opt3_4.qasm + replace_qasm_registers_grover() x7,,
+GROVER_5,Grover,grover-v-chain_nativegates_ibm_qiskit_opt3_5.qasm + replace_qasm_registers_grover,,pass,7,7,0,0,0,grover-v-chain_nativegates_ibm_qiskit_opt3_5.qasm + replace_qasm_registers_grover() x7,,
+GROVER_6,Grover,grover-v-chain_nativegates_ibm_qiskit_opt3_5.qasm + replace_qasm_registers_grover,,pass,2,2,0,0,0,grover-v-chain_nativegates_ibm_qiskit_opt3_5.qasm + replace_qasm_registers_grover() x2,,plans replay on the 5-qubit circuit; no 6-qubit v-chain file
+GROVER_7,Grover,grover-v-chain_nativegates_ibm_qiskit_opt3_7.qasm + replace_qasm_registers_grover,,pass,7,7,0,0,0,grover-v-chain_nativegates_ibm_qiskit_opt3_7.qasm + replace_qasm_registers_grover() x7,,
+GROVER_9,Grover,grover-v-chain_nativegates_ibm_qiskit_opt3_9.qasm + replace_qasm_registers_grover,,pass,7,7,0,0,0,grover-v-chain_nativegates_ibm_qiskit_opt3_9.qasm + replace_qasm_registers_grover() x7,,
+Grover_11,Grover,grover-v-chain_nativegates_ibm_qiskit_opt3_11.qasm + replace_qasm_registers_grover,,pass,1,1,0,0,0,grover-v-chain_nativegates_ibm_qiskit_opt3_11.qasm + replace_qasm_registers_grover() x1,,
+Grover_13,Grover,grover-v-chain_nativegates_ibm_qiskit_opt3_13.qasm + replace_qasm_registers_grover,,pass,1,1,0,0,0,grover-v-chain_nativegates_ibm_qiskit_opt3_13.qasm + replace_qasm_registers_grover() x1,,
+Grover_4,Grover,grover-v-chain_nativegates_ibm_qiskit_opt3_4.qasm + replace_qasm_registers_grover,,pass,1,1,0,0,0,grover-v-chain_nativegates_ibm_qiskit_opt3_4.qasm + replace_qasm_registers_grover() x1,,
+Grover_7,Grover,grover-v-chain_nativegates_ibm_qiskit_opt3_7.qasm + replace_qasm_registers_grover,,pass,1,1,0,0,0,grover-v-chain_nativegates_ibm_qiskit_opt3_7.qasm + replace_qasm_registers_grover() x1,,
+Grover_9,Grover,grover-v-chain_nativegates_ibm_qiskit_opt3_9.qasm + replace_qasm_registers_grover,,pass,1,1,0,0,0,grover-v-chain_nativegates_ibm_qiskit_opt3_9.qasm + replace_qasm_registers_grover() x1,,
+QFT_10,QFT,QXTools create_qft_circuit,n=10,pass,7,7,0,0,0,QXTools create_qft_circuit(n=10) x7,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_11,QFT,QXTools create_qft_circuit,n=11,pass,7,7,0,0,0,QXTools create_qft_circuit(n=11) x7,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_12,QFT,QXTools create_qft_circuit,n=12,pass,7,7,0,0,0,QXTools create_qft_circuit(n=12) x7,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_13,QFT,QXTools create_qft_circuit,n=13,pass,7,7,0,0,0,QXTools create_qft_circuit(n=13) x7,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_14,QFT,QXTools create_qft_circuit,n=14,pass,7,7,0,0,0,QXTools create_qft_circuit(n=14) x7,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_15,QFT,QXTools create_qft_circuit,n=15,pass,7,7,0,0,0,QXTools create_qft_circuit(n=15) x7,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_16,QFT,QXTools create_qft_circuit,n=16,pass,7,7,0,0,0,QXTools create_qft_circuit(n=16) x7,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_17,QFT,QXTools create_qft_circuit,n=17,pass,7,7,0,0,0,QXTools create_qft_circuit(n=17) x7,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_18,QFT,QXTools create_qft_circuit,n=18,pass,7,7,0,0,0,QXTools create_qft_circuit(n=18) x7,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_19,QFT,QXTools create_qft_circuit,n=19,pass,7,7,0,0,0,QXTools create_qft_circuit(n=19) x7,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_20,QFT,QXTools create_qft_circuit,n=20,pass,10,10,0,0,0,QXTools create_qft_circuit(n=20) x10,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_20_gpu,QFT,QXTools create_qft_circuit,n=20,pass,1,1,0,0,0,QXTools create_qft_circuit(n=20) x1,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_21,QFT,QXTools create_qft_circuit,n=21,pass,7,7,0,0,0,QXTools create_qft_circuit(n=21) x7,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_22,QFT,QXTools create_qft_circuit,n=22,pass,6,6,0,0,0,QXTools create_qft_circuit(n=22) x6,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_23,QFT,QXTools create_qft_circuit,n=23,pass,6,6,0,0,0,QXTools create_qft_circuit(n=23) x6,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_24,QFT,QXTools create_qft_circuit,n=24,pass,7,7,0,0,0,QXTools create_qft_circuit(n=24) x7,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_25,QFT,QXTools create_qft_circuit,n=25,pass,6,6,0,0,0,QXTools create_qft_circuit(n=25) x6,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_26,QFT,QXTools create_qft_circuit,n=26,pass,5,5,0,0,0,QXTools create_qft_circuit(n=26) x5,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_27,QFT,QXTools create_qft_circuit,n=27,pass,9,9,0,0,0,QXTools create_qft_circuit(n=27) x9,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_27_gpu,QFT,QXTools create_qft_circuit,n=27,pass,1,1,0,0,0,QXTools create_qft_circuit(n=27) x1,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_28,QFT,QXTools create_qft_circuit,n=28,pass,7,7,0,0,0,QXTools create_qft_circuit(n=28) x7,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_29,QFT,QXTools create_qft_circuit,n=29,pass,5,5,0,0,0,QXTools create_qft_circuit(n=29) x5,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_30,QFT,QXTools create_qft_circuit,n=30,pass,5,5,0,0,0,QXTools create_qft_circuit(n=30) x5,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_31,QFT,QXTools create_qft_circuit,n=31,pass,5,5,0,0,0,QXTools create_qft_circuit(n=31) x5,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_32,QFT,QXTools create_qft_circuit,n=32,pass,3,3,0,0,0,QXTools create_qft_circuit(n=32) x3,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_33,QFT,QXTools create_qft_circuit,n=33,pass,1,1,0,0,0,QXTools create_qft_circuit(n=33) x1,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_34,QFT,QXTools create_qft_circuit,n=34,pass,1,1,0,0,0,QXTools create_qft_circuit(n=34) x1,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_35,QFT,QXTools create_qft_circuit,n=35,pass,1,1,0,0,0,QXTools create_qft_circuit(n=35) x1,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_36,QFT,QXTools create_qft_circuit,n=36,pass,1,1,0,0,0,QXTools create_qft_circuit(n=36) x1,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_37,QFT,QXTools create_qft_circuit,n=37,pass,1,1,0,0,0,QXTools create_qft_circuit(n=37) x1,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_5,QFT,QXTools create_qft_circuit,n=5,pass,7,7,0,0,0,QXTools create_qft_circuit(n=5) x7,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_6,QFT,QXTools create_qft_circuit,n=6,pass,7,7,0,0,0,QXTools create_qft_circuit(n=6) x7,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_7,QFT,QXTools create_qft_circuit,n=7,pass,7,7,0,0,0,QXTools create_qft_circuit(n=7) x7,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_8,QFT,QXTools create_qft_circuit,n=8,pass,7,7,0,0,0,QXTools create_qft_circuit(n=8) x7,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_9,QFT,QXTools create_qft_circuit,n=9,pass,7,7,0,0,0,QXTools create_qft_circuit(n=9) x7,,qubits 1..n (QXTools numbers them 0..n-1)
+QFT_IQFT_10,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=10,pass,7,7,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=10) x7,,inferred from the plans
+QFT_IQFT_11,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=11,pass,7,7,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=11) x7,,inferred from the plans
+QFT_IQFT_12,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=12,pass,7,7,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=12) x7,,inferred from the plans
+QFT_IQFT_13,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=13,pass,7,7,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=13) x7,,inferred from the plans
+QFT_IQFT_14,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=14,pass,7,7,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=14) x7,,inferred from the plans
+QFT_IQFT_15,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=15,pass,7,7,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=15) x7,,inferred from the plans
+QFT_IQFT_16,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=16,pass,7,7,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=16) x7,,inferred from the plans
+QFT_IQFT_17,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=17,pass,7,7,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=17) x7,,inferred from the plans
+QFT_IQFT_18,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=18,pass,6,6,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=18) x6,,inferred from the plans
+QFT_IQFT_19,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=19,pass,5,5,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=19) x5,,inferred from the plans
+QFT_IQFT_20,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=20,pass,6,6,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=20) x6,,inferred from the plans
+QFT_IQFT_21,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=21,pass,5,5,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=21) x5,,inferred from the plans
+QFT_IQFT_22,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=22,pass,5,5,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=22) x5,,inferred from the plans
+QFT_IQFT_23,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=23,pass,3,3,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=23) x3,,inferred from the plans
+QFT_IQFT_24,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=24,pass,4,4,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=24) x4,,inferred from the plans
+QFT_IQFT_25,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=25,pass,1,1,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=25) x1,,inferred from the plans
+QFT_IQFT_5,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=5,pass,7,7,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=5) x7,,inferred from the plans
+QFT_IQFT_6,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=6,pass,7,7,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=6) x7,,inferred from the plans
+QFT_IQFT_7,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=7,pass,7,7,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=7) x7,,inferred from the plans
+QFT_IQFT_8,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=8,pass,7,7,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=8) x7,,inferred from the plans
+QFT_IQFT_9,QFT_IQFT,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n),n=9,pass,7,7,0,0,0,QXZoo apply_qft!(1:ceil(n/2)) + apply_iqft!(1:n)(n=9) x7,,inferred from the plans
+QFT_qasm_20,QFT_qasm,qft_nativegates_ibm_qiskit_opt3_20.qasm,,pass,7,7,0,0,0,qft_nativegates_ibm_qiskit_opt3_20.qasm() x7,,
+QFT_qasm_21,QFT_qasm,qft_nativegates_ibm_qiskit_opt3_21.qasm,,pass,7,7,0,0,0,qft_nativegates_ibm_qiskit_opt3_21.qasm() x7,,
+QFT_qasm_22,QFT_qasm,qft_nativegates_ibm_qiskit_opt3_22.qasm,,pass,6,6,0,0,0,qft_nativegates_ibm_qiskit_opt3_22.qasm() x6,,
+QFT_qasm_23,QFT_qasm,qft_nativegates_ibm_qiskit_opt3_23.qasm,,pass,6,6,0,0,0,qft_nativegates_ibm_qiskit_opt3_23.qasm() x6,,
+QFT_qasm_24,QFT_qasm,qft_nativegates_ibm_qiskit_opt3_24.qasm,,pass,6,6,0,0,0,qft_nativegates_ibm_qiskit_opt3_24.qasm() x6,,
+QFT_qasm_25,QFT_qasm,qft_nativegates_ibm_qiskit_opt3_25.qasm,,pass,6,6,0,0,0,qft_nativegates_ibm_qiskit_opt3_25.qasm() x6,,
+QFT_qasm_26,QFT_qasm,qft_nativegates_ibm_qiskit_opt3_26.qasm,,pass,6,6,0,0,0,qft_nativegates_ibm_qiskit_opt3_26.qasm() x6,,
+QFT_qasm_27,QFT_qasm,qft_nativegates_ibm_qiskit_opt3_27.qasm,,pass,6,6,0,0,0,qft_nativegates_ibm_qiskit_opt3_27.qasm() x6,,
+QFT_qasm_28,QFT_qasm,qft_nativegates_ibm_qiskit_opt3_28.qasm,,pass,6,6,0,0,0,qft_nativegates_ibm_qiskit_opt3_28.qasm() x6,,
+QFT_qasm_29,QFT_qasm,qft_nativegates_ibm_qiskit_opt3_29.qasm,,pass,6,6,0,0,0,qft_nativegates_ibm_qiskit_opt3_29.qasm() x6,,
+QFT_qasm_30,QFT_qasm,qft_nativegates_ibm_qiskit_opt3_30.qasm,,pass,6,6,0,0,0,qft_nativegates_ibm_qiskit_opt3_30.qasm() x6,,
+QFT_qasm_31,QFT_qasm,qft_nativegates_ibm_qiskit_opt3_31.qasm,,pass,4,4,0,0,0,qft_nativegates_ibm_qiskit_opt3_31.qasm() x4,,
+QFT_qasm_32,QFT_qasm,qft_nativegates_ibm_qiskit_opt3_32.qasm,,pass,4,4,0,0,0,qft_nativegates_ibm_qiskit_opt3_32.qasm() x4,,
+QFT_qasm_33,QFT_qasm,qft_nativegates_ibm_qiskit_opt3_33.qasm,,pass,3,3,0,0,0,qft_nativegates_ibm_qiskit_opt3_33.qasm() x3,,
+QFT_qasm_34,QFT_qasm,qft_nativegates_ibm_qiskit_opt3_34.qasm,,pass,3,3,0,0,0,qft_nativegates_ibm_qiskit_opt3_34.qasm() x3,,
+QFT_qasm_35,QFT_qasm,qft_nativegates_ibm_qiskit_opt3_35.qasm,,pass,2,2,0,0,0,qft_nativegates_ibm_qiskit_opt3_35.qasm() x2,,
+QNN_10,QNN,qnn_indep_qiskit_10.qasm,,pass,8,8,0,0,0,qnn_indep_qiskit_10.qasm()[earlier reader] x1; qnn_indep_qiskit_10.qasm() x7,p:90 u2:20,
+QNN_11,QNN,qnn_indep_qiskit_11.qasm,,pass,7,7,0,0,0,qnn_indep_qiskit_11.qasm() x7,,
+QNN_12,QNN,qnn_indep_qiskit_12.qasm,,pass,7,7,0,0,0,qnn_indep_qiskit_12.qasm() x7,,
+QNN_13,QNN,qnn_indep_qiskit_13.qasm,,pass,7,7,0,0,0,qnn_indep_qiskit_13.qasm() x7,,
+QNN_14,QNN,qnn_indep_qiskit_14.qasm,,pass,7,7,0,0,0,qnn_indep_qiskit_14.qasm() x7,,
+QNN_15,QNN,qnn_indep_qiskit_15.qasm,,pass,8,8,0,0,0,qnn_indep_qiskit_15.qasm()[earlier reader] x1; qnn_indep_qiskit_15.qasm() x7,p:210 u2:30,
+QNN_15_fils_28,QNN,qnn_indep_qiskit_15.qasm,,pass,1,1,0,0,0,qnn_indep_qiskit_15.qasm()[earlier reader] x1,p:210 u2:30,
+QNN_15_fils_28_gpu,QNN,qnn_indep_qiskit_15.qasm,,pass,1,1,0,0,0,qnn_indep_qiskit_15.qasm()[earlier reader] x1,p:210 u2:30,
+QNN_15_gpu,QNN,qnn_indep_qiskit_15.qasm,,pass,1,1,0,0,0,qnn_indep_qiskit_15.qasm()[earlier reader] x1,p:210 u2:30,
+QNN_16,QNN,qnn_indep_qiskit_16.qasm,,pass,7,7,0,0,0,qnn_indep_qiskit_16.qasm() x7,,
+QNN_17,QNN,qnn_indep_qiskit_17.qasm,,pass,8,8,0,0,0,qnn_indep_qiskit_17.qasm()[earlier reader] x1; qnn_indep_qiskit_17.qasm() x7,p:272 u2:34,
+QNN_18,QNN,qnn_indep_qiskit_18.qasm,,pass,7,7,0,0,0,qnn_indep_qiskit_18.qasm() x7,,
+QNN_19,QNN,qnn_indep_qiskit_19.qasm,,pass,7,7,0,0,0,qnn_indep_qiskit_19.qasm()[earlier reader] x1; qnn_indep_qiskit_19.qasm() x6,p:342 u2:38,
+QNN_2,QNN,qnn_indep_qiskit_2.qasm,,pass,7,7,0,0,0,qnn_indep_qiskit_2.qasm() x7,,
+QNN_20,QNN,qnn_indep_qiskit_20.qasm,,pass,7,7,0,0,0,qnn_indep_qiskit_20.qasm()[earlier reader] x1; qnn_indep_qiskit_20.qasm() x6,p:380 u2:40,
+QNN_21,QNN,qnn_indep_qiskit_21.qasm,,pass,6,6,0,0,0,qnn_indep_qiskit_21.qasm() x6,,
+QNN_22,QNN,qnn_indep_qiskit_22.qasm,,pass,6,6,0,0,0,qnn_indep_qiskit_22.qasm() x6,,
+QNN_23,QNN,qnn_indep_qiskit_23.qasm,,pass,5,5,0,0,0,qnn_indep_qiskit_23.qasm() x5,,
+QNN_24,QNN,qnn_indep_qiskit_24.qasm,,pass,5,5,0,0,0,qnn_indep_qiskit_24.qasm() x5,,
+QNN_25,QNN,qnn_indep_qiskit_25.qasm,,pass,6,6,0,0,0,qnn_indep_qiskit_25.qasm()[earlier reader] x1; qnn_indep_qiskit_25.qasm() x5,p:600 u2:50,
+QNN_25_fils_4,QNN,qnn_indep_qiskit_25.qasm,,pass,1,1,0,0,0,qnn_indep_qiskit_25.qasm()[earlier reader] x1,p:600 u2:50,
+QNN_25_fils_4_gpu,QNN,qnn_indep_qiskit_25.qasm,,pass,1,1,0,0,0,qnn_indep_qiskit_25.qasm()[earlier reader] x1,p:600 u2:50,
+QNN_25_gpu,QNN,qnn_indep_qiskit_25.qasm,,pass,1,1,0,0,0,qnn_indep_qiskit_25.qasm()[earlier reader] x1,p:600 u2:50,
+QNN_26_gpu,QNN,qnn_indep_qiskit_26.qasm,,pass,1,1,0,0,0,qnn_indep_qiskit_26.qasm()[earlier reader] x1,p:650 u2:52,
+QNN_3,QNN,qnn_indep_qiskit_3.qasm,,pass,7,7,0,0,0,qnn_indep_qiskit_3.qasm() x7,,
+QNN_4,QNN,qnn_indep_qiskit_4.qasm,,pass,7,7,0,0,0,qnn_indep_qiskit_4.qasm() x7,,
+QNN_5,QNN,qnn_indep_qiskit_5.qasm,,pass,8,8,0,0,0,qnn_indep_qiskit_5.qasm()[earlier reader] x1; qnn_indep_qiskit_5.qasm() x7,p:20 u2:10,
+QNN_6,QNN,qnn_indep_qiskit_6.qasm,,pass,7,7,0,0,0,qnn_indep_qiskit_6.qasm() x7,,
+QNN_7,QNN,qnn_indep_qiskit_7.qasm,,pass,7,7,0,0,0,qnn_indep_qiskit_7.qasm() x7,,
+QNN_8,QNN,qnn_indep_qiskit_8.qasm,,pass,7,7,0,0,0,qnn_indep_qiskit_8.qasm() x7,,
+QNN_9,QNN,qnn_indep_qiskit_9.qasm,,pass,7,7,0,0,0,qnn_indep_qiskit_9.qasm() x7,,
+QWALK_3,QWalk,qwalk-noancilla_nativegates_ibm_qiskit_opt3_3.qasm,,pass,10,10,0,0,0,qwalk-noancilla_nativegates_ibm_qiskit_opt3_3.qasm() x10,,
+QWALK_4,QWalk,qwalk-noancilla_nativegates_ibm_qiskit_opt3_4.qasm,,pass,7,7,0,0,0,qwalk-noancilla_nativegates_ibm_qiskit_opt3_4.qasm() x7,,
+QWALK_5,QWalk,qwalk-noancilla_nativegates_ibm_qiskit_opt3_5.qasm,,pass,7,7,0,0,0,qwalk-noancilla_nativegates_ibm_qiskit_opt3_5.qasm() x7,,
+QWALK_6,QWalk,qwalk-noancilla_nativegates_ibm_qiskit_opt3_6.qasm,,pass,10,10,0,0,0,qwalk-noancilla_nativegates_ibm_qiskit_opt3_6.qasm() x10,,
+QWALK_7,QWalk,qwalk-noancilla_nativegates_ibm_qiskit_opt3_7.qasm,,pass,7,7,0,0,0,qwalk-noancilla_nativegates_ibm_qiskit_opt3_7.qasm() x7,,
+Qwalk_3,QWalk,qwalk-noancilla_nativegates_ibm_qiskit_opt3_3.qasm,,pass,1,1,0,0,0,qwalk-noancilla_nativegates_ibm_qiskit_opt3_3.qasm()[earlier reader] x1,sx:5,
+Qwalk_4,QWalk,qwalk-noancilla_nativegates_ibm_qiskit_opt3_4.qasm,,pass,1,1,0,0,0,qwalk-noancilla_nativegates_ibm_qiskit_opt3_4.qasm()[earlier reader] x1,sx:17,
+Qwalk_5,QWalk,qwalk-noancilla_nativegates_ibm_qiskit_opt3_5.qasm,,no parseable plan,1,0,0,0,1,,,
+Qwalk_5_fil_2,QWalk,qwalk-noancilla_nativegates_ibm_qiskit_opt3_5.qasm,,pass,1,1,0,0,0,qwalk-noancilla_nativegates_ibm_qiskit_opt3_5.qasm()[earlier reader] x1,sx:77,
+Qwalk_5_fil_2_gpu,QWalk,qwalk-noancilla_nativegates_ibm_qiskit_opt3_5.qasm,,pass,1,1,0,0,0,qwalk-noancilla_nativegates_ibm_qiskit_opt3_5.qasm()[earlier reader] x1,sx:77,
+Qwalk_5_gpu,QWalk,qwalk-noancilla_nativegates_ibm_qiskit_opt3_5.qasm,,pass,1,1,0,0,0,qwalk-noancilla_nativegates_ibm_qiskit_opt3_5.qasm()[earlier reader] x1,sx:77,
+Qwalk_6,QWalk,qwalk-noancilla_nativegates_ibm_qiskit_opt3_6.qasm,,pass,1,1,0,0,0,qwalk-noancilla_nativegates_ibm_qiskit_opt3_6.qasm()[earlier reader] x1,sx:89,
+Qwalk_7,QWalk,qwalk-noancilla_nativegates_ibm_qiskit_opt3_7.qasm,,pass,1,1,0,0,0,qwalk-noancilla_nativegates_ibm_qiskit_opt3_7.qasm()[earlier reader] x1,sx:101,
+Qwalk_8,QWalk,qwalk-noancilla_nativegates_ibm_qiskit_opt3_8.qasm,,pass,1,1,0,0,0,qwalk-noancilla_nativegates_ibm_qiskit_opt3_8.qasm()[earlier reader] x1,sx:113,
+Qwalk_8_fil_1,QWalk,qwalk-noancilla_nativegates_ibm_qiskit_opt3_8.qasm,,pass,1,1,0,0,0,qwalk-noancilla_nativegates_ibm_qiskit_opt3_8.qasm()[earlier reader] x1,sx:113,
+Qwalk_8_fil_1_gpu,QWalk,qwalk-noancilla_nativegates_ibm_qiskit_opt3_8.qasm,,pass,1,1,0,0,0,qwalk-noancilla_nativegates_ibm_qiskit_opt3_8.qasm()[earlier reader] x1,sx:113,
+Qwalk_8_gpu,QWalk,qwalk-noancilla_nativegates_ibm_qiskit_opt3_8.qasm,,pass,1,1,0,0,0,qwalk-noancilla_nativegates_ibm_qiskit_opt3_8.qasm()[earlier reader] x1,sx:113,
+RANDOM_10,Random,random_nativegates_ibm_qiskit_opt3_10.qasm,,pass,7,7,0,0,0,random_nativegates_ibm_qiskit_opt3_10.qasm() x7,,
+RANDOM_11,Random,random_nativegates_ibm_qiskit_opt3_11.qasm,,"pass, some plans unparseable",7,6,0,0,1,random_nativegates_ibm_qiskit_opt3_11.qasm() x6,,
+RANDOM_12,Random,random_nativegates_ibm_qiskit_opt3_12.qasm,,pass,7,7,0,0,0,random_nativegates_ibm_qiskit_opt3_12.qasm() x7,,
+RANDOM_13,Random,random_nativegates_ibm_qiskit_opt3_13.qasm,,pass,7,7,0,0,0,random_nativegates_ibm_qiskit_opt3_13.qasm() x7,,
+RANDOM_14,Random,random_nativegates_ibm_qiskit_opt3_14.qasm,,pass,1,1,0,0,0,random_nativegates_ibm_qiskit_opt3_14.qasm() x1,,
+RANDOM_15,Random,random_nativegates_ibm_qiskit_opt3_15.qasm,,pass,2,2,0,0,0,random_nativegates_ibm_qiskit_opt3_15.qasm() x2,,
+RQC_10_10_14,RQC,QXZoo create_RQC,rows=10;cols=10;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=10,cols=10,depth=14,final_h=True)[final H] x1",,
+RQC_10_10_14_fil_8,RQC,QXZoo create_RQC,rows=10;cols=10;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=10,cols=10,depth=14,final_h=True)[final H] x1",,
+RQC_10_10_14_fil_8_gpu,RQC,QXZoo create_RQC,rows=10;cols=10;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=10,cols=10,depth=14,final_h=True)[final H] x1",,
+RQC_10_10_14_gpu,RQC,QXZoo create_RQC,rows=10;cols=10;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=10,cols=10,depth=14,final_h=True)[final H] x1",,
+RQC_11_11_11,RQC,QXZoo create_RQC,rows=11;cols=11;depth=11;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=11,cols=11,depth=11,final_h=True)[final H] x1",,
+RQC_11_11_14,RQC,QXZoo create_RQC,rows=11;cols=11;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=11,cols=11,depth=14,final_h=True)[final H] x1",,
+RQC_12_12_14,RQC,QXZoo create_RQC,rows=12;cols=12;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=12,cols=12,depth=14,final_h=True)[final H] x1",,
+RQC_13_13_14,RQC,QXZoo create_RQC,rows=13;cols=13;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=13,cols=13,depth=14,final_h=True)[final H] x1",,
+RQC_14_14_14,RQC,QXZoo create_RQC,rows=14;cols=14;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=14,cols=14,depth=14,final_h=True)[final H] x1",,
+RQC_14_14_14_fil_4,RQC,QXZoo create_RQC,rows=14;cols=14;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=14,cols=14,depth=14,final_h=True)[final H] x1",,
+RQC_14_14_14_fil_4_gpu,RQC,QXZoo create_RQC,rows=14;cols=14;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=14,cols=14,depth=14,final_h=True)[final H] x1",,
+RQC_14_14_14_gpu,RQC,QXZoo create_RQC,rows=14;cols=14;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=14,cols=14,depth=14,final_h=True)[final H] x1",,
+RQC_15_15_14,RQC,QXZoo create_RQC,rows=15;cols=15;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=15,cols=15,depth=14,final_h=True)[final H] x1",,
+RQC_15_15_14_gpu,RQC,QXZoo create_RQC,rows=15;cols=15;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=15,cols=15,depth=14,final_h=True)[final H] x1",,
+RQC_3_7_20,RQC,QXZoo create_RQC,rows=3;cols=7;depth=20;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=20,final_h=False)[no final H] x7",,
+RQC_3_7_25,RQC,QXZoo create_RQC,rows=3;cols=7;depth=25;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=25,final_h=False)[no final H] x7",,
+RQC_3_7_26,RQC,QXZoo create_RQC,rows=3;cols=7;depth=26;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=26,final_h=False)[no final H] x7",,
+RQC_3_7_27,RQC,QXZoo create_RQC,rows=3;cols=7;depth=27;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=27,final_h=False)[no final H] x7",,
+RQC_3_7_28,RQC,QXZoo create_RQC,rows=3;cols=7;depth=28;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=28,final_h=False)[no final H] x7",,
+RQC_3_7_29,RQC,QXZoo create_RQC,rows=3;cols=7;depth=29;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=29,final_h=False)[no final H] x7",,
+RQC_3_7_30,RQC,QXZoo create_RQC,rows=3;cols=7;depth=30;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=30,final_h=False)[no final H] x7",,
+RQC_3_7_31,RQC,QXZoo create_RQC,rows=3;cols=7;depth=31;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=31,final_h=False)[no final H] x7",,
+RQC_3_7_32,RQC,QXZoo create_RQC,rows=3;cols=7;depth=32;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=32,final_h=False)[no final H] x7",,
+RQC_3_7_33,RQC,QXZoo create_RQC,rows=3;cols=7;depth=33;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=33,final_h=False)[no final H] x7",,
+RQC_3_7_34,RQC,QXZoo create_RQC,rows=3;cols=7;depth=34;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=34,final_h=False)[no final H] x7",,
+RQC_3_7_35,RQC,QXZoo create_RQC,rows=3;cols=7;depth=35;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=35,final_h=False)[no final H] x7",,
+RQC_3_7_36,RQC,QXZoo create_RQC,rows=3;cols=7;depth=36;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=36,final_h=False)[no final H] x7",,
+RQC_3_7_37,RQC,QXZoo create_RQC,rows=3;cols=7;depth=37;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=37,final_h=False)[no final H] x7",,
+RQC_3_7_38,RQC,QXZoo create_RQC,rows=3;cols=7;depth=38;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=38,final_h=False)[no final H] x7",,
+RQC_3_7_39,RQC,QXZoo create_RQC,rows=3;cols=7;depth=39;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=39,final_h=False)[no final H] x7",,
+RQC_3_7_40,RQC,QXZoo create_RQC,rows=3;cols=7;depth=40;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=40,final_h=False)[no final H] x7",,
+RQC_3_7_41,RQC,QXZoo create_RQC,rows=3;cols=7;depth=41;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=41,final_h=False)[no final H] x7",,
+RQC_3_7_42,RQC,QXZoo create_RQC,rows=3;cols=7;depth=42;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=42,final_h=False)[no final H] x7",,
+RQC_3_7_43,RQC,QXZoo create_RQC,rows=3;cols=7;depth=43;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=43,final_h=False)[no final H] x7",,
+RQC_3_7_44,RQC,QXZoo create_RQC,rows=3;cols=7;depth=44;final_h=False,pass,6,6,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=44,final_h=False)[no final H] x6",,
+RQC_3_7_45,RQC,QXZoo create_RQC,rows=3;cols=7;depth=45;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=45,final_h=False)[no final H] x7",,
+RQC_3_7_46,RQC,QXZoo create_RQC,rows=3;cols=7;depth=46;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=46,final_h=False)[no final H] x7",,
+RQC_3_7_47,RQC,QXZoo create_RQC,rows=3;cols=7;depth=47;final_h=False,pass,6,6,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=47,final_h=False)[no final H] x6",,
+RQC_3_7_48,RQC,QXZoo create_RQC,rows=3;cols=7;depth=48;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=48,final_h=False)[no final H] x7",,
+RQC_3_7_49,RQC,QXZoo create_RQC,rows=3;cols=7;depth=49;final_h=False,pass,5,5,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=49,final_h=False)[no final H] x5",,
+RQC_3_7_50,RQC,QXZoo create_RQC,rows=3;cols=7;depth=49;final_h=False,pass,5,5,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=49,final_h=False)[no final H] x5",,plans replay on depth 49
+RQC_3_7_51,RQC,QXZoo create_RQC,rows=3;cols=7;depth=51;final_h=False,pass,5,5,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=51,final_h=False)[no final H] x5",,
+RQC_3_7_52,RQC,QXZoo create_RQC,rows=3;cols=7;depth=52;final_h=False,pass,6,6,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=52,final_h=False)[no final H] x6",,
+RQC_3_7_53,RQC,QXZoo create_RQC,rows=3;cols=7;depth=53;final_h=False,pass,4,4,0,0,0,"QXZoo create_RQC(rows=3,cols=7,depth=53,final_h=False)[no final H] x4",,
+RQC_3_8_20,RQC,QXZoo create_RQC,rows=3;cols=8;depth=20;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=8,depth=20,final_h=False)[no final H] x7",,
+RQC_3_8_24,RQC,QXZoo create_RQC,rows=3;cols=8;depth=24;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=8,depth=24,final_h=False)[no final H] x7",,
+RQC_3_8_28,RQC,QXZoo create_RQC,rows=3;cols=8;depth=28;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=8,depth=28,final_h=False)[no final H] x7",,
+RQC_3_8_32,RQC,QXZoo create_RQC,rows=3;cols=8;depth=32;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=8,depth=32,final_h=False)[no final H] x7",,
+RQC_3_8_36,RQC,QXZoo create_RQC,rows=3;cols=8;depth=36;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=8,depth=36,final_h=False)[no final H] x7",,
+RQC_3_8_38,RQC,QXZoo create_RQC,rows=3;cols=8;depth=38;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=8,depth=38,final_h=False)[no final H] x7",,
+RQC_3_8_40,RQC,QXZoo create_RQC,rows=3;cols=8;depth=40;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=8,depth=40,final_h=False)[no final H] x7",,
+RQC_3_8_42,RQC,QXZoo create_RQC,rows=3;cols=8;depth=42;final_h=False,pass,6,6,0,0,0,"QXZoo create_RQC(rows=3,cols=8,depth=42,final_h=False)[no final H] x6",,
+RQC_3_8_44,RQC,QXZoo create_RQC,rows=3;cols=8;depth=44;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=8,depth=44,final_h=False)[no final H] x7",,
+RQC_3_8_46,RQC,QXZoo create_RQC,rows=3;cols=8;depth=46;final_h=False,pass,5,5,0,0,0,"QXZoo create_RQC(rows=3,cols=8,depth=46,final_h=False)[no final H] x5",,
+RQC_3_8_48,RQC,QXZoo create_RQC,rows=3;cols=8;depth=48;final_h=False,pass,4,4,0,0,0,"QXZoo create_RQC(rows=3,cols=8,depth=48,final_h=False)[no final H] x4",,
+RQC_3_8_50,RQC,QXZoo create_RQC,rows=3;cols=8;depth=50;final_h=False,pass,1,1,0,0,0,"QXZoo create_RQC(rows=3,cols=8,depth=50,final_h=False)[no final H] x1",,
+RQC_3_8_52,RQC,QXZoo create_RQC,rows=3;cols=8;depth=52;final_h=False,pass,1,1,0,0,0,"QXZoo create_RQC(rows=3,cols=8,depth=52,final_h=False)[no final H] x1",,
+RQC_3_8_54,RQC,QXZoo create_RQC,rows=3;cols=8;depth=54;final_h=False,pass,1,1,0,0,0,"QXZoo create_RQC(rows=3,cols=8,depth=54,final_h=False)[no final H] x1",,
+RQC_3_9_20,RQC,QXZoo create_RQC,rows=3;cols=9;depth=20;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=9,depth=20,final_h=False)[no final H] x7",,
+RQC_3_9_24,RQC,QXZoo create_RQC,rows=3;cols=9;depth=24;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=9,depth=24,final_h=False)[no final H] x7",,
+RQC_3_9_28,RQC,QXZoo create_RQC,rows=3;cols=9;depth=28;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=9,depth=28,final_h=False)[no final H] x7",,
+RQC_3_9_30,RQC,QXZoo create_RQC,rows=3;cols=9;depth=30;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=9,depth=30,final_h=False)[no final H] x7",,
+RQC_3_9_32,RQC,QXZoo create_RQC,rows=3;cols=9;depth=32;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=9,depth=32,final_h=False)[no final H] x7",,
+RQC_3_9_36,RQC,QXZoo create_RQC,rows=3;cols=9;depth=36;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=9,depth=36,final_h=False)[no final H] x7",,
+RQC_3_9_38,RQC,QXZoo create_RQC,rows=3;cols=9;depth=38;final_h=False,pass,6,6,0,0,0,"QXZoo create_RQC(rows=3,cols=9,depth=38,final_h=False)[no final H] x6",,
+RQC_3_9_40,RQC,QXZoo create_RQC,rows=3;cols=9;depth=40;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=3,cols=9,depth=40,final_h=False)[no final H] x7",,
+RQC_3_9_42,RQC,QXZoo create_RQC,rows=3;cols=9;depth=42;final_h=False,pass,6,6,0,0,0,"QXZoo create_RQC(rows=3,cols=9,depth=42,final_h=False)[no final H] x6",,
+RQC_3_9_45,RQC,QXZoo create_RQC,rows=3;cols=9;depth=45;final_h=False,pass,2,2,0,0,0,"QXZoo create_RQC(rows=3,cols=9,depth=45,final_h=False)[no final H] x2",,
+RQC_4_11,RQC,QXZoo create_RQC,rows=4;cols=4;depth=11;final_h=True,partial only,1,0,1,0,0,"QXZoo create_RQC(rows=4,cols=4,depth=11,final_h=True)[final H] x1",,the only plan has one step; it doesn't identify the network
+RQC_4_12,RQC,QXZoo create_RQC,rows=4;cols=4;depth=12;final_h=True,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=4,depth=12,final_h=True)[final H] x7",,
+RQC_4_20,RQC,QXZoo create_RQC,rows=4;cols=4;depth=20;final_h=True,partial only,3,0,3,0,0,"QXZoo create_RQC(rows=4,cols=4,depth=20,final_h=True)[final H] x3",,"plans contract only t1-t193 (gate tensors, no inputs/outputs); they replay on any depth >= 17"
+RQC_4_32,RQC,QXZoo create_RQC,rows=4;cols=4;depth=32;final_h=True,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=4,depth=32,final_h=True)[final H] x6; QXZoo create_RQC(rows=4,cols=4,depth=32,final_h=False)[no final H] x1",,
+RQC_4_4_14,RQC,QXZoo create_RQC,rows=4;cols=4;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=4,cols=4,depth=14,final_h=True)[final H] x1",,
+RQC_4_50,RQC,QXZoo create_RQC,rows=4;cols=4;depth=50;final_h=True,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=4,depth=50,final_h=True)[final H] x6; QXZoo create_RQC(rows=4,cols=4,depth=50,final_h=False)[no final H] x1",,
+RQC_4_5_30,RQC,QXZoo create_RQC,rows=4;cols=5;depth=30;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=5,depth=30,final_h=False)[no final H] x7",,
+RQC_4_5_31,RQC,QXZoo create_RQC,rows=4;cols=5;depth=31;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=5,depth=31,final_h=False)[no final H] x7",,
+RQC_4_5_32,RQC,QXZoo create_RQC,rows=4;cols=5;depth=32;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=5,depth=32,final_h=False)[no final H] x7",,
+RQC_4_5_33,RQC,QXZoo create_RQC,rows=4;cols=5;depth=33;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=5,depth=33,final_h=False)[no final H] x7",,
+RQC_4_5_34,RQC,QXZoo create_RQC,rows=4;cols=5;depth=34;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=5,depth=34,final_h=False)[no final H] x7",,
+RQC_4_5_35,RQC,QXZoo create_RQC,rows=4;cols=5;depth=35;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=5,depth=35,final_h=False)[no final H] x7",,
+RQC_4_5_36,RQC,QXZoo create_RQC,rows=4;cols=5;depth=36;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=5,depth=36,final_h=False)[no final H] x7",,
+RQC_4_5_37,RQC,QXZoo create_RQC,rows=4;cols=5;depth=37;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=5,depth=37,final_h=False)[no final H] x7",,
+RQC_4_5_38,RQC,QXZoo create_RQC,rows=4;cols=5;depth=38;final_h=False,pass,6,6,0,0,0,"QXZoo create_RQC(rows=4,cols=5,depth=38,final_h=False)[no final H] x6",,
+RQC_4_5_39,RQC,QXZoo create_RQC,rows=4;cols=5;depth=39;final_h=False,pass,6,6,0,0,0,"QXZoo create_RQC(rows=4,cols=5,depth=39,final_h=False)[no final H] x6",,
+RQC_4_5_41,RQC,QXZoo create_RQC,rows=4;cols=5;depth=41;final_h=False,pass,6,6,0,0,0,"QXZoo create_RQC(rows=4,cols=5,depth=41,final_h=False)[no final H] x6",,
+RQC_4_5_42,RQC,QXZoo create_RQC,rows=4;cols=5;depth=42;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=5,depth=42,final_h=False)[no final H] x7",,
+RQC_4_5_43,RQC,QXZoo create_RQC,rows=4;cols=5;depth=43;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=5,depth=43,final_h=False)[no final H] x7",,
+RQC_4_60,RQC,QXZoo create_RQC,rows=4;cols=4;depth=60;final_h=True,partial only,2,0,2,0,0,"QXZoo create_RQC(rows=4,cols=4,depth=60,final_h=True)[final H] x2",,"plans contract only t1-t193 (gate tensors, no inputs/outputs); they replay on any depth >= 17"
+RQC_4_6_20,RQC,QXZoo create_RQC,rows=4;cols=6;depth=20;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=6,depth=20,final_h=False)[no final H] x7",,
+RQC_4_6_25,RQC,QXZoo create_RQC,rows=4;cols=6;depth=25;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=6,depth=25,final_h=False)[no final H] x7",,
+RQC_4_6_28,RQC,QXZoo create_RQC,rows=4;cols=6;depth=28;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=6,depth=28,final_h=False)[no final H] x7",,
+RQC_4_6_30,RQC,QXZoo create_RQC,rows=4;cols=6;depth=30;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=6,depth=32,final_h=False)[no final H] x5; QXZoo create_RQC(rows=4,cols=6,depth=30,final_h=False)[no final H] x2",,five plans replay on depth 32
+RQC_4_6_34,RQC,QXZoo create_RQC,rows=4;cols=6;depth=34;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=6,depth=34,final_h=False)[no final H] x7",,
+RQC_4_6_35,RQC,QXZoo create_RQC,rows=4;cols=6;depth=35;final_h=False,pass,5,5,0,0,0,"QXZoo create_RQC(rows=4,cols=6,depth=35,final_h=False)[no final H] x5",,
+RQC_4_6_36,RQC,QXZoo create_RQC,rows=4;cols=6;depth=36;final_h=False,pass,6,6,0,0,0,"QXZoo create_RQC(rows=4,cols=6,depth=36,final_h=False)[no final H] x6",,
+RQC_4_72,RQC,QXZoo create_RQC,rows=4;cols=4;depth=72;final_h=True,pass,6,6,0,0,0,"QXZoo create_RQC(rows=4,cols=4,depth=72,final_h=True)[final H] x5; QXZoo create_RQC(rows=4,cols=4,depth=72,final_h=False)[no final H] x1",,
+RQC_4_75,RQC,QXZoo create_RQC,rows=4;cols=4;depth=75;final_h=True,pass,6,6,0,0,0,"QXZoo create_RQC(rows=4,cols=4,depth=75,final_h=True)[final H] x6",,
+RQC_4_7_20,RQC,QXZoo create_RQC,rows=4;cols=7;depth=20;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=7,depth=20,final_h=False)[no final H] x7",,
+RQC_4_7_24,RQC,QXZoo create_RQC,rows=4;cols=7;depth=24;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=7,depth=24,final_h=False)[no final H] x7",,
+RQC_4_7_28,RQC,QXZoo create_RQC,rows=4;cols=7;depth=28;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=7,depth=28,final_h=False)[no final H] x7",,
+RQC_4_7_32,RQC,QXZoo create_RQC,rows=4;cols=7;depth=32;final_h=False,pass,7,7,0,0,0,"QXZoo create_RQC(rows=4,cols=7,depth=32,final_h=False)[no final H] x7",,
+RQC_4_7_36,RQC,QXZoo create_RQC,rows=4;cols=7;depth=36;final_h=False,pass,4,4,0,0,0,"QXZoo create_RQC(rows=4,cols=7,depth=36,final_h=False)[no final H] x4",,
+RQC_4_7_40,RQC,QXZoo create_RQC,rows=4;cols=7;depth=40;final_h=False,pass,2,2,0,0,0,"QXZoo create_RQC(rows=4,cols=7,depth=40,final_h=False)[no final H] x2",,
+RQC_5_16,RQC,QXZoo create_RQC,rows=5;cols=5;depth=16;final_h=True,pass,7,7,0,0,0,"QXZoo create_RQC(rows=5,cols=5,depth=16,final_h=True)[final H] x6; QXZoo create_RQC(rows=5,cols=5,depth=16,final_h=False)[no final H] x1",,
+RQC_5_24,RQC,QXZoo create_RQC,rows=5;cols=5;depth=24;final_h=True,pass,7,7,0,0,0,"QXZoo create_RQC(rows=5,cols=5,depth=24,final_h=True)[final H] x6; QXZoo create_RQC(rows=5,cols=5,depth=24,final_h=False)[no final H] x1",,
+RQC_5_28,RQC,QXZoo create_RQC,rows=5;cols=5;depth=28;final_h=True,pass,7,7,0,0,0,"QXZoo create_RQC(rows=5,cols=5,depth=28,final_h=True)[final H] x6; QXZoo create_RQC(rows=5,cols=5,depth=28,final_h=False)[no final H] x1",,
+RQC_5_28_mockpla_fc,RQC,QXZoo create_RQC,rows=5;cols=5;depth=28;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=5,cols=5,depth=28,final_h=True)[final H] x1",,
+RQC_5_28_mockpla_gn,RQC,QXZoo create_RQC,rows=5;cols=5;depth=28;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=5,cols=5,depth=28,final_h=True)[final H] x1",,
+RQC_5_28_mockpla_jdrasil,RQC,QXZoo create_RQC,rows=5;cols=5;depth=28;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=5,cols=5,depth=28,final_h=True)[final H] x1",,
+RQC_5_28_mockpla_mf,RQC,QXZoo create_RQC,rows=5;cols=5;depth=28;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=5,cols=5,depth=28,final_h=True)[final H] x1",,
+RQC_5_28_mockpla_minfill_mrs,RQC,QXZoo create_RQC,rows=5;cols=5;depth=28;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=5,cols=5,depth=28,final_h=True)[final H] x1",,
+RQC_5_28_mockpla_minfillbg_mrs,RQC,QXZoo create_RQC,rows=5;cols=5;depth=28;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=5,cols=5,depth=28,final_h=True)[final H] x1",,
+RQC_5_28_mockpla_tamaki,RQC,QXZoo create_RQC,rows=5;cols=5;depth=28;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=5,cols=5,depth=28,final_h=True)[final H] x1",,
+RQC_5_32,RQC,QXZoo create_RQC,rows=5;cols=5;depth=32;final_h=True,pass,5,5,0,0,0,"QXZoo create_RQC(rows=5,cols=5,depth=32,final_h=True)[final H] x5",,
+RQC_5_5_14,RQC,QXZoo create_RQC,rows=5;cols=5;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=5,cols=5,depth=14,final_h=True)[final H] x1",,
+RQC_6_16,RQC,QXZoo create_RQC,rows=6;cols=6;depth=16;final_h=True,pass,7,7,0,0,0,"QXZoo create_RQC(rows=6,cols=6,depth=16,final_h=True)[final H] x6; QXZoo create_RQC(rows=6,cols=6,depth=16,final_h=False)[no final H] x1",,
+RQC_6_20,RQC,QXZoo create_RQC,rows=6;cols=6;depth=20;final_h=True,pass,7,7,0,0,0,"QXZoo create_RQC(rows=6,cols=6,depth=20,final_h=False)[no final H] x7",,
+RQC_6_24,RQC,QXZoo create_RQC,rows=6;cols=6;depth=24;final_h=True,pass,7,7,0,0,0,"QXZoo create_RQC(rows=6,cols=6,depth=24,final_h=True)[final H] x6; QXZoo create_RQC(rows=6,cols=6,depth=24,final_h=False)[no final H] x1",,
+RQC_6_30,RQC,QXZoo create_RQC,rows=6;cols=6;depth=30;final_h=True,pass,2,2,0,0,0,"QXZoo create_RQC(rows=6,cols=6,depth=30,final_h=True)[final H] x2",,
+RQC_6_32,RQC,QXZoo create_RQC,rows=6;cols=6;depth=32;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=6,cols=6,depth=32,final_h=True)[final H] x1",,
+RQC_6_6_14,RQC,QXZoo create_RQC,rows=6;cols=6;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=6,cols=6,depth=14,final_h=True)[final H] x1",,
+RQC_7_16,RQC,QXZoo create_RQC,rows=7;cols=7;depth=16;final_h=True,pass,7,7,0,0,0,"QXZoo create_RQC(rows=7,cols=7,depth=16,final_h=True)[final H] x6; QXZoo create_RQC(rows=7,cols=7,depth=16,final_h=False)[no final H] x1",,
+RQC_7_20,RQC,QXZoo create_RQC,rows=7;cols=7;depth=20;final_h=True,pass,7,7,0,0,0,"QXZoo create_RQC(rows=7,cols=7,depth=20,final_h=True)[final H] x6; QXZoo create_RQC(rows=7,cols=7,depth=20,final_h=False)[no final H] x1",,
+RQC_7_24,RQC,QXZoo create_RQC,rows=7;cols=7;depth=24;final_h=True,pass,3,3,0,0,0,"QXZoo create_RQC(rows=7,cols=7,depth=24,final_h=True)[final H] x3",,
+RQC_7_7_14,RQC,QXZoo create_RQC,rows=7;cols=7;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=7,cols=7,depth=14,final_h=True)[final H] x1",,
+RQC_8_8_14,RQC,QXZoo create_RQC,rows=8;cols=8;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=8,cols=8,depth=14,final_h=True)[final H] x1",,
+RQC_9_9_14,RQC,QXZoo create_RQC,rows=9;cols=9;depth=14;final_h=True,pass,1,1,0,0,0,"QXZoo create_RQC(rows=9,cols=9,depth=14,final_h=True)[final H] x1",,
+Random_IBM_12,Random,random_nativegates_ibm_qiskit_opt3_12.qasm,,pass,1,1,0,0,0,random_nativegates_ibm_qiskit_opt3_12.qasm() x1,,
+Random_IBM_13,Random,random_nativegates_ibm_qiskit_opt3_13.qasm,,pass,1,1,0,0,0,random_nativegates_ibm_qiskit_opt3_13.qasm() x1,,
+Random_IBM_14,Random,random_nativegates_ibm_qiskit_opt3_14.qasm,,pass,1,1,0,0,0,random_nativegates_ibm_qiskit_opt3_14.qasm() x1,,
+Random_IBM_15,Random,random_nativegates_ibm_qiskit_opt3_15.qasm,,pass,1,1,0,0,0,random_nativegates_ibm_qiskit_opt3_15.qasm() x1,,
+Random_IBM_15_gn,Random,random_nativegates_ibm_qiskit_opt3_15.qasm,,pass,1,1,0,0,0,random_nativegates_ibm_qiskit_opt3_15.qasm() x1,,
+Random_IBM_16,Random,random_nativegates_ibm_qiskit_opt3_16.qasm,,pass,1,1,0,0,0,random_nativegates_ibm_qiskit_opt3_16.qasm() x1,,
+Random_IBM_17,Random,random_nativegates_ibm_qiskit_opt3_17.qasm,,pass,1,1,0,0,0,random_nativegates_ibm_qiskit_opt3_17.qasm() x1,,
+Random_IBM_18,Random,random_nativegates_ibm_qiskit_opt3_18.qasm,,pass,1,1,0,0,0,random_nativegates_ibm_qiskit_opt3_18.qasm() x1,,
+Random_IBM_19,Random,random_nativegates_ibm_qiskit_opt3_19.qasm,,pass,1,1,0,0,0,random_nativegates_ibm_qiskit_opt3_19.qasm() x1,,
+Random_IBM_20,Random,random_nativegates_ibm_qiskit_opt3_20.qasm,,pass,1,1,0,0,0,random_nativegates_ibm_qiskit_opt3_20.qasm() x1,,
+VQE_16,VQE,vqe_nativegates_ibm_qiskit_opt3_16.qasm,,pass,7,7,0,0,0,vqe_nativegates_ibm_qiskit_opt3_16.qasm() x7,,
+VQE_3,VQE,vqe_nativegates_ibm_qiskit_opt3_3.qasm,,pass,7,7,0,0,0,vqe_nativegates_ibm_qiskit_opt3_3.qasm() x7,,
+VQE_4,VQE,vqe_nativegates_ibm_qiskit_opt3_4.qasm,,pass,7,7,0,0,0,vqe_nativegates_ibm_qiskit_opt3_4.qasm() x7,,
+VQE_5,VQE,vqe_nativegates_ibm_qiskit_opt3_5.qasm,,pass,7,7,0,0,0,vqe_nativegates_ibm_qiskit_opt3_5.qasm() x7,,
+VQE_6,VQE,vqe_nativegates_ibm_qiskit_opt3_6.qasm,,pass,7,7,0,0,0,vqe_nativegates_ibm_qiskit_opt3_6.qasm() x7,,
+VQE_7,VQE,vqe_nativegates_ibm_qiskit_opt3_7.qasm,,pass,7,7,0,0,0,vqe_nativegates_ibm_qiskit_opt3_7.qasm() x7,,
+VQE_8,VQE,vqe_nativegates_ibm_qiskit_opt3_8.qasm,,pass,7,7,0,0,0,vqe_nativegates_ibm_qiskit_opt3_8.qasm() x7,,
+dj_indep_qiskit_130,Deutsch-Jozsa,dj_indep_qiskit_130.qasm,,pass,7,7,0,0,0,dj_indep_qiskit_130.qasm() x7,,
+dj_indep_qiskit_25,Pricing call,pricingcall_nativegates_ibm_qiskit_opt3_25.qasm,,pass,2,2,0,0,0,pricingcall_nativegates_ibm_qiskit_opt3_25.qasm() x2,,named dj_indep_qiskit_25; plans replay on the pricing-call circuit
+dj_indep_qiskit_40,Deutsch-Jozsa,dj_indep_qiskit_40.qasm,,pass,7,7,0,0,0,dj_indep_qiskit_40.qasm() x7,,
+dj_indep_qiskit_90,Deutsch-Jozsa,dj_indep_qiskit_90.qasm,,pass,7,7,0,0,0,dj_indep_qiskit_90.qasm() x7,,
+dj_nativegates_ibm_qiskit_opt3_130,Deutsch-Jozsa,dj_nativegates_ibm_qiskit_opt3_130.qasm,,pass,7,7,0,0,0,dj_nativegates_ibm_qiskit_opt3_130.qasm() x7,,
+groundstate_large_indep_qiskit_14_14,Ground state,groundstate_large_indep_qiskit_14.qasm,,pass,7,7,0,0,0,groundstate_large_indep_qiskit_14.qasm() x7,,
+portfolioqaoa_nativegates_ibm_qiskit_opt3_10,Portfolio QAOA,portfolioqaoa_nativegates_ibm_qiskit_opt3_10.qasm,,pass,7,7,0,0,0,portfolioqaoa_nativegates_ibm_qiskit_opt3_10.qasm() x7,,
+portfolioqaoa_nativegates_ibm_qiskit_opt3_17,Portfolio QAOA,portfolioqaoa_nativegates_ibm_qiskit_opt3_17.qasm,,pass,6,6,0,0,0,portfolioqaoa_nativegates_ibm_qiskit_opt3_17.qasm() x6,,
+pricingcall_nativegates_ibm_qiskit_opt3_11,Pricing call,pricingcall_nativegates_ibm_qiskit_opt3_11.qasm,,pass,7,7,0,0,0,pricingcall_nativegates_ibm_qiskit_opt3_11.qasm() x7,,
+pricingcall_nativegates_ibm_qiskit_opt3_13,Pricing call,pricingcall_nativegates_ibm_qiskit_opt3_13.qasm,,pass,7,7,0,0,0,pricingcall_nativegates_ibm_qiskit_opt3_13.qasm() x7,,
+pricingcall_nativegates_ibm_qiskit_opt3_15,Pricing call,pricingcall_nativegates_ibm_qiskit_opt3_15.qasm,,pass,7,7,0,0,0,pricingcall_nativegates_ibm_qiskit_opt3_15.qasm() x7,,
+pricingcall_nativegates_ibm_qiskit_opt3_17,Pricing call,pricingcall_nativegates_ibm_qiskit_opt3_17.qasm,,pass,7,7,0,0,0,pricingcall_nativegates_ibm_qiskit_opt3_17.qasm() x7,,
+pricingcall_nativegates_ibm_qiskit_opt3_19,Pricing call,pricingcall_nativegates_ibm_qiskit_opt3_19.qasm,,pass,7,7,0,0,0,pricingcall_nativegates_ibm_qiskit_opt3_19.qasm() x7,,
+pricingcall_nativegates_ibm_qiskit_opt3_21,Pricing call,pricingcall_nativegates_ibm_qiskit_opt3_21.qasm,,pass,5,5,0,0,0,pricingcall_nativegates_ibm_qiskit_opt3_21.qasm() x5,,
+pricingcall_nativegates_ibm_qiskit_opt3_23,Pricing call,pricingcall_nativegates_ibm_qiskit_opt3_23.qasm,,pass,4,4,0,0,0,pricingcall_nativegates_ibm_qiskit_opt3_23.qasm() x4,,
+pricingcall_nativegates_ibm_qiskit_opt3_25,Pricing call,pricingcall_nativegates_ibm_qiskit_opt3_25.qasm,,pass,3,3,0,0,0,pricingcall_nativegates_ibm_qiskit_opt3_25.qasm() x3,,
+pricingcall_nativegates_ibm_qiskit_opt3_5,Pricing call,pricingcall_nativegates_ibm_qiskit_opt3_5.qasm,,pass,7,7,0,0,0,pricingcall_nativegates_ibm_qiskit_opt3_5.qasm() x7,,
+pricingcall_nativegates_ibm_qiskit_opt3_7,Pricing call,pricingcall_nativegates_ibm_qiskit_opt3_7.qasm,,pass,7,7,0,0,0,pricingcall_nativegates_ibm_qiskit_opt3_7.qasm() x7,,
+pricingcall_nativegates_ibm_qiskit_opt3_9,Pricing call,pricingcall_nativegates_ibm_qiskit_opt3_9.qasm,,pass,7,7,0,0,0,pricingcall_nativegates_ibm_qiskit_opt3_9.qasm() x7,,
+qft_25,QFT,QXTools create_qft_circuit,n=25,pass,1,1,0,0,0,QXTools create_qft_circuit(n=25) x1,,qubits 1..n (QXTools numbers them 0..n-1)
+qft_25_gpu,QFT,QXTools create_qft_circuit,n=25,pass,1,1,0,0,0,QXTools create_qft_circuit(n=25) x1,,qubits 1..n (QXTools numbers them 0..n-1)
+qft_30,QFT,QXTools create_qft_circuit,n=30,pass,1,1,0,0,0,QXTools create_qft_circuit(n=30) x1,,qubits 1..n (QXTools numbers them 0..n-1)
+qft_30_gpu,QFT,QXTools create_qft_circuit,n=30,pass,1,1,0,0,0,QXTools create_qft_circuit(n=30) x1,,qubits 1..n (QXTools numbers them 0..n-1)
+qft_31,QFT,QXTools create_qft_circuit,n=31,pass,1,1,0,0,0,QXTools create_qft_circuit(n=31) x1,,qubits 1..n (QXTools numbers them 0..n-1)
+qft_31_gpu,QFT,QXTools create_qft_circuit,n=31,pass,1,1,0,0,0,QXTools create_qft_circuit(n=31) x1,,qubits 1..n (QXTools numbers them 0..n-1)
+qft_33,QFT,QXTools create_qft_circuit,n=33,pass,1,1,0,0,0,QXTools create_qft_circuit(n=33) x1,,qubits 1..n (QXTools numbers them 0..n-1)
