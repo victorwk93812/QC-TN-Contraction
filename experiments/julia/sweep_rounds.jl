@@ -1,8 +1,9 @@
 # Predictions of the authors' training recipe at every boosting round, for each
 # parameter set, so metrics can be computed in one place (qctn.rank.metrics).
 # Reference only. Writes long-format CSV: objective,params,round,split,row,score
-# Usage: julia --project=external/julia-env/rank sweep_rounds.jl <authors repo> <output csv> <max rounds>
-authors, out, maxr = ARGS[1], ARGS[2], parse(Int, ARGS[3])
+# Usage: julia --project=external/julia-env/rank sweep_rounds.jl <authors repo, or ""> <output csv> <max rounds>
+include(joinpath(@__DIR__, "authors_path.jl"))
+authors, out, maxr = authors_path(ARGS[1]), abspath(ARGS[2]), parse(Int, ARGS[3])
 include(joinpath(authors, "src", "Preliminar_getting_results.jl"))
 load(name) = getting_dataframe_excel(joinpath(authors, "Data", "splits", name))
 

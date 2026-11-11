@@ -1,7 +1,8 @@
 # The authors' own code path for Tables 6 and 7, run headless (their Notebook 5 asks
 # for a menu choice on stdin). Reference only. Writes one CSV row per model and split.
-# Usage: julia --project=external/julia-env/rank t06_t07.jl <authors repo> <output csv>
-authors, out = ARGS
+# Usage: julia --project=external/julia-env/rank t06_t07.jl <authors repo, or ""> <output csv>
+include(joinpath(@__DIR__, "authors_path.jl"))
+authors, out = authors_path(ARGS[1]), abspath(ARGS[2])
 include(joinpath(authors, "src", "Preliminar_getting_results.jl"))
 
 load(name) = getting_dataframe_excel(joinpath(authors, "Data", "splits", name))
