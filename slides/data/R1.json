@@ -1,0 +1,30 @@
+{
+ "schema": 1,
+ "id": "R1",
+ "kind": "static",
+ "meta": {
+  "title": "Reproduction setup",
+  "source": "pyproject.toml, src/README.md, scripts/README.md, src/notes/deviations.md"
+ },
+ "nodes": {},
+ "edges": [],
+ "package": "qctn",
+ "authors_repo": "alfred-miquel/LTR-Quantum-Contraction-Plans",
+ "authors_commit": "936630a",
+ "julia": "1.9.1",
+ "julia_stack": [
+  "QXTools 1.0",
+  "OMEinsum 0.6.13",
+  "CUDA.jl 3.13.1",
+  "XGBoost.jl 2.5.5"
+ ],
+ "xgboost": "2.1.4",
+ "xgboost_jll": "2.1.5",
+ "xgboost_match": "5e-8",
+ "xgboost_newer": "3.4.1",
+ "xgboost_newer_diff": "0.03\u20131.06",
+ "cupy": "cupy-cuda12x[ctk] 14.2.0",
+ "gpus": "8\u00d7 Tesla V100-SXM2-16GB",
+ "driver": "535",
+ "gpu_status": "installed; smoke test only (one einsum); executor planned for phase 4"
+}

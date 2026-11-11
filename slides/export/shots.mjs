@@ -1,7 +1,7 @@
 // shots.mjs — step through the deck and save one PNG per fragment state, for review by eye.
 //   node export/shots.mjs                 all slides, every fragment state
 //   node export/shots.mjs 2 5 --last      slides 2..5 (1-based), first and last state only
-// Requires the deck to be served:  python3 tools/serve.py 8001  (from slides/)
+// Requires the deck to be served:  python3 tools/serve.py 8001  (from slides/); PORT=<n> for another port
 import { chromium } from "playwright";
 import fs from "node:fs";
 
@@ -17,7 +17,7 @@ const page = await browser.newPage({ viewport: { width: 1600, height: 900 } });
 const errors = [];
 page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
 page.on("pageerror", (e) => errors.push(String(e)));
-await page.goto("http://localhost:8001/deck/index.html", { waitUntil: "networkidle" });
+await page.goto(`http://localhost:${process.env.PORT || 8001}/deck/index.html`, { waitUntil: "networkidle" });
 await page.waitForFunction(() => document.body.dataset.deckReady === "1", null, { timeout: 30000 });
 await page.waitForTimeout(500);
 

@@ -6,7 +6,7 @@ import { chromium } from "playwright";
 
 const browser = await chromium.launch({ executablePath: "/usr/bin/chromium" });
 const page = await browser.newPage({ viewport: { width: 1600, height: 900 } });
-await page.goto("http://localhost:8001/deck/index.html", { waitUntil: "networkidle" });
+await page.goto(`http://localhost:${process.env.PORT || 8001}/deck/index.html`, { waitUntil: "networkidle" });
 await page.waitForFunction(() => document.body.dataset.deckReady === "1");
 
 const state = () => page.evaluate(() => {

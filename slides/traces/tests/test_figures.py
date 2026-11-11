@@ -362,3 +362,50 @@ def test_S32_theory_numbers():                 # deck slide 34
     assert d["middle_sides"] == f15["panels"]["middle"]["sizes"]
     assert d["lt_bound"] == round(2 * math.sqrt(2) * math.sqrt(49), 1)
     assert d["rs_sep"] == d["tw"] + 1 and d["rs_side"] == (d["n"] - d["rs_sep"]) // 2
+
+
+def test_R1_setup_pins():                       # deck slide 51 (reproduction setup)
+    d = load("R1")
+    assert d["xgboost"] == "2.1.4" and d["xgboost_jll"] == "2.1.5"
+    assert d["cupy"] == "cupy-cuda12x[ctk] 14.2.0" and d["driver"] == "535"
+    assert d["authors_commit"] == "936630a" and d["julia"] == "1.9.1"
+    assert "planned" in d["gpu_status"]           # no GPU results are claimed
+
+
+def test_R2_table6_two_model_composition():     # deck slide 52
+    doc = load("R2")
+    assert float(doc["julia_max_diff_txt"]) >= max(r["julia_max_diff"] for r in doc["rows"].values())
+    d = doc["rows"]
+    assert (d["opt_ndcg"]["rounds_k1"], d["opt_ndcg"]["rounds_k3"]) == (1, 65)
+    assert (d["opt_pair"]["rounds_k1"], d["opt_pair"]["rounds_k3"]) == (16, 14)
+    for row in d.values():
+        assert all(row["match"].values())                        # composed row == published row, all four metrics
+        assert row["single_model_all_four"] == []                # no single model gives the row
+        assert row["win_ours"][0] < row["paper"]["win"]          # win rate not reproduced
+        assert row["julia_max_diff"] < 1e-6                      # Python and the authors' Julia code agree
+        one, three = (row["models"][str(row[k])] for k in ("rounds_k1", "rounds_k3"))
+        assert not (one["top3"] == row["paper"]["top3"] and one["regret3"] == row["paper"]["regret3"])
+
+
+def test_R3_single_model_ranges():              # deck slide 53
+    d = load("R3")
+    k = d["by_key"]
+    assert all(r["n_runs"] == 6 for r in d["rows"])
+    assert k["opt_ndcg|id"]["top1_txt"] == "56–60" and k["opt_ndcg|id"]["top3_txt"] == "88–92"
+    assert k["opt_pair|id"]["top1_txt"] == "44–60" and k["opt_ndcg|ood"]["top3_txt"] == "47–55"
+    assert k["opt_ndcg|ood"]["top1_txt"] == "27–34" and k["opt_pair|ood"]["top3_txt"] == "45–58"
+    assert d["rounds_range"] == [7, 158] and d["rounds_range_txt"] == "7–158" and d["fold_seeds"] == [1, 2, 42]
+    assert d["mf_id_top1_txt"] == "12" and d["random_ood_top3_txt"] == "52.2" and d["pts_per_circuit_id"] == 4.0
+    assert k["opt_ndcg|id"]["top1"][0] > 4 * d["ref"]["id"]["mf_first"]["top1"]   # ID: well ahead of MinFill first
+    lo, hi = k["opt_ndcg|ood"]["top3"]
+    assert lo < d["ref"]["ood"]["random"]["top3"] < hi                             # OOD Top-3 brackets random
+
+
+def test_R4_not_reproduced():                   # deck slide 54
+    d = load("R4")
+    b = d["baselines"]
+    assert (b["random|id"]["ours"]["top1"], b["random|id"]["paper"]["top1"]) == (16.13, 22.95)
+    assert (b["mf_rand|id"]["ours"]["top3"], b["mf_rand|id"]["paper"]["top3"]) == (44.93, 28.0)
+    assert b["mf_rand|id"]["ours"]["top1"] == b["mf_rand|id"]["paper"]["top1"] == 12.0
+    assert d["stored_top1_txt"] == "84–97" and d["stored_circuits"] == 225
+    assert (d["win_ndcg_id_txt"], d["win_ndcg_id_paper"]) == ("80", 92.0)

@@ -1,0 +1,164 @@
+<!-- Reproduction results — phase 1 of src/README.md (deck slides 51–55; not in the proposal).
+     Numbers: data/R1–R4.json, built by traces/fig_repro.py from results/*.csv and pyproject.toml.
+     Findings and wording: src/notes/deviations.md. -->
+
+<section id="rp1">
+  <div class="act-label">Reproduction · setup</div>
+  <h2>Setup: a Python package, checked against the authors' code</h2>
+  <div class="cols">
+    <div>
+      <ul class="rp-list">
+        <li><b>Package <code data-bind="R1:package"></code></b> reproduces arXiv 2608.05819 in Python, starting from the authors' public release
+          (<span data-bind="R1:authors_repo"></span>), pinned at commit <code data-bind="R1:authors_commit"></code>: circuits, all candidate plans, features, splits, labels and both models.</li>
+        <li><b>Reference:</b> the authors' Julia <span data-bind="R1:julia"></span> stack (<span data-bind="R1:julia_stack" data-fmt="list"></span>), run next to our code to check numbers, never as our pipeline.</li>
+        <li><b>Phase 1</b> (this section): the ranker alone, on the authors' published features and splits, on CPU.</li>
+      </ul>
+    </div>
+    <div>
+      <table class="tbl" style="font-size: 0.56em; width: 100%">
+        <tr><th>stack</th><th>why</th><th>status</th></tr>
+        <tr><td>xgboost <span data-bind="R1:xgboost"></span></td>
+          <td>predictions match their XGBoost_jll <span data-bind="R1:xgboost_jll"></span> to about <span data-bind="R1:xgboost_match"></span>; <span data-bind="R1:xgboost_newer"></span> differs by <span data-bind="R1:xgboost_newer_diff"></span></td>
+          <td><span class="rp-badge is-done">pinned, used</span></td></tr>
+        <tr><td><span data-bind="R1:cupy"></span></td>
+          <td>GPU array backend on <span data-bind="R1:gpus"></span>, driver <span data-bind="R1:driver"></span> (CUDA 12 only)</td>
+          <td><span class="rp-badge is-planned">installed, smoke test</span></td></tr>
+        <tr><td>CuPy executor, GPU timings</td>
+          <td>time every plan with CuPy and with their OMEinsum / CUDA.jl code on the same V100</td>
+          <td><span class="rp-badge is-planned">planned (phase 4)</span></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="fragment math-anchor">
+    Everything in this section is CPU work on the published data. No GPU result is reported: the GPU stack is installed and passes a one-line smoke test; the executor is not built yet.
+  </div>
+  <aside class="notes">
+    Sources: pyproject.toml (pins), src/README.md (decisions and phases 0–6), scripts/README.md (setup), src/notes/deviations.md (findings).
+    Code is MIT, data CC BY 4.0. The Julia Manifest in the release holds two complete manifests; scripts/setup_julia.sh splits it into the
+    QXTools/CUDA.jl environment and the XGBoost.jl environment. The xgboost pin matters: 3.4.1 trains measurably different models from the same
+    inputs, so the project stays on 2.1.4, the release closest to the authors' XGBoost_jll 2.1.5.
+    CuPy's ctk extra supplies the CUDA headers this machine lacks; its bundled CUDA 12.9 runtime works on driver 535 through minor-version
+    compatibility. The only GPU evidence so far is tests/test_setup.py::test_cupy_runs_on_gpu, a 64×64 einsum. Present it as setup, not as a result.
+  </aside>
+</section>
+
+<section id="rp2">
+  <div class="act-label">Reproduction · Table 6</div>
+  <h2>Table 6 reproduces exactly, with the recipe in the authors' notebook</h2>
+  <table class="tbl" style="font-size: 0.6em; width: 100%">
+    <tr><th>ID test, N = <span data-bind="R3:n_id"></span></th><th class="r">Top-1 %</th><th class="r">Regret₁</th><th class="r">Top-3 %</th><th class="r">Regret₃</th></tr>
+    <tr><td>opt_ndcg, <span data-bind="R2:rows.opt_ndcg.rounds_k1"></span> round</td>
+      <td class="r used" data-bind="R2:rows.opt_ndcg.models.1.top1"></td><td class="r used" data-bind="R2:rows.opt_ndcg.models.1.regret1"></td>
+      <td class="r" data-bind="R2:rows.opt_ndcg.models.1.top3"></td><td class="r" data-bind="R2:rows.opt_ndcg.models.1.regret3"></td></tr>
+    <tr><td>opt_ndcg, <span data-bind="R2:rows.opt_ndcg.rounds_k3"></span> rounds</td>
+      <td class="r" data-bind="R2:rows.opt_ndcg.models.65.top1"></td><td class="r" data-bind="R2:rows.opt_ndcg.models.65.regret1"></td>
+      <td class="r used" data-bind="R2:rows.opt_ndcg.models.65.top3"></td><td class="r used" data-bind="R2:rows.opt_ndcg.models.65.regret3"></td></tr>
+    <tr class="hl"><td>opt_ndcg, published row</td>
+      <td class="r" data-bind="R2:rows.opt_ndcg.paper.top1"></td><td class="r" data-bind="R2:rows.opt_ndcg.paper.regret1"></td>
+      <td class="r" data-bind="R2:rows.opt_ndcg.paper.top3"></td><td class="r" data-bind="R2:rows.opt_ndcg.paper.regret3"></td></tr>
+    <tr class="pub"><td>opt_pair, <span data-bind="R2:rows.opt_pair.rounds_k1"></span> rounds</td>
+      <td class="r used" data-bind="R2:rows.opt_pair.models.16.top1"></td><td class="r used" data-bind="R2:rows.opt_pair.models.16.regret1"></td>
+      <td class="r" data-bind="R2:rows.opt_pair.models.16.top3"></td><td class="r" data-bind="R2:rows.opt_pair.models.16.regret3"></td></tr>
+    <tr><td>opt_pair, <span data-bind="R2:rows.opt_pair.rounds_k3"></span> rounds</td>
+      <td class="r" data-bind="R2:rows.opt_pair.models.14.top1"></td><td class="r" data-bind="R2:rows.opt_pair.models.14.regret1"></td>
+      <td class="r used" data-bind="R2:rows.opt_pair.models.14.top3"></td><td class="r used" data-bind="R2:rows.opt_pair.models.14.regret3"></td></tr>
+    <tr class="hl"><td>opt_pair, published row</td>
+      <td class="r" data-bind="R2:rows.opt_pair.paper.top1"></td><td class="r" data-bind="R2:rows.opt_pair.paper.regret1"></td>
+      <td class="r" data-bind="R2:rows.opt_pair.paper.top3"></td><td class="r" data-bind="R2:rows.opt_pair.paper.regret3"></td></tr>
+  </table>
+  <div class="panel-sub" style="text-align: left">purple: the cells that make up the published row (coral) · same numbers from the authors' Julia code (differences below <span data-bind="R2:julia_max_diff_txt"></span>)</div>
+  <div class="fragment math-anchor" style="font-size: 0.66em">
+    What the release's Notebook 5 does, and the paper's text:
+    <b>two models per row</b>, one for Top-1 and Regret₁, one for Top-3 and Regret₃ (the paper's table reads as one model per row);
+    opt_ndcg with eta <span data-bind="R2:notebook_params.eta"></span>, subsample <span data-bind="R2:notebook_params.subsample"></span> (Table 4 lists <span data-bind="R2:table4_params.eta"></span> and <span data-bind="R2:table4_params.subsample"></span>);
+    regret on the label log(1 + Sp) (the paper defines it on speedup).
+  </div>
+  <aside class="notes">
+    data/R2.json from results/t06_t07.csv (experiments/t06_t07.py) and results/julia_t06_t07.csv (experiments/julia/t06_t07.jl).
+    The release's code: Preliminar_getting_results.jl, test_model() trains m_t1 with num[1] rounds and m_t3 with num[2] rounds and scores Top-1/Regret1
+    on the first and Top-3/Regret3 on the second; Notebook 5 calls it with (1, 65) for opt_ndcg and (16, 14) for opt_pair.
+    The paper states: hyperparameters in Table 4 (opt_ndcg eta 0.01, subsample 0.7) and Regret = 1 − Sp_1/Sp* (Eq. 14–15).
+    With Table 4's values no round in 1–300 gives the published Top-3 or regrets. With regret on speedup no round matches, and MinFill's Regret1
+    becomes 0.1015 instead of 0.0735. No single model at any round 1–300 gives all four published values of a row.
+    The release doesn't show how the round counts were chosen; we report what the code gives and can't tell why it differs from the text.
+    Win rate is not part of this match (next slides).
+  </aside>
+</section>
+
+<section id="rp3">
+  <div class="act-label">Reproduction · one model per objective</div>
+  <h2>One model, rounds picked on training data: still well ahead of MinFill on test circuits</h2>
+  <div class="cols">
+    <div data-fig="ranges" data-trace="R3" data-metric="top1" data-title="Top-1: fastest plan ranked first"></div>
+    <div data-fig="ranges" data-trace="R3" data-metric="top3" data-title="Top-3: fastest plan in the first three"></div>
+  </div>
+  <div class="fragment math-anchor" style="font-size: 0.66em">
+    Test circuits: opt_ndcg Top-1 <b class="acc"><span data-bind="R3:by_key.opt_ndcg|id.top1_txt"></span>%</b> against <span data-bind="R3:mf_id_top1_txt"></span>% for MinFill first.
+    Held-out QFT family: Top-3 <span data-bind="R3:by_key.opt_ndcg|ood.top3_txt"></span>% (opt_ndcg), close to the <span data-bind="R3:random_ood_top3_txt"></span>% of a random order.
+    With N = <span data-bind="R3:n_id"></span> one circuit is <span data-bind="R3:pts_per_circuit_id"></span> points, and the chosen round count ranged over <span data-bind="R3:rounds_range_txt"></span>: ranges, not point estimates.
+  </div>
+  <aside class="notes">
+    data/R3.json from results/t06_t07.csv, rows single_cv_*: one model per objective; its round count is the best mean NDCG@3 over grouped 5-fold CV
+    on the 138 training circuits alone (src/qctn/rank/train.py cv_rounds, up to 300 rounds), then refit on the training split and scored on the test
+    splits. Ranges are over three fold assignments (seeds 1, 2, 42) and, for opt_ndcg, both parameter sets (Notebook 5 and Table 4); opt_pair's
+    two sets are the same. Regrets on labels, to compare with the paper (deviations.md has the full table):
+    opt_ndcg ID Regret1 0.021–0.023, Regret3 0.0008–0.0037, win 80; OOD Top-1 27–34, Top-3 47–55. opt_pair ID Top-1 44–60, Top-3 68–88.
+    Random and MinFill-first markers are exact expectations on these splits, computed by us (the release has no code for them; see next slide).
+    The diamonds are the published Table 6 / Table 7 rows, which combine two models each (previous slide).
+    Takeaway, kept modest: on in-distribution circuits the learned ranker clearly beats MinFill first; on the held-out family Top-3 is near random.
+  </aside>
+</section>
+
+<section id="rp4">
+  <div class="act-label">Reproduction · open items</div>
+  <h2>Not reproduced from the release: Table 7, win rate, two baselines</h2>
+  <div class="cols c-wide-left">
+    <ul class="rp-list">
+      <li><b>Table 7</b> (held-out QFT): no code for it in the release. Trained on the training split alone, no round gives opt_ndcg's values;
+        trained on training + ID test, some rounds jointly match each pair of values. This suggests the same two-model composition as Table 6; it isn't established.</li>
+      <li><b>Win rate</b>: no code in the release. With our reading (top pick against the MinFill plan, ties half), opt_ndcg on the test circuits gives
+        <span data-bind="R4:win_ndcg_id_txt"></span>; the paper has <span data-bind="R4:win_ndcg_id_paper"></span>.</li>
+      <li><b>Random and MinFill + random baselines</b>: no code in the release; our exact expectations differ from the paper's rows (table). MinFill's own Top-1 and Regret₁ match.</li>
+      <li class="fragment"><b>The stored JSON models are not test evidence.</b> They are fitted on all <span data-bind="R4:stored_circuits"></span> circuits, test sets included
+        (the authors' README calls them production models, a normal choice for that), and score Top-1 <span data-bind="R4:stored_top1_txt"></span>%. Table 6 doesn't use them.</li>
+    </ul>
+    <table class="tbl" style="font-size: 0.56em">
+      <tr><th>ID test</th><th class="r">Top-1</th><th class="r">Top-3</th><th class="r">Regret₁</th></tr>
+      <tr><td>random, exact</td><td class="r" data-bind="R4:baselines.random|id.ours.top1" data-fmt="fixed2"></td><td class="r" data-bind="R4:baselines.random|id.ours.top3" data-fmt="fixed2"></td><td class="r" data-bind="R4:baselines.random|id.ours.regret1"></td></tr>
+      <tr><td>random, paper</td><td class="r" data-bind="R4:baselines.random|id.paper.top1" data-fmt="fixed2"></td><td class="r" data-bind="R4:baselines.random|id.paper.top3" data-fmt="fixed2"></td><td class="r" data-bind="R4:baselines.random|id.paper.regret1"></td></tr>
+      <tr class="pub"><td>MinFill + random, exact</td><td class="r" data-bind="R4:baselines.mf_rand|id.ours.top1" data-fmt="fixed2"></td><td class="r" data-bind="R4:baselines.mf_rand|id.ours.top3" data-fmt="fixed2"></td><td class="r" data-bind="R4:baselines.mf_rand|id.ours.regret1"></td></tr>
+      <tr><td>MinFill + random, paper</td><td class="r" data-bind="R4:baselines.mf_rand|id.paper.top1" data-fmt="fixed2"></td><td class="r" data-bind="R4:baselines.mf_rand|id.paper.top3" data-fmt="fixed2"></td><td class="r" data-bind="R4:baselines.mf_rand|id.paper.regret1"></td></tr>
+    </table>
+  </div>
+  <aside class="notes">
+    data/R4.json; details in src/notes/deviations.md, "Not reproduced". Table 7: on train + ID, opt_ndcg Top-1 + Regret1 match at round 11 and
+    Top-3 + Regret3 at 23, 24, 135–138; opt_pair Top-1 + Regret1 at 54 (train + ID) and Top-3 + Regret3 at 14 (train alone)
+    (results/t06_t07_composition.csv). Win rate: our opt_ndcg ID runs give 80 (80–84 over rounds 1–300) against 92.
+    Baselines: exact expectations over all orders on the published splits; OOD random 17.66 / 52.17 against the paper's 27.87 / 54.65.
+    Stored models: models/opt_pair.json equals the Notebook 5 recipe fitted on all 225 circuits (predictions agree to under 1e-5 at 1850 rounds);
+    opt_ndcg.json looks similar but its exact parameters weren't identified. mf_ndcg was not attempted.
+    Wording: "the release's code does X; the paper states Y". The authors have not been contacted yet.
+  </aside>
+</section>
+
+<section id="rp5">
+  <div class="act-label">Reproduction · next</div>
+  <h2>Next: from the authors' data to our own pipeline</h2>
+  <p class="small" style="margin: 0 0 0.5em">Phase 0 (setup) and phase 1 (the ranker on the authors' data) are done; each later phase lands as its own pull request and ends with a check against the authors' numbers.</p>
+  <ol class="rp-list" start="2" style="font-size: 0.62em">
+    <li class="fragment"><b>Plans and features.</b> Parse all candidate plans into <code data-bind="R1:package"></code> trees; reimplement the plan features of Table 2 and match the authors' feature file; find the scaler behind the split features.</li>
+    <li class="fragment"><b>Generators.</b> Regenerate the seven plans per circuit and compare cost and width with theirs.</li>
+    <li class="fragment"><b>GPU timing on V100</b> <span class="rp-badge is-planned">planned</span>. Build the CuPy executor; time every plan with it and with their OMEinsum / CUDA.jl code on the same GPU; compare with the paper's Volta results.</li>
+    <li class="fragment"><b>End to end.</b> Our circuits, plans, features and timings, then the ranker, reported next to the paper's tables.</li>
+    <li class="fragment"><b>Slides on <code data-bind="R1:package"></code>.</b> These slides' traces import the package; every test still passes and the data files don't change.</li>
+  </ol>
+  <div class="fragment math-anchor" style="font-size: 0.66em">
+    <b>Future work, not analysed yet:</b> how precise Top-1 and Top-3 are on <span data-bind="R3:n_id"></span> and <span data-bind="R3:n_ood"></span> circuits
+    (sensitivity to round count, fold assignment and sample size), and how much of the gap to the published rows that explains.
+  </div>
+  <aside class="notes">
+    Phases from src/README.md (agreed 2026-11-05); phase 0 (setup) and phase 1 (ranker on their data) are done. Each phase lands as its own pull
+    request and ends with a check against the authors' numbers. Phase 4 needs a free V100 on the shared machine; the Ampere (RTX A6000) results can
+    only be quoted, as there is no A6000 here. The precision question is deliberately left open in this talk.
+  </aside>
+</section>

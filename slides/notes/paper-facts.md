@@ -55,6 +55,14 @@ Table 6 — ID test (N = 25):
 | mf_ndcg | 12.00 | 84.00 | 0.0735 | 0.0025 | 50.00 |
 | mf_rand | 12.00 | 28.00 | 0.0735 | 0.0319 | 50.00 |
 
+How the published rows are composed (our reproduction, `src/notes/deviations.md`; not stated in the paper): in the authors'
+release (`936630a`, Notebook 5 / `test_model` in `src/Preliminar_getting_results.jl`) each model row combines **two models**:
+Top-1 and Regret1 from one, Top-3 and Regret3 from another with a different round count (opt_ndcg 1 and 65 rounds, opt_pair 16 and 14).
+That code also uses opt_ndcg eta 0.02 / subsample 0.8 where the paper's Table 4 gives 0.01 / 0.7, and computes regret on the label
+log(1 + Sp) where Eq. 14–15 define it on speedup. With these, Table 6's Top-1/Top-3/Regret1/Regret3 reproduce exactly; the win rate does not.
+One model per objective with rounds chosen by grouped CV on the training split gives ranges instead (deck slide 53).
+The paper's random and MinFill+random rows differ from exact expectations on the published splits (deck slide 54).
+
 Table 7 — OOD QFT (N = 62):
 
 | Model | Top-1 % | Top-3 % | Regret1 | Regret3 | Win rate |
@@ -77,7 +85,8 @@ Table 11 — zero-shot cross-GPU, ID test (N = 25), trained on Ampere:
 Ranking stability A6000 vs V100 over 225 groups (Tables 8–9, p.16): mean Kendall τb 0.845 [0.808, 0.878]; same best plan 84.0% [79.1, 88.4]; mean Top-3 overlap 89.63% [87.1, 92.0]. QFT-based family least stable: τb 0.710, same-best 69.4% (Table 10).
 
 ## Proposal claims, checked
-- "MinFill-first baselines find the fastest plan in only 12%": Table 6, mf_ndcg / mf_rand Top-1 = 12.00 (OOD 8.06, Table 7).
+- "MinFill-first baselines find the fastest plan in only 12%": Table 6, mf_ndcg / mf_rand Top-1 = 12.00 (OOD 8.06, Table 7). Our exact MinFill Top-1 on the split matches.
+- "The ranker finds the fastest plan 5× more often" (slide 49, 60 vs 12): the 60 is the Top-1 of a 1-round model, and the row's Top-3 comes from a second model (above); one model per objective gives 56–60 (deck slide 53).
 - "Random top pick beats MinFill in about 70%": random win rate 70.16 (Table 6; ties count half), 70.97 OOD (Table 7).
 - "Same-width plans with different runtimes" (slide 19): no table or figure in the paper; only qualitative statements (abstract; Sec 3.2 p.4; Sec 4 p.5; App. A.1 p.22 "Why width alone is not sufficient"; App. A.7 p.25 "runtime is not a monotone function of FLOPs").
 - Winner distribution across the seven generators: NOT IN PAPER.

@@ -1,0 +1,81 @@
+{
+ "schema": 1,
+ "id": "R4",
+ "kind": "table",
+ "meta": {
+  "title": "Not reproduced",
+  "source": "results/t06_t07*.csv; src/notes/deviations.md"
+ },
+ "nodes": {},
+ "edges": [],
+ "baselines": {
+  "random|id": {
+   "ours": {
+    "top1": 16.13,
+    "top3": 46.4,
+    "regret1": 0.0798,
+    "regret3": 0.0204,
+    "win": 56.95
+   },
+   "paper": {
+    "top1": 22.95,
+    "top3": 58.44,
+    "regret1": 0.0699,
+    "regret3": 0.0137,
+    "win": 70.16
+   }
+  },
+  "random|ood": {
+   "ours": {
+    "top1": 17.66,
+    "top3": 52.17,
+    "regret1": 0.114,
+    "regret3": 0.0287,
+    "win": 56.08
+   },
+   "paper": {
+    "top1": 27.87,
+    "top3": 54.65,
+    "regret1": 0.0775,
+    "regret3": 0.0265,
+    "win": 70.97
+   }
+  },
+  "mf_rand|id": {
+   "ours": {
+    "top1": 12.0,
+    "top3": 44.93,
+    "regret1": 0.0735,
+    "regret3": 0.0233,
+    "win": 50.0
+   },
+   "paper": {
+    "top1": 12.0,
+    "top3": 28.0,
+    "regret1": 0.0735,
+    "regret3": 0.0319,
+    "win": 50.0
+   }
+  },
+  "mf_rand|ood": {
+   "ours": {
+    "top1": 8.06,
+    "top3": 44.95,
+    "regret1": 0.0784,
+    "regret3": 0.0307,
+    "win": 50.0
+   },
+   "paper": {
+    "top1": 8.06,
+    "top3": 43.55,
+    "regret1": 0.0784,
+    "regret3": 0.0273,
+    "win": 50.0
+   }
+  }
+ },
+ "stored_top1_txt": "84\u201397",
+ "stored_circuits": 225,
+ "win_ndcg_id_txt": "80",
+ "win_ndcg_id_paper": 92.0
+}

@@ -1,0 +1,111 @@
+{
+ "schema": 1,
+ "id": "R2",
+ "kind": "table",
+ "meta": {
+  "title": "Table 6 from the notebook recipe",
+  "source": "results/t06_t07.csv, t06_t07_composition.csv, julia_t06_t07.csv; arXiv 2608.05819 Table 6"
+ },
+ "nodes": {},
+ "edges": [],
+ "rows": {
+  "opt_ndcg": {
+   "rounds_k1": 1,
+   "rounds_k3": 65,
+   "models": {
+    "1": {
+     "top1": 60.0,
+     "top3": 80.0,
+     "regret1": 0.0141,
+     "regret3": 0.0059,
+     "win": 80.0
+    },
+    "65": {
+     "top1": 52.0,
+     "top3": 96.0,
+     "regret1": 0.0262,
+     "regret3": 0.0004,
+     "win": 80.0
+    }
+   },
+   "composed": {
+    "top1": 60.0,
+    "regret1": 0.0141,
+    "top3": 96.0,
+    "regret3": 0.0004
+   },
+   "paper": {
+    "top1": 60.0,
+    "top3": 96.0,
+    "regret1": 0.0141,
+    "regret3": 0.0004,
+    "win": 92.0
+   },
+   "match": {
+    "top1": true,
+    "regret1": true,
+    "top3": true,
+    "regret3": true
+   },
+   "win_ours": [
+    80.0
+   ],
+   "julia_max_diff": 4.5001602845713695e-07,
+   "single_model_all_four": []
+  },
+  "opt_pair": {
+   "rounds_k1": 16,
+   "rounds_k3": 14,
+   "models": {
+    "16": {
+     "top1": 60.0,
+     "top3": 84.0,
+     "regret1": 0.0211,
+     "regret3": 0.0027,
+     "win": 86.0
+    },
+    "14": {
+     "top1": 56.0,
+     "top3": 92.0,
+     "regret1": 0.0222,
+     "regret3": 0.0004,
+     "win": 86.0
+    }
+   },
+   "composed": {
+    "top1": 60.0,
+    "regret1": 0.0211,
+    "top3": 92.0,
+    "regret3": 0.0004
+   },
+   "paper": {
+    "top1": 60.0,
+    "top3": 92.0,
+    "regret1": 0.0211,
+    "regret3": 0.0004,
+    "win": 88.0
+   },
+   "match": {
+    "top1": true,
+    "regret1": true,
+    "top3": true,
+    "regret3": true
+   },
+   "win_ours": [
+    86.0
+   ],
+   "julia_max_diff": 4.433735078281098e-07,
+   "single_model_all_four": []
+  }
+ },
+ "julia_max_diff_txt": "5e-7",
+ "notebook_params": {
+  "eta": 0.02,
+  "subsample": 0.8
+ },
+ "table4_params": {
+  "eta": 0.01,
+  "subsample": 0.7
+ },
+ "max_rounds": 300
+}

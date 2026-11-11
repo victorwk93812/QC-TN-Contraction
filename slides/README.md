@@ -42,7 +42,7 @@ Edit slides in `deck/slides/<act>.html`, never `deck/index.html` (generated).
 ## Check before rehearsal
 
 ```sh
-node export/shots.mjs [from to] [--last]      # PNG per fragment state → export/out/shots/
+node export/shots.mjs [from to] [--last]      # PNG per fragment state → export/out/shots/ (PORT=<n> if not 8001)
 node export/check_steppers.mjs                # forward / backward / re-entry consistency
 .venv/bin/python export/lint_numbers.py       # digits typed into slides instead of bound
 grep -rn "VERIFY:" deck/slides/               # claims still to check
@@ -57,6 +57,7 @@ grep -rn "VERIFY:" deck/slides/               # claims still to check
 | `data/` | generated traces |
 | `deck/` | `shell.html`, `slides/*.html`, `js/` (stepper, figure renderers, `deck.js` bootstrap and `data-bind`), `css/`, `vendor/` (offline reveal.js, KaTeX, fonts) |
 | `notes/paper-facts.md` | every number quoted from arXiv 2608.05819, with table and page |
+| `deck/slides/repro.html`, `traces/fig_repro.py` | reproduction section (deck slides 51–55): traces R1–R4 built from `../results/*.csv` and `../pyproject.toml`; findings in `../src/notes/deviations.md` |
 | `prototypes/` | the chat prototypes (visual reference only) |
 | `export/` | build, screenshots, checks, PDF |
 
