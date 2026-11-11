@@ -19,11 +19,22 @@ FEATURES = {
     ],
 }
 SPLIT_FILES = {"train": "df_final", "id": "df_test_n", "ood": "df_ood_n"}
+SPLITS = tuple(SPLIT_FILES)
 
 
-def load_split(split: str, objective: str) -> pd.DataFrame:
+def load_released(split: str, objective: str) -> pd.DataFrame:
     """One split as published: z-scored features plus `speedup`, `base_id`, `label`."""
     path = authors_repo() / "Data" / "splits" / f"{SPLIT_FILES[split]}_{objective}"
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         return pd.read_excel(path, engine="openpyxl")
+
+
+def load_split(split: str, objective: str, variant: str = "released") -> pd.DataFrame:
+    """One split, "released" as published or "corrected" (qctn.rank.corrected)."""
+    if variant == "released":
+        return load_released(split, objective)
+    if variant == "corrected":
+        from qctn.rank.corrected import load_corrected
+        return load_corrected(split, objective)
+    raise ValueError(f"variant must be 'released' or 'corrected', not {variant!r}")

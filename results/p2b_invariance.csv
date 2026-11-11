@@ -1,0 +1,35 @@
+objective,pair,split,max_abs_pred_diff,rounds_identical,rounds_same_metrics,rounds,float32_order_and_ties_kept,distinct_float32_z,distinct_float32_raw
+ndcg,released vs released_raw,id,0.30426085,3.0,6.0,300,,,
+ndcg,released vs released_raw,ood,0.4112473,3.0,3.0,300,,,
+ndcg,corrected vs corrected_raw,id,0.28359717,10.0,31.0,300,,,
+ndcg,corrected vs corrected_raw,ood,0.39919138,10.0,13.0,300,,,
+ndcg,released vs std_cost raw,id+ood,0.0,,,300,True,1141.0,1141.0
+ndcg,released vs n_steps raw,id+ood,0.0,,,300,True,216.0,216.0
+ndcg,released vs frac_tiny raw,id+ood,0.0,,,300,True,882.0,882.0
+ndcg,released vs max_out_rank raw,id+ood,0.0,,,300,True,40.0,40.0
+ndcg,released vs avg_out_rank raw,id+ood,0.0,,,300,True,1127.0,1127.0
+ndcg,released vs costw_out_rank raw,id+ood,0.0,,,300,False,1140.0,1141.0
+ndcg,released vs p_at_max_cost_val raw,id+ood,0.0,,,300,True,224.0,224.0
+ndcg,released vs max_red_rank_val raw,id+ood,0.0,,,300,True,34.0,34.0
+ndcg,released vs k_at_max_cost_val raw,id+ood,0.0,,,300,True,166.0,166.0
+ndcg,released vs max_asym_val raw,id+ood,0.38913545,,,300,False,30.0,7.0
+ndcg,released vs avg_asym raw,id+ood,0.0,,,300,False,1138.0,1139.0
+ndcg,released vs costw_asym_val raw,id+ood,0.0,,,300,True,1141.0,1141.0
+ndcg,released vs d_at_max_cost_val raw,id+ood,0.26209044,,,300,False,511.0,492.0
+pair,released vs released_raw,id,0.7931533,0.0,0.0,300,,,
+pair,released vs released_raw,ood,1.1737851,0.0,0.0,300,,,
+pair,corrected vs corrected_raw,id,0.5557709,0.0,0.0,300,,,
+pair,corrected vs corrected_raw,ood,0.9906153,0.0,0.0,300,,,
+pair,released vs n_steps raw,id+ood,0.0,,,300,True,216.0,216.0
+pair,released vs frac_tiny raw,id+ood,0.0,,,300,True,882.0,882.0
+pair,released vs max_out_rank raw,id+ood,0.0,,,300,True,40.0,40.0
+pair,released vs avg_out_rank raw,id+ood,0.0,,,300,True,1127.0,1127.0
+pair,released vs costw_out_rank raw,id+ood,0.89013964,,,300,False,1140.0,1141.0
+pair,released vs p_at_max_cost_val raw,id+ood,0.0,,,300,True,224.0,224.0
+pair,released vs max_red_rank_val raw,id+ood,0.0,,,300,True,34.0,34.0
+pair,released vs costw_red_rank_val raw,id+ood,0.0,,,300,True,1079.0,1079.0
+pair,released vs k_at_max_cost_val raw,id+ood,0.0,,,300,True,166.0,166.0
+pair,released vs max_asym_val raw,id+ood,1.0470036,,,300,False,30.0,7.0
+pair,released vs avg_asym raw,id+ood,0.0,,,300,False,1138.0,1139.0
+pair,released vs costw_asym_val raw,id+ood,0.0,,,300,True,1141.0,1141.0
+pair,released vs d_at_max_cost_val raw,id+ood,1.0374494,,,300,False,511.0,492.0
