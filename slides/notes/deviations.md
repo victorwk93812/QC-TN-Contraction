@@ -2,8 +2,11 @@
 
 ## Slide numbering
 Two primer slides were added after proposal slide 3 (user request, Oct 1 2026), so **deck number = proposal number + 2**
-from proposal slide 4 on (53 slides + B1–B6). Section ids keep the proposal numbers (`s04` … `s51`); the primer slides
+from proposal slide 4 on (then 53 slides + B1–B6). Section ids keep the proposal numbers (`s04` … `s51`); the primer slides
 are `s03a` (bags and width on a star, two orders) and `s03b` (treewidth on tree / cycle / 3×3 grid / K₅).
+A reproduction section (`rp1`–`rp5`, `deck/slides/repro.html`, Nov 2026) sits between Acts IV and V as deck slides 51–55,
+so from proposal slide 49 on (Act V) **deck number = proposal number + 7**; the deck now has 58 slides + B1–B6.
+It is not in the proposal: it records phase 1 of `src/README.md` (see `src/notes/deviations.md`).
 Proposal slide 10 (spectrum) became "Certificates that treewidth is large" (K₅ and the 4×4 grid); the spectrum
 picture moved into the primer. Act I is 9 min, Act II 9 min (F00).
 

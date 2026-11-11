@@ -30,11 +30,11 @@ that link dangles, which is harmless (and gitignored).
 Building without CI needs Docker, or Singularity `--fakeroot` (an `/etc/subuid`
 entry), neither of which this account has on DGX106.
 
-## Status (2026-11-04)
+## Status (2026-11-11)
 
-Written but **not yet built or tested**. On DGX106 this account cannot use the Docker
-daemon (not in the `docker` group) and has no `/etc/subuid` entry for Singularity
-`--fakeroot`; both have been reported to the admin. Until one is granted, or the CI
-image is published, the deck's render/export steps (vendor, clips, PDF, screenshot
-checks) and the report build are **not reproduced on DGX106**. The bare-metal Python
-side works there: 161 tests pass, all 53 traces validate, `build_deck.py` and `serve.py` run.
+The CI image is published and `sh container/pull.sh` pulls it on DGX106 without root (no Docker or
+`--fakeroot` needed). Checked there on 2026-11-11: `export/vendor.sh`, `export/shots.mjs` and
+`export/check_steppers.mjs` run in the container (all 347 stepper states consistent). A worktree can
+reuse the main checkout's image with `QCTN_SIF=<main checkout>/container/qctn-toolchain.sif`.
+`shots.mjs` and `check_steppers.mjs` read the server port from `PORT` (default 8001), which helps on a
+shared node where 8001 may be taken. Manim clips, the PDF export and the report build were not re-run for this note.

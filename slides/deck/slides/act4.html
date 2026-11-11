@@ -1,4 +1,4 @@
-<!-- Act IV — Head-to-head: from plan shapes to a learned ranker (deck slides 45–50; proposal 43–48) -->
+<!-- Act IV — Head-to-head: from plan shapes to a learned ranker (deck slides 45–50; proposal 43–48); the reproduction section follows (deck slides 51–55) -->
 
 <section id="s43">
   <div class="act-label">IV · Head-to-head</div>
@@ -133,6 +133,9 @@
     OOD: opt_ndcg 38.71, opt_pair 30.65, random 27.87, MinFill-first 8.06. On the V100 without retraining: Top-1 64.0, Top-3 92.0, Regret1 0.0254.
     "5×": 60.00 / 12.00. Caveats from the authors: 7 candidates per circuit, one held-out family, two related GPU stacks; the QFT family is also the least
     stable across GPUs (same best plan in 69.4% of groups vs 84.0% overall, Tables 9–10).
+    Reproduction (slides 52–53, src/notes/deviations.md): each published model row combines two models. In the release's Notebook 5, Top-1 and Regret1
+    come from one model and Top-3 and Regret3 from another trained for a different number of rounds (opt_ndcg 1 and 65 rounds, opt_pair 16 and 14).
+    With one model per objective and rounds chosen on training data alone, opt_ndcg's ID Top-1 is 56–60%: still far above MinFill first's 12%.
   </aside>
 </section>
 

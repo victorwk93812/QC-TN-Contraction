@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DECK = ROOT / "deck"
-ORDER = ["act1", "act2", "act3", "dd1", "dd2", "dd3", "dd4", "act4", "act5", "backup"]
+ORDER = ["act1", "act2", "act3", "dd1", "dd2", "dd3", "dd4", "act4", "repro", "act5", "backup"]
 
 # Manim clips as optional vertical sub-slides (press ↓) under the slide whose figure they animate.
 CLIPS = {

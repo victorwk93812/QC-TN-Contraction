@@ -290,6 +290,8 @@ from .fig_dd34 import BUILDERS as _DD34       # noqa: E402  (deep dives 3-4)
 BUILDERS.update(_DD34)
 from .fig_act345 import BUILDERS as _A345     # noqa: E402  (Acts III-V, backups)
 BUILDERS.update(_A345)
+from .fig_repro import BUILDERS as _REPRO     # noqa: E402  (reproduction section, phase 1)
+BUILDERS.update(_REPRO)
 
 
 def main(ids):

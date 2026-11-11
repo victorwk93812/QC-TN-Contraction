@@ -1,0 +1,401 @@
+{
+ "schema": 1,
+ "id": "R3",
+ "kind": "table",
+ "meta": {
+  "title": "One model per objective, rounds by grouped CV",
+  "source": "results/t06_t07.csv; arXiv 2608.05819 Tables 6, 7"
+ },
+ "nodes": {},
+ "edges": [],
+ "rows": [
+  {
+   "key": "opt_ndcg|id",
+   "model": "opt_ndcg",
+   "split": "id",
+   "n_runs": 6,
+   "rounds": [
+    7,
+    158
+   ],
+   "paper": {
+    "top1": 60.0,
+    "top3": 96.0,
+    "regret1": 0.0141,
+    "regret3": 0.0004,
+    "win": 92.0
+   },
+   "top1": [
+    56.0,
+    60.0
+   ],
+   "top1_txt": "56\u201360",
+   "top3": [
+    88.0,
+    92.0
+   ],
+   "top3_txt": "88\u201392",
+   "regret1": [
+    0.0214,
+    0.0231
+   ],
+   "regret1_txt": "0.0214\u20130.0231",
+   "regret3": [
+    0.0008,
+    0.0037
+   ],
+   "regret3_txt": "0.0008\u20130.0037",
+   "win": [
+    80.0,
+    80.0
+   ],
+   "win_txt": "80"
+  },
+  {
+   "key": "opt_pair|id",
+   "model": "opt_pair",
+   "split": "id",
+   "n_runs": 6,
+   "rounds": [
+    9,
+    93
+   ],
+   "paper": {
+    "top1": 60.0,
+    "top3": 92.0,
+    "regret1": 0.0211,
+    "regret3": 0.0004,
+    "win": 88.0
+   },
+   "top1": [
+    44.0,
+    60.0
+   ],
+   "top1_txt": "44\u201360",
+   "top3": [
+    68.0,
+    88.0
+   ],
+   "top3_txt": "68\u201388",
+   "regret1": [
+    0.0211,
+    0.0324
+   ],
+   "regret1_txt": "0.0211\u20130.0324",
+   "regret3": [
+    0.0021,
+    0.0076
+   ],
+   "regret3_txt": "0.0021\u20130.0076",
+   "win": [
+    82.0,
+    86.0
+   ],
+   "win_txt": "82\u201386"
+  },
+  {
+   "key": "opt_ndcg|ood",
+   "model": "opt_ndcg",
+   "split": "ood",
+   "n_runs": 6,
+   "rounds": [
+    7,
+    158
+   ],
+   "paper": {
+    "top1": 38.71,
+    "top3": 62.9,
+    "regret1": 0.052,
+    "regret3": 0.0181,
+    "win": 73.39
+   },
+   "top1": [
+    27.42,
+    33.87
+   ],
+   "top1_txt": "27\u201334",
+   "top3": [
+    46.77,
+    54.84
+   ],
+   "top3_txt": "47\u201355",
+   "regret1": [
+    0.044,
+    0.1043
+   ],
+   "regret1_txt": "0.0440\u20130.1043",
+   "regret3": [
+    0.0187,
+    0.0243
+   ],
+   "regret3_txt": "0.0187\u20130.0243",
+   "win": [
+    71.77,
+    83.06
+   ],
+   "win_txt": "72\u201383"
+  },
+  {
+   "key": "opt_pair|ood",
+   "model": "opt_pair",
+   "split": "ood",
+   "n_runs": 6,
+   "rounds": [
+    9,
+    93
+   ],
+   "paper": {
+    "top1": 30.65,
+    "top3": 62.9,
+    "regret1": 0.08,
+    "regret3": 0.0234,
+    "win": 87.1
+   },
+   "top1": [
+    24.19,
+    27.42
+   ],
+   "top1_txt": "24\u201327",
+   "top3": [
+    45.16,
+    58.06
+   ],
+   "top3_txt": "45\u201358",
+   "regret1": [
+    0.0852,
+    0.1027
+   ],
+   "regret1_txt": "0.0852\u20130.1027",
+   "regret3": [
+    0.02,
+    0.0268
+   ],
+   "regret3_txt": "0.0200\u20130.0268",
+   "win": [
+    62.9,
+    69.35
+   ],
+   "win_txt": "63\u201369"
+  }
+ ],
+ "by_key": {
+  "opt_ndcg|id": {
+   "key": "opt_ndcg|id",
+   "model": "opt_ndcg",
+   "split": "id",
+   "n_runs": 6,
+   "rounds": [
+    7,
+    158
+   ],
+   "paper": {
+    "top1": 60.0,
+    "top3": 96.0,
+    "regret1": 0.0141,
+    "regret3": 0.0004,
+    "win": 92.0
+   },
+   "top1": [
+    56.0,
+    60.0
+   ],
+   "top1_txt": "56\u201360",
+   "top3": [
+    88.0,
+    92.0
+   ],
+   "top3_txt": "88\u201392",
+   "regret1": [
+    0.0214,
+    0.0231
+   ],
+   "regret1_txt": "0.0214\u20130.0231",
+   "regret3": [
+    0.0008,
+    0.0037
+   ],
+   "regret3_txt": "0.0008\u20130.0037",
+   "win": [
+    80.0,
+    80.0
+   ],
+   "win_txt": "80"
+  },
+  "opt_pair|id": {
+   "key": "opt_pair|id",
+   "model": "opt_pair",
+   "split": "id",
+   "n_runs": 6,
+   "rounds": [
+    9,
+    93
+   ],
+   "paper": {
+    "top1": 60.0,
+    "top3": 92.0,
+    "regret1": 0.0211,
+    "regret3": 0.0004,
+    "win": 88.0
+   },
+   "top1": [
+    44.0,
+    60.0
+   ],
+   "top1_txt": "44\u201360",
+   "top3": [
+    68.0,
+    88.0
+   ],
+   "top3_txt": "68\u201388",
+   "regret1": [
+    0.0211,
+    0.0324
+   ],
+   "regret1_txt": "0.0211\u20130.0324",
+   "regret3": [
+    0.0021,
+    0.0076
+   ],
+   "regret3_txt": "0.0021\u20130.0076",
+   "win": [
+    82.0,
+    86.0
+   ],
+   "win_txt": "82\u201386"
+  },
+  "opt_ndcg|ood": {
+   "key": "opt_ndcg|ood",
+   "model": "opt_ndcg",
+   "split": "ood",
+   "n_runs": 6,
+   "rounds": [
+    7,
+    158
+   ],
+   "paper": {
+    "top1": 38.71,
+    "top3": 62.9,
+    "regret1": 0.052,
+    "regret3": 0.0181,
+    "win": 73.39
+   },
+   "top1": [
+    27.42,
+    33.87
+   ],
+   "top1_txt": "27\u201334",
+   "top3": [
+    46.77,
+    54.84
+   ],
+   "top3_txt": "47\u201355",
+   "regret1": [
+    0.044,
+    0.1043
+   ],
+   "regret1_txt": "0.0440\u20130.1043",
+   "regret3": [
+    0.0187,
+    0.0243
+   ],
+   "regret3_txt": "0.0187\u20130.0243",
+   "win": [
+    71.77,
+    83.06
+   ],
+   "win_txt": "72\u201383"
+  },
+  "opt_pair|ood": {
+   "key": "opt_pair|ood",
+   "model": "opt_pair",
+   "split": "ood",
+   "n_runs": 6,
+   "rounds": [
+    9,
+    93
+   ],
+   "paper": {
+    "top1": 30.65,
+    "top3": 62.9,
+    "regret1": 0.08,
+    "regret3": 0.0234,
+    "win": 87.1
+   },
+   "top1": [
+    24.19,
+    27.42
+   ],
+   "top1_txt": "24\u201327",
+   "top3": [
+    45.16,
+    58.06
+   ],
+   "top3_txt": "45\u201358",
+   "regret1": [
+    0.0852,
+    0.1027
+   ],
+   "regret1_txt": "0.0852\u20130.1027",
+   "regret3": [
+    0.02,
+    0.0268
+   ],
+   "regret3_txt": "0.0200\u20130.0268",
+   "win": [
+    62.9,
+    69.35
+   ],
+   "win_txt": "63\u201369"
+  }
+ },
+ "ref": {
+  "id": {
+   "random": {
+    "top1": 16.13,
+    "top3": 46.4,
+    "regret1": 0.0798,
+    "regret3": 0.0204,
+    "win": 56.95
+   },
+   "mf_first": {
+    "top1": 12.0,
+    "top3": 44.93,
+    "regret1": 0.0735,
+    "regret3": 0.0233,
+    "win": 50.0
+   }
+  },
+  "ood": {
+   "random": {
+    "top1": 17.66,
+    "top3": 52.17,
+    "regret1": 0.114,
+    "regret3": 0.0287,
+    "win": 56.08
+   },
+   "mf_first": {
+    "top1": 8.06,
+    "top3": 44.95,
+    "regret1": 0.0784,
+    "regret3": 0.0307,
+    "win": 50.0
+   }
+  }
+ },
+ "folds": 5,
+ "fold_seeds": [
+  1,
+  2,
+  42
+ ],
+ "rounds_range": [
+  7,
+  158
+ ],
+ "rounds_range_txt": "7\u2013158",
+ "n_id": 25,
+ "n_ood": 62,
+ "pts_per_circuit_id": 4.0,
+ "random_ood_top3_txt": "52.2",
+ "mf_id_top1_txt": "12"
+}
