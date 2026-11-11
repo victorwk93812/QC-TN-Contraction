@@ -1,0 +1,53 @@
+objective,split,check,value,train,params
+ndcg,id,stored_vs_fit_on_all,spearman=0.611329 max_abs_diff=3.99,,
+ndcg,ood,stored_vs_fit_on_all,spearman=0.551397 max_abs_diff=4.17,,
+ndcg,id,top1+regret1,"[1, 5]",train,notebook
+ndcg,id,top3+regret3,"[65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 89, 90, 93, 94, 95, 110]",train,notebook
+ndcg,id,all_four,[],train,notebook
+ndcg,id,win,[],train,notebook
+ndcg,id,top1+regret1,[],train,table4
+ndcg,id,top3+regret3,[],train,table4
+ndcg,id,all_four,[],train,table4
+ndcg,id,win,[],train,table4
+ndcg,ood,top1+regret1,[],train,notebook
+ndcg,ood,top3+regret3,[],train,notebook
+ndcg,ood,all_four,[],train,notebook
+ndcg,ood,win,"[4, 10, 268, 273, 274, 277, 278, 280]",train,notebook
+ndcg,ood,top1+regret1,[],train,table4
+ndcg,ood,top3+regret3,[],train,table4
+ndcg,ood,all_four,[],train,table4
+ndcg,ood,win,[],train,table4
+ndcg,ood,top1+regret1,[11],train+id,notebook
+ndcg,ood,top3+regret3,"[23, 24, 135, 136, 137, 138]",train+id,notebook
+ndcg,ood,all_four,[],train+id,notebook
+ndcg,ood,win,[],train+id,notebook
+ndcg,ood,top1+regret1,[],train+id,table4
+ndcg,ood,top3+regret3,[],train+id,table4
+ndcg,ood,all_four,[],train+id,table4
+ndcg,ood,win,"[8, 11, 21, 83, 87, 88, 105, 121, 126, 127, 128, 141, 143, 146, 147, 148, 149, 150, 165, 166]",train+id,table4
+pair,id,stored_vs_fit_on_all,spearman=1.000000 max_abs_diff=2.62e-06,,
+pair,ood,stored_vs_fit_on_all,spearman=1.000000 max_abs_diff=6.44e-06,,
+pair,id,top1+regret1,"[16, 17, 18, 19]",train,notebook
+pair,id,top3+regret3,[14],train,notebook
+pair,id,all_four,[],train,notebook
+pair,id,win,"[22, 23, 24, 25, 26, 27, 28, 29, 34, 35, 36, 37]",train,notebook
+pair,id,top1+regret1,"[16, 17, 18, 19]",train,table4
+pair,id,top3+regret3,[14],train,table4
+pair,id,all_four,[],train,table4
+pair,id,win,"[22, 23, 24, 25, 26, 27, 28, 29, 34, 35, 36, 37]",train,table4
+pair,ood,top1+regret1,[],train,notebook
+pair,ood,top3+regret3,[14],train,notebook
+pair,ood,all_four,[],train,notebook
+pair,ood,win,[],train,notebook
+pair,ood,top1+regret1,[],train,table4
+pair,ood,top3+regret3,[14],train,table4
+pair,ood,all_four,[],train,table4
+pair,ood,win,[],train,table4
+pair,ood,top1+regret1,[54],train+id,notebook
+pair,ood,top3+regret3,[],train+id,notebook
+pair,ood,all_four,[],train+id,notebook
+pair,ood,win,[],train+id,notebook
+pair,ood,top1+regret1,[54],train+id,table4
+pair,ood,top3+regret3,[],train+id,table4
+pair,ood,all_four,[],train+id,table4
+pair,ood,win,[],train+id,table4
