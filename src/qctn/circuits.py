@@ -125,14 +125,22 @@ _RULES = [
     (r"^cp\(", rf"cp\((.*)\)\s+{_Q},\s*{_Q};",
      lambda m: Gate("cp", (int(m[2]), int(m[3])), controlled(phase(_angle(m[1]))))),
 ]
-_RULES = [(re.compile(a), re.compile(b), f) for a, b, f in _RULES]
+_RULES = [(re.match(r"\^(\w+)", a)[1], re.compile(a), re.compile(b), f) for a, b, f in _RULES]
+# The release says u2/u1 and p were added later ("New search patterns", funcions_qasm.jl l. 645, 674, 702); some
+# plans were made with an earlier reader (see builders.EARLY_SKIPPED).
 _NOT_GATES = re.compile(r"^(include|qreg|creg|measure|barrier|reset|gate|opaque|if)\b")
 
 
-def authors_gates(path: Path) -> Circuit:
+def authors_gates(path: Path, without=frozenset()) -> Circuit:
     """The circuit as `import_from_qasm` in the authors' funcions_qasm.jl builds it."""
     path = Path(path)
-    lines = [l for l in path.read_text().splitlines()
+    return authors_gates_text(path.read_text(), path.stem, without)
+
+
+def authors_gates_text(text: str, name: str, without=frozenset()) -> Circuit:
+    """`authors_gates` on QASM text (e.g. after the release's register rewriting). Gate names in `without`
+    (QASM names such as "u2") are treated as lines the parser doesn't recognise."""
+    lines = [l for l in text.splitlines()
              if not (l.strip().startswith("//") or l.strip().startswith("#") or not l.strip())]
     n = None
     for l in lines:
@@ -140,14 +148,17 @@ def authors_gates(path: Path) -> Circuit:
             n = int(re.search(r"qreg q\[(\d+)\];", l)[1])
             break
     if n is None:
-        raise ValueError(f"{path.name}: no 'qreg q[...]' register")
+        raise ValueError(f"{name}: no 'qreg q[...]' register")
     gates, skipped = [], []
     for l in lines:
         if not re.match(r"^[a-z]", l):
             continue
         s = l.strip()
-        for test, pat, build in _RULES:
+        for gname, test, pat, build in _RULES:
             if test.search(s):
+                if gname in without:
+                    skipped.append(s)
+                    break
                 m = pat.search(s)
                 if m is None:
                     skipped.append(s)  # the Julia code warns and skips
@@ -157,7 +168,7 @@ def authors_gates(path: Path) -> Circuit:
         else:
             if not _NOT_GATES.match(s):
                 skipped.append(s)
-    return Circuit(path.stem, n, gates, skipped)
+    return Circuit(name, n, gates, skipped)
 
 
 def load_qiskit(path: Path):
