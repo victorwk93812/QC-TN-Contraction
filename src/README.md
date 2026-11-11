@@ -32,10 +32,12 @@ src/qctn/
   plans/
     tree.py               contraction tree (cotengra ContractionTree interop), order ↔ tree, tree stats
     authors.py            read and write the authors' plan text format
-    elimination.py        MinFill / MinDegree (moved from slides/traces)
-    flowcutter.py         official FlowCutter PACE17 binary, built from source; the existing lite version kept
-    girvan_newman.py, separators.py, td.py, exact.py      (moved from slides/traces)
-    pace.py               Tamaki, Jdrasil and the two MinFill PACE heuristics, via Java subprocess
+    qxtools.py            QXTools' planning path, ported exactly: line graph, min_fill (mf), tree decomposition
+                          -> elimination order -> plan (phase 3)
+    girvan_newman.py      gn: Girvan-Newman on the tensor graph, reverse removal order (phase 3)
+    pace.py               FlowCutter, Tamaki, Jdrasil and the two MinFill PACE heuristics as subprocesses (phase 3)
+    generators.py         the seven generators on any qctn.tn network (phase 3)
+    elimination.py, separators.py, td.py, exact.py      (to move from slides/traces, phase 6)
   features.py             the 18 features of Table 2 (c, p, k, d per step; cost weights w_i)
   execute/                CuPy executor for a tree; timing: 1 warm-up + 50 runs, synchronised, complex64
   rank/                   labels log(1+Sp), grouped splits, XGBoost rank:ndcg / rank:pairwise,
