@@ -14,7 +14,7 @@ slides/deck/vendor/
 slides/tools/Jdrasil/
 slides/tools/PACE2017-TrackA/
 # authors' release, solver sources, Julia depot: scripts/README.md
-external/
+/external
 
 # ---- third-party papers (not ours to redistribute; download links in README.md) ----
 references/*.pdf
