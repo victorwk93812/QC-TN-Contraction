@@ -162,6 +162,11 @@ def summarise(pc: pd.DataFrame, min_plans: int = 3) -> pd.DataFrame:
     return pd.DataFrame(out)
 
 
+def _gres(alloc: str | None) -> str | None:
+    """'GresUsed=gpu:V100:3(IDX:0-2)' from the node's scontrol line: GPUs allocated on the node, by index."""
+    return next((x.split("=", 1)[1] for x in (alloc or "").split() if x.startswith("GresUsed=")), None)
+
+
 def tasks(run: Path) -> pd.DataFrame:
     rows = []
     for p in sorted((run / "tasks").glob("*.json")):
@@ -169,11 +174,12 @@ def tasks(run: Path) -> pd.DataFrame:
         e, s, f = t["env"], t.get("start", {}), t.get("end", {})
         g0, g1 = (s.get("gpus") or [{}])[0], (f.get("gpus") or [{}])[0]
         rows.append(dict(shard=t["shard"], job=e.get("slurm_job"), array_job=e.get("array_job"),
-                         partition=e.get("partition"), node=e.get("node"), gpu_index=e.get("gpu_index"),
-                         gpu_uuid=e.get("gpu_uuid"), pci_bus=e.get("pci_bus"), gpu=e.get("gpu"),
+                         partition=e.get("partition"), node=e.get("node"), gpu_index_node=e.get("slurm_gpus"),
+                         pci_bus=e.get("pci_bus"), gpu=e.get("gpu"),
                          util_start=g0.get("utilization.gpu"), mem_start_mib=g0.get("memory.used"),
                          util_end=g1.get("utilization.gpu"), mem_end_mib=g1.get("memory.used"),
-                         node_alloc_start=s.get("node_alloc"), node_jobs_start=len(s.get("node_jobs") or []),
+                         gres_used_start=_gres(s.get("node_alloc")), gres_used_end=_gres(f.get("node_alloc")),
+                         node_jobs_start=len(s.get("node_jobs") or []),
                          node_jobs_end=len(f.get("node_jobs") or []) if f else np.nan,
                          circuits=len(t.get("circuits", [])), already_done=len(t.get("skipped_done", [])),
                          seconds=t.get("seconds"), finished="end" in t))
@@ -194,12 +200,15 @@ def main(argv=None):
     for c in ("dup_of_minfill", "dup_drop"):
         df[c] = df[c].astype("boolean").fillna(False).astype(bool)
     df = df.sort_values(["circuit", "plan", "mode"])
-    df.to_csv(OUT / "p4full_timing.csv", index=False)
+    tk = tasks(run)
+    if len(tk):  # the GPU as the node's index (from the task), not its UUID
+        gpu_of = dict(zip(tk.job.astype(str), tk.gpu_index_node))
+        df.insert(df.columns.get_loc("node") + 1, "gpu_index", df.job.map(lambda j: gpu_of.get(str(j).split(".")[0])))
+    df.drop(columns=["gpu_uuid"], errors="ignore").to_csv(OUT / "p4full_timing.csv", index=False)
     pc = per_circuit(df)
     pc.to_csv(OUT / "p4full_compare.csv", index=False)
     sm = summarise(pc)
     sm.to_csv(OUT / "p4full_summary.csv", index=False)
-    tk = tasks(run)
     tk.to_csv(OUT / "p4full_tasks.csv", index=False)
 
     st = df.status.fillna("").str.split(":").str[:2].str.join(":")
