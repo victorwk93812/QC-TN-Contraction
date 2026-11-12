@@ -1,0 +1,39 @@
+circuit_name,base_id,speedup,label,repeated_row,dup_of_minfill,dup_cause,dup_group,dup_drop,split,same_tree_as
+GROVER_11_pla_mf,GROVER_11,1.0,0.6931471805599453,False,False,,GROVER_11/1,False,train,minfillbg_mrs
+GROVER_11_pla_minfillbg_mrs,GROVER_11,1.0650334358404068,0.7251464179721818,False,True,timeout,GROVER_11/1,True,train,mf
+GROVER_9_pla_mf,GROVER_9,1.0,0.6931471805599453,False,False,,GROVER_9/1,False,train,minfillbg_mrs
+GROVER_9_pla_minfillbg_mrs,GROVER_9,1.1867528432057752,0.7824177235139753,False,True,timeout,GROVER_9/1,True,train,mf
+QNN_25_pla_mf,QNN_25,1.0,0.6931471805599453,False,False,,QNN_25/1,False,train,minfillbg_mrs
+QNN_25_pla_minfillbg_mrs,QNN_25,0.8958386288623672,0.6396612888511418,False,True,timeout,QNN_25/1,True,train,mf
+QWALK_6_pla_mf,QWALK_6,1.0,0.6931471805599453,False,False,,QWALK_6/1,False,train,minfillbg_mrs
+QWALK_6_pla_minfillbg_mrs,QWALK_6,0.9997052290254176,0.6929997842103458,False,True,timeout,QWALK_6/1,True,train,mf
+QWALK_7_pla_mf,QWALK_7,1.0,0.6931471805599453,False,False,,QWALK_7/1,False,train,minfillbg_mrs
+QWALK_7_pla_minfillbg_mrs,QWALK_7,1.0038845012655826,0.6950875474626992,False,True,timeout,QWALK_7/1,True,train,mf
+RQC_3_7_40_pla_fc,RQC_3_7_40,1.1355218977151313,0.7587110653864181,True,False,,,False,train,
+RQC_3_7_40_pla_gn,RQC_3_7_40,1.5922091023978278,0.9525104474575837,True,False,,,False,train,
+RQC_3_7_40_pla_jdrasil,RQC_3_7_40,1.287475197965111,0.8274486756891362,True,False,,,False,train,
+RQC_3_7_40_pla_mf,RQC_3_7_40,1.4005139151626669,0.8756828457488394,True,False,,,False,train,
+RQC_3_7_40_pla_minfill_mrs,RQC_3_7_40,1.2646275982323747,0.8174103296257933,True,False,,,False,train,
+RQC_3_7_40_pla_minfillbg_mrs,RQC_3_7_40,1.3165217639111948,0.840066821000384,True,False,,,False,train,
+RQC_3_7_40_pla_tamaki,RQC_3_7_40,0.25164095894448535,0.22445545754437626,True,False,,,False,train,
+RQC_3_7_52_pla_fc,RQC_3_7_52,0.754222877940326,0.5620259542585181,True,False,,,False,train,
+RQC_3_7_52_pla_jdrasil,RQC_3_7_52,0.9442404269997631,0.6648713748311542,True,False,,,False,train,
+RQC_3_7_52_pla_mf,RQC_3_7_52,1.0,0.6931471805599453,True,False,,,False,train,
+RQC_3_7_52_pla_minfill_mrs,RQC_3_7_52,0.9835873881654695,0.6849070175593269,True,False,,,False,train,
+RQC_3_7_52_pla_minfillbg_mrs,RQC_3_7_52,0.9696464822503619,0.6778540760123715,True,False,,,False,train,
+RQC_5_16_pla_fc,RQC_5_16,0.8684240803003427,0.6250953377560536,False,True,unexplained,RQC_5_16/1,True,train,gn mf minfill_mrs minfillbg_mrs tamaki
+RQC_5_16_pla_gn,RQC_5_16,1.0812713670079828,0.7329789411241795,False,True,unexplained,RQC_5_16/1,True,train,fc mf minfill_mrs minfillbg_mrs tamaki
+RQC_5_16_pla_mf,RQC_5_16,1.0,0.6931471805599453,False,False,,RQC_5_16/1,False,train,fc gn minfill_mrs minfillbg_mrs tamaki
+RQC_5_16_pla_minfill_mrs,RQC_5_16,1.1152972591367307,0.7491953506774806,False,True,unexplained,RQC_5_16/1,True,train,fc gn mf minfillbg_mrs tamaki
+RQC_5_16_pla_minfillbg_mrs,RQC_5_16,0.8800063247334174,0.6312751410561017,False,True,unexplained,RQC_5_16/1,True,train,fc gn mf minfill_mrs tamaki
+RQC_5_16_pla_tamaki,RQC_5_16,1.1500826093625722,0.7655062643607644,False,True,unexplained,RQC_5_16/1,True,train,fc gn mf minfill_mrs minfillbg_mrs
+pricingcall_nativegates_ibm_qiskit_opt3_21_pla_mf,pricingcall_nativegates_ibm_qiskit_opt3_21,1.0,0.6931471805599453,False,False,,pricingcall_nativegates_ibm_qiskit_opt3_21/1,False,train,minfillbg_mrs
+pricingcall_nativegates_ibm_qiskit_opt3_21_pla_minfillbg_mrs,pricingcall_nativegates_ibm_qiskit_opt3_21,0.969229867482932,0.6776425361050517,False,True,timeout,pricingcall_nativegates_ibm_qiskit_opt3_21/1,True,train,mf
+pricingcall_nativegates_ibm_qiskit_opt3_23_pla_jdrasil,pricingcall_nativegates_ibm_qiskit_opt3_23,0.5965214450040849,0.46782716559365545,False,True,timeout,pricingcall_nativegates_ibm_qiskit_opt3_23/1,True,train,mf minfillbg_mrs
+pricingcall_nativegates_ibm_qiskit_opt3_23_pla_mf,pricingcall_nativegates_ibm_qiskit_opt3_23,1.0,0.6931471805599453,False,False,,pricingcall_nativegates_ibm_qiskit_opt3_23/1,False,train,jdrasil minfillbg_mrs
+pricingcall_nativegates_ibm_qiskit_opt3_23_pla_minfillbg_mrs,pricingcall_nativegates_ibm_qiskit_opt3_23,0.825006771636808,0.6015836975134932,False,True,timeout,pricingcall_nativegates_ibm_qiskit_opt3_23/1,True,train,jdrasil mf
+pricingcall_nativegates_ibm_qiskit_opt3_25_pla_jdrasil,pricingcall_nativegates_ibm_qiskit_opt3_25,0.5459098311779854,0.43561262451735344,False,True,timeout,pricingcall_nativegates_ibm_qiskit_opt3_25/1,False,train,minfill_mrs minfillbg_mrs
+pricingcall_nativegates_ibm_qiskit_opt3_25_pla_minfill_mrs,pricingcall_nativegates_ibm_qiskit_opt3_25,0.5683405988731028,0.45001811700872746,False,True,timeout,pricingcall_nativegates_ibm_qiskit_opt3_25/1,True,train,jdrasil minfillbg_mrs
+pricingcall_nativegates_ibm_qiskit_opt3_25_pla_minfillbg_mrs,pricingcall_nativegates_ibm_qiskit_opt3_25,0.4485889648423727,0.3705899549414113,False,True,timeout,pricingcall_nativegates_ibm_qiskit_opt3_25/1,True,train,jdrasil minfill_mrs
+GROVER_13_pla_mf,GROVER_13,1.0,0.6931471805599453,False,False,,GROVER_13/1,False,id,minfillbg_mrs
+GROVER_13_pla_minfillbg_mrs,GROVER_13,1.0327342237361434,0.7093817950308734,False,True,timeout,GROVER_13/1,True,id,mf

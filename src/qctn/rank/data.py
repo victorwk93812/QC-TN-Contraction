@@ -30,11 +30,21 @@ def load_released(split: str, objective: str) -> pd.DataFrame:
         return pd.read_excel(path, engine="openpyxl")
 
 
-def load_split(split: str, objective: str, variant: str = "released") -> pd.DataFrame:
-    """One split, "released" as published or "corrected" (qctn.rank.corrected)."""
+def load_split(split: str, objective: str, variant: str = "released", dups: str | None = None) -> pd.DataFrame:
+    """One split, "released" as published or "corrected" (qctn.rank.corrected).
+
+    `dups` (qctn.rank.duplicates): None leaves the split as it is; "flag" adds the duplicate-candidate
+    columns; "drop" also removes the copies of another plan of the same circuit; "drop_all" also the
+    repeated listings of a plan.
+    """
     if variant == "released":
-        return load_released(split, objective)
-    if variant == "corrected":
+        df = load_released(split, objective)
+    elif variant == "corrected":
         from qctn.rank.corrected import load_corrected
-        return load_corrected(split, objective)
-    raise ValueError(f"variant must be 'released' or 'corrected', not {variant!r}")
+        df = load_corrected(split, objective)
+    else:
+        raise ValueError(f"variant must be 'released' or 'corrected', not {variant!r}")
+    if dups is None:
+        return df
+    from qctn.rank.duplicates import apply
+    return apply(df, split, dups)
