@@ -331,7 +331,7 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     for name in ("inventory", "run"):
         p = sub.add_parser(name)
-        p.add_argument("--max-gb", type=float, default=12.0)
+        p.add_argument("--max-gb", type=float, default=15.0, help="the V100 has 15.8 GiB; OOM is caught")
         p.add_argument("--max-run", type=float, default=600.0)
         p.add_argument("--warmup", type=int, default=1)
         p.add_argument("--repeats", type=int, default=50)
