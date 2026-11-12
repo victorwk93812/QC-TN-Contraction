@@ -22,6 +22,7 @@ moves arrays.
 """
 from __future__ import annotations
 
+import math
 import string
 from dataclasses import dataclass, field
 from typing import Iterable, Sequence
@@ -76,11 +77,13 @@ class _UF:
     def __init__(self):
         self.p: dict = {}
 
-    def find(self, x):
-        p = self.p.setdefault(x, x)
-        if p != x:
-            p = self.p[x] = self.find(p)
-        return p
+    def find(self, x):  # iterative: chains of diagonal gates (GHZ_999) are deeper than the recursion limit
+        root = x
+        while (p := self.p.setdefault(root, root)) != root:
+            root = p
+        while x != root:
+            self.p[x], x = root, self.p[x]
+        return root
 
     def union(self, x, y):
         rx, ry = self.find(x), self.find(y)
@@ -126,7 +129,7 @@ def compile_plan(tn: TensorNetwork, plan, *, hyper: bool = False,
             pos = {x: LETTERS[k] for k, g in enumerate(gs) for x in g}
             leaf_reduce[i] = "".join(pos[x] for x in inds[i]) + "->" + "".join(LETTERS[k] for k in range(len(gs)))
 
-    size = {i: int(np.prod(s, dtype=np.int64)) for i, s in enumerate(leaf_shapes)}
+    size = {i: math.prod(s) for i, s in enumerate(leaf_shapes)}  # Python ints: exact above 2^63
     live = dict(size)
     cur = peak = sum(live.values())
     biggest = max(live.values(), default=0)
@@ -164,7 +167,7 @@ def compile_plan(tn: TensorNetwork, plan, *, hyper: bool = False,
         inds[sc] = C
         ops.append(op)
         flops += f
-        n = int(np.prod(cs, dtype=np.int64))
+        n = math.prod(cs)
         cur += n
         peak = max(peak, cur)
         cur -= live.pop(sa) + live.pop(sb)
