@@ -105,6 +105,11 @@ def test_per_circuit_uses_times_and_nodup():
     assert nd.plans == 3
     m = pc[(pc.ours == "mock") & (pc.variant == "all")].iloc[0]
     assert m.spearman == pytest.approx(1)
+    df.loc[df.generator == "gn", "status"] = "oom"  # not timed: out of `mock_same`, still in `mock`
+    pc = C.per_circuit(df)
+    assert pc[(pc.ours == "mock") & (pc.variant == "all")].plans.iloc[0] == 4
+    assert pc[(pc.ours == "mock_same") & (pc.variant == "all")].plans.iloc[0] == 3
+    assert pc[(pc.ours == "mean") & (pc.variant == "all")].not_timed.iloc[0] == 1
     sm = C.summarise(pc)
     assert set(sm.group_by) == {"all", "split", "family", "size"}
 

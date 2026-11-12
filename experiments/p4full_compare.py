@@ -9,8 +9,8 @@ speedups of the split files (`Data/splits`, RTX A6000), with `qctn.rank.duplicat
 - `results/p4full_timing.csv`: one row per plan and mode: status, repeats, mean / median / min / CV of the
   repeats, plan size, node and GPU, our speedups t(MinFill) / t(plan) in the same mode (NaN without a timed `_pla_mf`
   plan), the mock-time speedup (sum of the plan file's time column), the release's speedup, split and dup flags;
-- `results/p4full_compare.csv`: one row per circuit, mode, statistic (`mean`, `median`, `min`, and `mock` for
-  the plan files' time column) and plan set (`all` labelled plans, or `nodup`: without the rows
+- `results/p4full_compare.csv`: one row per circuit, mode, statistic (`mean`, `median`, `min`; `mock` for
+  the plan files' time column on every labelled plan, `mock_same` on the plans we timed in that mode) and plan set (`all` labelled plans, or `nodup`: without the rows
   `dups="drop"` removes): plans compared, Spearman and Kendall (tau-b) between our speedups and the labels,
   whether the best plan is the same, the regret of our best plan under the labels (1 - label(ours) / max label)
   and the mean regret of a uniformly random pick;
@@ -71,9 +71,19 @@ def load_run(run: Path) -> pd.DataFrame:
                      cv=(t.std(ddof=1) / t.mean()) if len(t) > 1 else np.nan,
                      gpu_util_before=g.get("utilization.gpu"), gpu_mem_before=g.get("memory.used"))
             res = r.pop("result", None)
-            r["result_abs"] = abs(complex(*res)) if isinstance(res, list) else np.nan
+            r["result_re"], r["result_im"] = res if isinstance(res, list) else (np.nan, np.nan)
             rows.append(r)
     return pd.DataFrame(rows)
+
+
+def result_spread(df: pd.DataFrame) -> pd.Series:
+    """Per plan: |amplitude - median amplitude of its network (all plans, both modes)| / |median|. Every plan of
+    a network contracts the same amplitude, so this checks the run (complex64)."""
+    key = df.circuit + "|" + df.source.astype(str)
+    re = df.result_re.astype(float)
+    im = df.result_im.astype(float)
+    med = re.groupby(key).transform("median") + 1j * im.groupby(key).transform("median")
+    return np.abs(re + 1j * im - med) / np.abs(med)
 
 
 def with_planned(df: pd.DataFrame) -> pd.DataFrame:
@@ -120,9 +130,10 @@ def per_circuit(df: pd.DataFrame) -> pd.DataFrame:
                     dup_of_minfill=int(g.dup_of_minfill.sum()), has_mf=bool((g.generator == "mf").any()),
                     networks=g.source.nunique())
         for variant, h0 in (("all", g), ("nodup", g[~g.dup_drop.astype(bool)])):
-            for ours in STATS + ("mock",):
-                col = ours if ours != "mock" else "mock_time"
-                ok = h0.status.isin(["ok", "budget"]) if ours != "mock" else h0.mock_time.notna()
+            for ours in STATS + ("mock", "mock_same"):
+                col = ours if ours in STATS else "mock_time"
+                timed = h0.status.isin(["ok", "budget"])
+                ok = h0.mock_time.notna() if ours == "mock" else timed
                 h = h0[ok & np.isfinite(h0[col].astype(float))]
                 row = dict(meta, ours=ours, variant=variant, plans=len(h), not_timed=len(h0) - len(h))
                 if len(h) >= 2:
@@ -179,11 +190,12 @@ def main(argv=None):
     size = df.groupby("circuit").tensors.transform("max")
     df["size_bin"] = pd.cut(size, SIZE_BINS, labels=SIZE_LABELS).astype(str)
     df = add_speedups(df)
+    df["result_rel_dev"] = result_spread(df)
+    for c in ("dup_of_minfill", "dup_drop"):
+        df[c] = df[c].astype("boolean").fillna(False).astype(bool)
     df = df.sort_values(["circuit", "plan", "mode"])
     df.to_csv(OUT / "p4full_timing.csv", index=False)
-    lab = df.drop(columns=["size_bin"]).assign(size_bin=df.size_bin)
-    pc = per_circuit(lab.assign(dup_of_minfill=lab.dup_of_minfill.fillna(False).astype(bool),
-                                dup_drop=lab.dup_drop.fillna(False).astype(bool)))
+    pc = per_circuit(df)
     pc.to_csv(OUT / "p4full_compare.csv", index=False)
     sm = summarise(pc)
     sm.to_csv(OUT / "p4full_summary.csv", index=False)
@@ -196,14 +208,20 @@ def main(argv=None):
     cols = ["mode", "ours", "variant", "group", "circuits", "plans", "spearman_median", "spearman_mean",
             "kendall_median", "best_same", "regret_median", "regret_random_mean"]
     print(sm[sm.group_by.isin(["all", "split"])][cols].round(3).to_string(index=False))
+    print(f"amplitude spread: max {df.result_rel_dev.max():.2e}, plans over 1e-3: {(df.result_rel_dev > 1e-3).sum()}")
     ok = df[df.status.isin(["ok", "budget"])]
-    both = ok.pivot_table(index="plan", columns="mode", values="mean")
+    both = ok.pivot_table(index=["circuit", "plan"], columns="mode", values="mean")
     if {"dense", "hyper"} <= set(both):
-        b = both.dropna()
-        print(f"dense vs hyper over {len(b)} plans: Spearman {spearmanr(b.dense, b.hyper).statistic:.3f}, "
-              f"median hyper/dense {np.median(b.hyper / b.dense):.2f}")
+        b = both.dropna().reset_index()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            rho = b.groupby("circuit").apply(lambda g: spearmanr(g.dense, g.hyper).statistic if len(g) >= 3
+                                             else np.nan, include_groups=False)
+        print(f"dense vs hyper over {len(b)} plans: per-circuit Spearman median {rho.median():.3f} "
+              f"({rho.notna().sum()} circuits), median hyper/dense time {np.median(b.hyper / b.dense):.2f}")
     if len(tk):
-        print(f"tasks {len(tk)}, nodes {sorted(tk.node.dropna().unique())}, GPU-hours {tk.seconds.sum() / 3600:.2f}")
+        print(f"tasks {len(tk)} ({tk.finished.sum()} finished), nodes {sorted(tk.node.dropna().unique())}, "
+              f"GPU-hours {tk.seconds.fillna(0).sum() / 3600:.2f}")
 
 
 if __name__ == "__main__":
