@@ -1,0 +1,281 @@
+{
+ "schema": 1,
+ "id": "R7",
+ "kind": "chart",
+ "meta": {
+  "title": "Where a contract_tn! run spends its time",
+  "source": "results/p4q_timing.csv, p4q_hyperflops.csv, p2_split_sources.csv; src/notes/deviations.md Phase 4b"
+ },
+ "nodes": {},
+ "edges": [],
+ "rows": [
+  {
+   "circuit": "dj_indep_qiskit_40",
+   "short": "DJ indep 40",
+   "plans": 7,
+   "steps": 236,
+   "shares": {
+    "indices": 0.5111,
+    "data": 0.4265,
+    "einsum": 0.0487,
+    "rest": 0.0136
+   },
+   "ms_per_step": 1.28,
+   "cpu_over_gpu": 0.84
+  },
+  {
+   "circuit": "dj_indep_qiskit_90",
+   "short": "DJ indep 90",
+   "plans": 7,
+   "steps": 536,
+   "shares": {
+    "indices": 0.5173,
+    "data": 0.4532,
+    "einsum": 0.0231,
+    "rest": 0.0064
+   },
+   "ms_per_step": 2.78,
+   "cpu_over_gpu": 0.87
+  },
+  {
+   "circuit": "dj_indep_qiskit_130",
+   "short": "DJ indep 130",
+   "plans": 7,
+   "steps": 776,
+   "shares": {
+    "indices": 0.5161,
+    "data": 0.4633,
+    "einsum": 0.0157,
+    "rest": 0.0048
+   },
+   "ms_per_step": 4.15,
+   "cpu_over_gpu": 0.84
+  },
+  {
+   "circuit": "dj_nativegates_ibm_qiskit_opt3_130",
+   "short": "DJ native 130",
+   "plans": 7,
+   "steps": 1047,
+   "shares": {
+    "indices": 0.5184,
+    "data": 0.4559,
+    "einsum": 0.0186,
+    "rest": 0.007
+   },
+   "ms_per_step": 3.35,
+   "cpu_over_gpu": 0.84
+  },
+  {
+   "circuit": "portfolioqaoa_nativegates_ibm_qiskit_opt3_10",
+   "short": "Portfolio QAOA 10",
+   "plans": 7,
+   "steps": 871,
+   "shares": {
+    "indices": 0.4999,
+    "data": 0.4177,
+    "einsum": 0.0621,
+    "rest": 0.0203
+   },
+   "ms_per_step": 1.3,
+   "cpu_over_gpu": 0.82
+  },
+  {
+   "circuit": "portfolioqaoa_nativegates_ibm_qiskit_opt3_17",
+   "short": "Portfolio QAOA 17",
+   "plans": 6,
+   "steps": 2376,
+   "shares": {
+    "indices": 0.5028,
+    "data": 0.446,
+    "einsum": 0.0375,
+    "rest": 0.0137
+   },
+   "ms_per_step": 2.91,
+   "cpu_over_gpu": 0.85
+  },
+  {
+   "circuit": "pricingcall_nativegates_ibm_qiskit_opt3_5",
+   "short": "Pricing call 5",
+   "plans": 7,
+   "steps": 202,
+   "shares": {
+    "indices": 0.4853,
+    "data": 0.3319,
+    "einsum": 0.1435,
+    "rest": 0.0393
+   },
+   "ms_per_step": 0.52,
+   "cpu_over_gpu": 0.74
+  },
+  {
+   "circuit": "pricingcall_nativegates_ibm_qiskit_opt3_7",
+   "short": "Pricing call 7",
+   "plans": 7,
+   "steps": 385,
+   "shares": {
+    "indices": 0.4769,
+    "data": 0.3585,
+    "einsum": 0.129,
+    "rest": 0.0357
+   },
+   "ms_per_step": 0.57,
+   "cpu_over_gpu": 0.8
+  },
+  {
+   "circuit": "pricingcall_nativegates_ibm_qiskit_opt3_9",
+   "short": "Pricing call 9",
+   "plans": 7,
+   "steps": 585,
+   "shares": {
+    "indices": 0.4727,
+    "data": 0.3637,
+    "einsum": 0.1253,
+    "rest": 0.0383
+   },
+   "ms_per_step": 0.59,
+   "cpu_over_gpu": 0.78
+  },
+  {
+   "circuit": "pricingcall_nativegates_ibm_qiskit_opt3_11",
+   "short": "Pricing call 11",
+   "plans": 7,
+   "steps": 833,
+   "shares": {
+    "indices": 0.4866,
+    "data": 0.352,
+    "einsum": 0.1239,
+    "rest": 0.0376
+   },
+   "ms_per_step": 0.65,
+   "cpu_over_gpu": 0.76
+  },
+  {
+   "circuit": "pricingcall_nativegates_ibm_qiskit_opt3_13",
+   "short": "Pricing call 13",
+   "plans": 7,
+   "steps": 1183,
+   "shares": {
+    "indices": 0.47,
+    "data": 0.3608,
+    "einsum": 0.129,
+    "rest": 0.0403
+   },
+   "ms_per_step": 0.65,
+   "cpu_over_gpu": 0.82
+  },
+  {
+   "circuit": "pricingcall_nativegates_ibm_qiskit_opt3_15",
+   "short": "Pricing call 15",
+   "plans": 7,
+   "steps": 1727,
+   "shares": {
+    "indices": 0.4726,
+    "data": 0.3594,
+    "einsum": 0.1305,
+    "rest": 0.0376
+   },
+   "ms_per_step": 0.62,
+   "cpu_over_gpu": 0.92
+  },
+  {
+   "circuit": "pricingcall_nativegates_ibm_qiskit_opt3_17",
+   "short": "Pricing call 17",
+   "plans": 7,
+   "steps": 2681,
+   "shares": {
+    "indices": 0.4806,
+    "data": 0.334,
+    "einsum": 0.1406,
+    "rest": 0.0449
+   },
+   "ms_per_step": 0.58,
+   "cpu_over_gpu": 1.02
+  },
+  {
+   "circuit": "pricingcall_nativegates_ibm_qiskit_opt3_19",
+   "short": "Pricing call 19",
+   "plans": 7,
+   "steps": 4435,
+   "shares": {
+    "indices": 0.4734,
+    "data": 0.3343,
+    "einsum": 0.147,
+    "rest": 0.0453
+   },
+   "ms_per_step": 0.63,
+   "cpu_over_gpu": 0.81
+  },
+  {
+   "circuit": "pricingcall_nativegates_ibm_qiskit_opt3_21",
+   "short": "Pricing call 21",
+   "plans": 5,
+   "steps": 7826,
+   "shares": {
+    "indices": 0.4808,
+    "data": 0.3418,
+    "einsum": 0.1347,
+    "rest": 0.0427
+   },
+   "ms_per_step": 0.62,
+   "cpu_over_gpu": 0.93
+  },
+  {
+   "circuit": "pricingcall_nativegates_ibm_qiskit_opt3_23",
+   "short": "Pricing call 23",
+   "plans": 4,
+   "steps": 13872,
+   "shares": {
+    "indices": 0.4879,
+    "data": 0.322,
+    "einsum": 0.14,
+    "rest": 0.0501
+   },
+   "ms_per_step": 0.71,
+   "cpu_over_gpu": 7.58
+  },
+  {
+   "circuit": "pricingcall_nativegates_ibm_qiskit_opt3_25",
+   "short": "Pricing call 25",
+   "plans": 3,
+   "steps": 22970,
+   "shares": {
+    "indices": 0.5151,
+    "data": 0.2941,
+    "einsum": 0.138,
+    "rest": 0.0528
+   },
+   "ms_per_step": 0.62,
+   "cpu_over_gpu": 2.77
+  }
+ ],
+ "circuits": 17,
+ "plans": 109,
+ "share_txt": {
+  "indices": "47\u201352",
+  "data": "29\u201346",
+  "einsum": "2\u201315",
+  "rest": "0\u20135"
+ },
+ "host_txt": "85\u201398",
+ "ome_txt": "0.5\u201310",
+ "cpu_le_n": 15,
+ "cpu_le_txt": "0.74\u20131.02",
+ "cpu_gt_txt": "2.8\u00d7 and 7.6\u00d7",
+ "ms_pricing_txt": "0.5\u20130.7",
+ "ms_other_txt": "1.3\u20134.2",
+ "run_s_txt": "0.1\u201314.6",
+ "run_s_median_txt": "1.2",
+ "split_plans": 1463,
+ "split_under_2_36": 1379,
+ "split_max_log2_txt": "41.2",
+ "arith_ms_2_36_txt": "35",
+ "peak_tflops": 15.7,
+ "our_hw": {
+  "host": "Intel Xeon E5-2698 v4",
+  "gpu": "V100-SXM2-16GB"
+ },
+ "their_hw": {
+  "host": "AMD EPYC 7282",
+  "gpu": "RTX A6000"
+ }
+}

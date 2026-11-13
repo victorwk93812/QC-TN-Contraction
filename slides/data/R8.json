@@ -1,0 +1,186 @@
+{
+ "schema": 1,
+ "id": "R8",
+ "kind": "chart",
+ "meta": {
+  "title": "Identical plans, different labels",
+  "source": "results/p4q_label_noise.csv, p4full_timing.csv, p4q_label_stats.csv, p4q_summary.csv, p4q_timing.csv"
+ },
+ "nodes": {},
+ "edges": [],
+ "labels": [
+  {
+   "circuit": "GROVER_11",
+   "plan": "GROVER_11_pla_minfillbg_mrs",
+   "cause": "timeout",
+   "speedup": 1.065
+  },
+  {
+   "circuit": "GROVER_13",
+   "plan": "GROVER_13_pla_minfillbg_mrs",
+   "cause": "timeout",
+   "speedup": 1.0327
+  },
+  {
+   "circuit": "GROVER_9",
+   "plan": "GROVER_9_pla_minfillbg_mrs",
+   "cause": "timeout",
+   "speedup": 1.1868
+  },
+  {
+   "circuit": "QNN_25",
+   "plan": "QNN_25_pla_minfillbg_mrs",
+   "cause": "timeout",
+   "speedup": 0.8958
+  },
+  {
+   "circuit": "QWALK_6",
+   "plan": "QWALK_6_pla_minfillbg_mrs",
+   "cause": "timeout",
+   "speedup": 0.9997
+  },
+  {
+   "circuit": "QWALK_7",
+   "plan": "QWALK_7_pla_minfillbg_mrs",
+   "cause": "timeout",
+   "speedup": 1.0039
+  },
+  {
+   "circuit": "RQC_5_16",
+   "plan": "RQC_5_16_pla_fc",
+   "cause": "unexplained",
+   "speedup": 0.8684
+  },
+  {
+   "circuit": "RQC_5_16",
+   "plan": "RQC_5_16_pla_gn",
+   "cause": "unexplained",
+   "speedup": 1.0813
+  },
+  {
+   "circuit": "RQC_5_16",
+   "plan": "RQC_5_16_pla_minfill_mrs",
+   "cause": "unexplained",
+   "speedup": 1.1153
+  },
+  {
+   "circuit": "RQC_5_16",
+   "plan": "RQC_5_16_pla_minfillbg_mrs",
+   "cause": "unexplained",
+   "speedup": 0.88
+  },
+  {
+   "circuit": "RQC_5_16",
+   "plan": "RQC_5_16_pla_tamaki",
+   "cause": "unexplained",
+   "speedup": 1.1501
+  },
+  {
+   "circuit": "pricingcall_nativegates_ibm_qiskit_opt3_21",
+   "plan": "pricingcall_nativegates_ibm_qiskit_opt3_21_pla_minfillbg_mrs",
+   "cause": "timeout",
+   "speedup": 0.9692
+  },
+  {
+   "circuit": "pricingcall_nativegates_ibm_qiskit_opt3_23",
+   "plan": "pricingcall_nativegates_ibm_qiskit_opt3_23_pla_jdrasil",
+   "cause": "timeout",
+   "speedup": 0.5965
+  },
+  {
+   "circuit": "pricingcall_nativegates_ibm_qiskit_opt3_23",
+   "plan": "pricingcall_nativegates_ibm_qiskit_opt3_23_pla_minfillbg_mrs",
+   "cause": "timeout",
+   "speedup": 0.825
+  },
+  {
+   "circuit": "pricingcall_nativegates_ibm_qiskit_opt3_25",
+   "plan": "pricingcall_nativegates_ibm_qiskit_opt3_25_pla_jdrasil",
+   "cause": "timeout",
+   "speedup": 0.5459
+  },
+  {
+   "circuit": "pricingcall_nativegates_ibm_qiskit_opt3_25",
+   "plan": "pricingcall_nativegates_ibm_qiskit_opt3_25_pla_minfill_mrs",
+   "cause": "timeout",
+   "speedup": 0.5683
+  },
+  {
+   "circuit": "pricingcall_nativegates_ibm_qiskit_opt3_25",
+   "plan": "pricingcall_nativegates_ibm_qiskit_opt3_25_pla_minfillbg_mrs",
+   "cause": "timeout",
+   "speedup": 0.4486
+  }
+ ],
+ "ours": {
+  "hyper": [
+   1.0125,
+   1.0054,
+   1.0081,
+   1.0039,
+   1.0043,
+   0.9956,
+   0.9973,
+   0.985,
+   0.9932,
+   0.979,
+   0.9659,
+   1.0143,
+   1.0015,
+   0.9995
+  ],
+  "dense": [
+   1.0109,
+   0.9946,
+   0.9996,
+   0.987,
+   1.0018,
+   0.9872,
+   0.9989,
+   0.9621,
+   0.9775,
+   0.9881,
+   0.9979,
+   0.9963,
+   0.9991
+  ]
+ },
+ "copies": 17,
+ "copy_circuits": 10,
+ "timeouts": 12,
+ "unexplained": 5,
+ "label_range_txt": "0.45\u20131.19",
+ "ours_pairs": 27,
+ "ours_range_txt": "0.96\u20131.01",
+ "ours_median_txt": "0.998",
+ "sigma": 0.0968,
+ "sigma_csv": 0.097,
+ "sigma_txt": "0.097",
+ "replicate": {
+  "circuits": 223,
+  "median_txt": "0.64",
+  "mean_txt": "0.57",
+  "best_pct": 40,
+  "qasm_mean_txt": "0.57"
+ },
+ "example": {
+  "circuit": "Pricing call 23",
+  "rows": [
+   {
+    "generator": "MinFill",
+    "qxtns_s_txt": "9.76",
+    "label_txt": "1.00"
+   },
+   {
+    "generator": "Jdrasil",
+    "qxtns_s_txt": "9.85",
+    "label_txt": "0.60"
+   },
+   {
+    "generator": "MinFill-BG (MRS)",
+    "qxtns_s_txt": "9.87",
+    "label_txt": "0.83"
+   }
+  ]
+ }
+}

@@ -369,7 +369,7 @@ def test_R1_setup_pins():                       # deck slide 51 (reproduction se
     assert d["xgboost"] == "2.1.4" and d["xgboost_jll"] == "2.1.5"
     assert d["cupy"] == "cupy-cuda12x[ctk] 14.2.0" and d["driver"] == "535"
     assert d["authors_commit"] == "936630a" and d["julia"] == "1.9.1"
-    assert "planned" in d["gpu_status"]           # no GPU results are claimed
+    assert "V100" in d["gpu_status"] and "phases 4, 4b" in d["gpu_status"]   # GPU results from phases 4 and 4b
 
 
 def test_R2_table6_two_model_composition():     # deck slide 52
@@ -409,3 +409,65 @@ def test_R4_not_reproduced():                   # deck slide 54
     assert b["mf_rand|id"]["ours"]["top1"] == b["mf_rand|id"]["paper"]["top1"] == 12.0
     assert d["stored_top1_txt"] == "84–97" and d["stored_circuits"] == 225
     assert (d["win_ndcg_id_txt"], d["win_ndcg_id_paper"]) == ("80", 92.0)
+
+
+def test_R5_release_vs_paper():                 # deck slide 55
+    d = load("R5")
+    assert (d["mock_step_spearman_median"], d["mock_plans"]) == (0.93, 109)   # release-issues.md entry 1
+    assert (d["big_dense_rank"], d["big_hyper_rank"], d["big_label_txt"]) == (55, 19, "1.10")   # entry 2
+    assert d["big_dense_status"].startswith("skipped")             # dense form doesn't fit; the label exists anyway
+    assert (d["copies"], d["copies_range_txt"]) == (17, "0.45–1.19")   # entry 4
+    assert d["jdrasil_mf_features"] == 213                          # entry 11
+    assert d["rqc_circuits"] == 82                                  # deviations.md, Phase 4 full run (RQC gate draws)
+
+
+def test_R6_what_the_labels_track():            # deck slide 56
+    d = load("R6")
+    k = d["by_key"]
+    assert (d["circuits"], d["plans"]) == (15, 109)
+    assert (k["qxtns_mean"]["median_txt"], k["qxtns_mean"]["mean_txt"], k["qxtns_mean"]["ci_txt"]) == ("0.40", "0.28", "[0.11, 0.46]")
+    assert k["decomp_indices_s"]["ci_txt"] == "[0.14, 0.64]" and k["release_mock_median_x_steps"]["mean_txt"] == "0.46"
+    assert k["ome_mean"]["ci_txt"] == "[−0.42, 0.06]" and k["log2_flops_hyper"]["circuits"] == 14
+    # the claims on the slide, at the strength of release-issues.md entry 3
+    host_pos = [r for r in d["rows"] if r["group"] == "host" and r["lo"] > 0]
+    assert {r["key"] for r in host_pos} == {"qxtns_mean", "decomp_indices_s", "decomp_data_s", "authors_mock_mean",
+                                            "release_mock_median_x_steps"} and d["host_pos_n"] == 5
+    assert d["host_pos_txt"] == "0.28–0.46" and d["gpu_txt"] == "−0.18 to −0.14"
+    assert all(r["mean"] < 0 for r in d["rows"] if r["group"] == "gpu")
+    assert all(r["lo"] <= 0 <= r["hi"] for r in d["rows"] if r["group"] == "compile")   # compilation: not supported
+    assert all(r["lo"] <= r["mean"] <= r["hi"] for r in d["rows"])
+    assert (d["ceiling"]["mean_txt"], d["ceiling"]["median"]) == ("0.57", 0.62)
+    assert k["qxtns_mean"]["mean"] < d["ceiling"]["mean"] / 2 + 0.01      # "about half" of a re-measurement
+    f = d["full"]
+    assert [(r["circuits"], r["median_txt"], r["best_pct"]) for r in f] == [(221, "0.14", 20), (211, "0.04", 12), (221, "0.21", 38), (223, "0.64", 40)]
+    assert d["their_hw"] == {"host": "AMD EPYC 7282", "gpu": "RTX A6000"}
+
+
+def test_R7_time_breakdown():                   # deck slide 57
+    d = load("R7")
+    assert (d["circuits"], d["plans"]) == (17, 109) and sum(r["plans"] for r in d["rows"]) == 109
+    for r in d["rows"]:
+        assert abs(sum(r["shares"].values()) - 1) < 1e-3
+        assert r["shares"]["indices"] + r["shares"]["data"] > 0.8 > r["shares"]["einsum"]   # bookkeeping dominates
+    assert d["share_txt"] == {"indices": "47–52", "data": "29–46", "einsum": "2–15", "rest": "0–5"}
+    assert d["ome_txt"] == "0.5–10"
+    assert (d["cpu_le_n"], d["cpu_le_txt"], d["cpu_gt_txt"]) == (15, "0.74–1.02", "2.8× and 7.6×")
+    big = sorted(d["rows"], key=lambda r: r["steps"])[-2:]                 # the two largest networks
+    assert {r["short"] for r in big} == {"Pricing call 23", "Pricing call 25"} and all(r["cpu_over_gpu"] > 2 for r in big)
+    assert (d["split_under_2_36"], d["split_plans"], d["split_max_log2_txt"]) == (1379, 1463, "41.2")
+    assert d["arith_ms_2_36_txt"] == "35" and d["run_s_txt"] == "0.1–14.6"
+    assert d["ms_pricing_txt"] == "0.5–0.7" and d["ms_other_txt"] == "1.3–4.2"
+
+
+def test_R8_identical_plans():                  # deck slide 58
+    d = load("R8")
+    assert (d["copies"], d["copy_circuits"], d["timeouts"], d["unexplained"]) == (17, 10, 12, 5)
+    assert d["label_range_txt"] == "0.45–1.19" and len(d["labels"]) == 17
+    assert (len(d["ours"]["hyper"]), len(d["ours"]["dense"]), d["ours_pairs"]) == (14, 13, 27)
+    assert d["ours_range_txt"] == "0.96–1.01"                              # deviations.md: within 4% of MinFill
+    assert abs(d["sigma"] - d["sigma_csv"]) < 5e-4 and d["sigma_txt"] == "0.097"   # recomputed sigma = the CSV's
+    r = d["replicate"]
+    assert (r["circuits"], r["median_txt"], r["mean_txt"], r["best_pct"], r["qasm_mean_txt"]) == (223, "0.64", "0.57", 40, "0.57")
+    assert r["qasm_mean_txt"] == load("R6")["ceiling"]["mean_txt"]         # the dashed line on the slide before
+    ex = d["example"]["rows"]
+    assert [e["label_txt"] for e in ex] == ["1.00", "0.60", "0.83"] and [e["qxtns_s_txt"] for e in ex] == ["9.76", "9.85", "9.87"]
