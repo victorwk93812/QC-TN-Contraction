@@ -13,7 +13,8 @@ with the plan's time (a smaller time should mean a larger speedup), so circuits 
   label speedup, and whether the fastest plan is the labels' best;
 - `results/p4q_summary.csv`: per measure, medians and means over circuits;
 - `results/p4q_steps.csv`: per plan, the release's time column against our run of the release's
-  `contract_tn_rank_mock!` (step-by-step Spearman, medians, sums).
+  `contract_tn_rank_mock!` (step-by-step Spearman, medians, sums);
+- `results/p4q_measures.csv`: median within-circuit Spearman between pairs of measures (all 17 circuits).
 """
 from __future__ import annotations
 
@@ -170,14 +171,18 @@ def main(argv=None):
                                  "decomp_data_s", "decomp_einsum_s", "decomp_rest_s", "distinct_signatures",
                                  "distinct_shapes", "log2_flops_dense", "log2_flops_hyper"]
     pcs, summ = [], []
+    boot = np.random.default_rng(1)
     for m in measures:
         if m not in lab or lab[m].notna().sum() == 0:
             continue
         x = lab.assign(neg=-lab[m])
         pc = within_circuit(x, "neg", "speedup", group="circuit").assign(measure=m)
         pcs.append(pc)
+        # 95% interval of the mean Spearman, resampling circuits
+        bs = [boot.choice(pc.spearman.to_numpy(), len(pc)).mean() for _ in range(2000)] if len(pc) else [np.nan]
         summ.append(dict(measure=m, circuits=len(pc), spearman_median=pc.spearman.median(),
-                         spearman_mean=pc.spearman.mean(), kendall_median=pc.kendall.median(),
+                         spearman_mean=pc.spearman.mean(), spearman_mean_lo=np.quantile(bs, 0.025),
+                         spearman_mean_hi=np.quantile(bs, 0.975), kendall_median=pc.kendall.median(),
                          kendall_mean=pc.kendall.mean(), best_same=int(pc.best_same.sum())))
     # the labels against a simulated re-measurement with the noise of the identical plans (p4q_label_noise.csv)
     noise = pd.read_csv(OUT / "p4q_label_noise.csv")
@@ -196,12 +201,23 @@ def main(argv=None):
     sm.to_csv(OUT / "p4q_summary.csv", index=False)
     sc = step_compare(dirs)
     sc.to_csv(OUT / "p4q_steps.csv", index=False)
+    # how our measures agree with each other within a circuit (all 17 circuits, labels not needed)
+    key = ["qxtns_mean", "authors_mean", "authors_mock_mean", "mock_mean", "release_mock_median_x_steps",
+           "release_mock_sum", "ome_mean", "cupy_dense_mean", "cupy_hyper_mean", "log2_flops_hyper", "cpu_qxtns_mean"]
+    key = [k for k in key if k in df and df[k].notna().any()]
+    mm = pd.DataFrame(index=key, columns=key, dtype=float)
+    for a in key:
+        for b in key:
+            pcm = within_circuit(df.assign(_a=df[a], _b=-df[b]), "_a", "_b", group="circuit")
+            mm.loc[a, b] = -pcm.spearman.median()
+    mm.to_csv(OUT / "p4q_measures.csv")
 
     pd.set_option("display.width", 220)
     pd.set_option("display.max_columns", 40)
     print(sm.round(3).to_string(index=False))
     if len(sc):
         print(sc.describe().round(3).to_string())
+    print(mm.round(2).to_string())
 
 
 if __name__ == "__main__":
