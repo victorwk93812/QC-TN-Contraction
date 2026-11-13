@@ -1,0 +1,23 @@
+{
+ "schema": 1,
+ "id": "R5",
+ "kind": "static",
+ "meta": {
+  "title": "The release next to the paper",
+  "source": "results/p4q_steps.csv, p4_timing.csv, p4q_label_noise.csv, p2_split_sources.csv; src/notes/release-issues.md"
+ },
+ "nodes": {},
+ "edges": [],
+ "mock_step_spearman_median": 0.93,
+ "mock_step_spearman_range_txt": "0.73\u20130.97",
+ "mock_plans": 109,
+ "big_plan": "pricing call 21, Jdrasil",
+ "big_dense_rank": 55,
+ "big_hyper_rank": 19,
+ "big_dense_status": "skipped_memory",
+ "big_label_txt": "1.10",
+ "copies": 17,
+ "copies_range_txt": "0.45\u20131.19",
+ "jdrasil_mf_features": 213,
+ "rqc_circuits": 82
+}

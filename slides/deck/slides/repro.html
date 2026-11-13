@@ -1,6 +1,8 @@
-<!-- Reproduction results — phase 1 of src/README.md (deck slides 51–55; not in the proposal).
-     Numbers: data/R1–R4.json, built by traces/fig_repro.py from results/*.csv and pyproject.toml.
-     Findings and wording: src/notes/deviations.md. -->
+<!-- Reproduction results — phases 1–4b of src/README.md (deck slides 51–59; not in the proposal).
+     rp1–rp4: phase 1 (the ranker on the authors' data); rp5–rp8: what phases 2–4b found about the release and its
+     labels; rp9: next steps.
+     Numbers: data/R1–R8.json, built by traces/fig_repro.py from results/*.csv and pyproject.toml.
+     Findings and wording: src/notes/deviations.md, src/notes/release-issues.md. -->
 
 <section id="rp1">
   <div class="act-label">Reproduction · setup</div>
@@ -11,7 +13,8 @@
         <li><b>Package <code data-bind="R1:package"></code></b> reproduces arXiv 2608.05819 in Python, starting from the authors' public release
           (<span data-bind="R1:authors_repo"></span>), pinned at commit <code data-bind="R1:authors_commit"></code>: circuits, all candidate plans, features, splits, labels and both models.</li>
         <li><b>Reference:</b> the authors' Julia <span data-bind="R1:julia"></span> stack (<span data-bind="R1:julia_stack" data-fmt="list"></span>), run next to our code to check numbers, never as our pipeline.</li>
-        <li><b>Phase 1</b> (this section): the ranker alone, on the authors' published features and splits, on CPU.</li>
+        <li><b>Phase 1</b> (the next three slides): the ranker alone, on the authors' published features and splits, on CPU.</li>
+        <li><b>Phases 2–4b</b> (the four after): plans, features, generators, GPU timings, and what the release's labels measure.</li>
       </ul>
     </div>
     <div>
@@ -22,15 +25,15 @@
           <td><span class="rp-badge is-done">pinned, used</span></td></tr>
         <tr><td><span data-bind="R1:cupy"></span></td>
           <td>GPU array backend on <span data-bind="R1:gpus"></span>, driver <span data-bind="R1:driver"></span> (CUDA 12 only)</td>
-          <td><span class="rp-badge is-planned">installed, smoke test</span></td></tr>
+          <td><span class="rp-badge is-done">used</span></td></tr>
         <tr><td>CuPy executor, GPU timings</td>
-          <td>time every plan with CuPy and with their OMEinsum / CUDA.jl code on the same V100</td>
-          <td><span class="rp-badge is-planned">planned (phase 4)</span></td></tr>
+          <td>time every plan with CuPy and with their QXTns / OMEinsum / CUDA.jl code on V100s</td>
+          <td><span class="rp-badge is-done">done (phases 4, 4b)</span></td></tr>
       </table>
     </div>
   </div>
   <div class="fragment math-anchor">
-    Everything in this section is CPU work on the published data. No GPU result is reported: the GPU stack is installed and passes a one-line smoke test; the executor is not built yet.
+    The next three slides are CPU work on the published data. GPU timings, ours and those of the authors' stack, come after them.
   </div>
   <aside class="notes">
     Sources: pyproject.toml (pins), src/README.md (decisions and phases 0–6), scripts/README.md (setup), src/notes/deviations.md (findings).
@@ -38,7 +41,8 @@
     QXTools/CUDA.jl environment and the XGBoost.jl environment. The xgboost pin matters: 3.4.1 trains measurably different models from the same
     inputs, so the project stays on 2.1.4, the release closest to the authors' XGBoost_jll 2.1.5.
     CuPy's ctk extra supplies the CUDA headers this machine lacks; its bundled CUDA 12.9 runtime works on driver 535 through minor-version
-    compatibility. The only GPU evidence so far is tests/test_setup.py::test_cupy_runs_on_gpu, a 64×64 einsum. Present it as setup, not as a result.
+    compatibility. Phases 4 and 4b timed the plans on V100-SXM2-16GB cards through Slurm (CuPy executor in qctn.execute; the authors'
+    QXTns stack with their Manifest); job numbers and protocols are in src/notes/deviations.md.
   </aside>
 </section>
 
@@ -142,23 +146,199 @@
 </section>
 
 <section id="rp5">
+  <div class="act-label">Reproduction · release and paper</div>
+  <h2>The release next to the paper: what differs</h2>
+  <div class="rp-groups">
+    <div class="rp-group is-host">
+      <h3>Labels and timing</h3>
+      <ul>
+        <li><b>No GPU timing code.</b> The plan files' time column comes from the release's mock run: index bookkeeping, no tensor data.
+          Our run of that function follows it step by step (Spearman median <span data-bind="R5:mock_step_spearman_median"></span> over <span data-bind="R5:mock_plans"></span> plans).</li>
+        <li><b>Hyperindex form, not dense.</b> A labelled plan (<span data-bind="R5:big_plan"></span>, speedup <span data-bind="R5:big_label_txt"></span>) needs a rank-<span data-bind="R5:big_dense_rank"></span> dense intermediate,
+          rank <span data-bind="R5:big_hyper_rank"></span> in QXTns' hyperindex form. The paper describes dense pairwise GEMMs.</li>
+        <li><b>Identical plans, different labels.</b> <span data-bind="R5:copies"></span> plans that are step for step their circuit's MinFill plan have speedups <span data-bind="R5:copies_range_txt"></span>, not 1.</li>
+        <li><b>MinFill's own speedup isn't 1</b> in some circuits, against the paper's definition; where the release's measurement file covers them, it has MinFill at 1 and the same order.</li>
+      </ul>
+    </div>
+    <div class="rp-group">
+      <h3>Ranker and evaluation</h3>
+      <ul>
+        <li><b>Each Table 6 row combines two models</b> (<span data-bind="R2:rows.opt_ndcg.rounds_k1"></span> and <span data-bind="R2:rows.opt_ndcg.rounds_k3"></span> rounds for opt_ndcg); opt_ndcg's eta and subsample differ from Table 4.</li>
+        <li><b>Regret on the label</b> \(\log(1 + \mathrm{Sp})\), not on the speedup the paper defines it on.</li>
+        <li><b>No code</b> for Table 7, the win rate or the random and MinFill + random baselines.</li>
+        <li><b>The stored models</b> are fitted on all <span data-bind="R4:stored_circuits"></span> circuits, test sets included.</li>
+      </ul>
+    </div>
+    <div class="rp-group">
+      <h3>Features, splits and plans</h3>
+      <ul>
+        <li><b><span data-bind="R5:jdrasil_mf_features"></span> Jdrasil rows</b> carry their circuit's MinFill features, with their own labels.</li>
+        <li><b>Split features are z-scored</b> with a fixed scaler that isn't in the release.</li>
+        <li><b>Plan names and circuits:</b> some plans replay on another circuit than their name says; no code for the seven generators.</li>
+        <li><b>No second GPU:</b> the cross-GPU tables can't be checked from the release.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="fragment math-anchor" style="font-size: 0.62em">
+    Full list, with the release's file and line for each: <code>src/notes/release-issues.md</code>. It records what differs, not why; the release doesn't show that.
+    The authors haven't been contacted yet.
+  </div>
+  <aside class="notes">
+    data/R5.json (with R2 and R4 for the ranker items); the full list is src/notes/release-issues.md, 17 entries in four groups, each with the
+    paper's section, the release's file and line at 936630a, and the deviations.md section that reruns the check. This slide shows the ones
+    that matter most for the published numbers, grouped as there.
+    Labels and timing: contract_tn_rank_mock! (src/funcions_article_IA.jl l. 28–71) is the only timed contraction; Notebooks 1_a and 1_b call it
+    with mock=true and say themselves that nothing is contracted on the GPU. The rank-55 plan is pricing call 21's Jdrasil plan (a netcon plan);
+    dense it would need 2^55 complex numbers, and we skipped it in the dense run for memory. The MinFill copies: 12 look like solver time-outs
+    that fell back to MinFill, 5 on RQC_5_16 are unexplained (slide after next). MinFill rows other than 1: e.g. QFT_6 at 686.1; every row of
+    such a circuit is measures.xlsx's value times one constant.
+    Ranker: rp2 and rp4 above. Features: Jdrasil rows equal the MinFill rows' features where Features.xlsx and the plan files differ; recomputing
+    them lowers opt_ndcg ID Top-1 from 56–60 to 44–52 (phase 2b). The scaler fits only N = 773 rows with the sample std; no tried row set gives it.
+    Wording: "the release does X; the paper states Y". No reasons are suggested; the release doesn't show them.
+  </aside>
+</section>
+
+<section id="rp6">
+  <div class="act-label">Reproduction · what the labels measure</div>
+  <h2>The labels follow host-side overhead, not GPU work</h2>
+  <p class="small" style="margin: 0 0 0.3em">The <span data-bind="R6:circuits"></span> labelled QASM circuits (<span data-bind="R6:plans"></span> plans), timed on a V100: per circuit, the Spearman correlation of each measure with the release's speedups.</p>
+  <div class="cols c-wide-left" style="gap: 28px">
+    <div data-fig="forest" data-trace="R6"></div>
+    <div>
+      <div class="small" style="font-weight: 600; margin-bottom: 4px">All labelled circuits (full run)</div>
+      <table class="tbl" style="font-size: 0.5em; width: 100%">
+        <tr><th>measure</th><th class="r">circuits</th><th class="r">median</th><th class="r">same best</th></tr>
+        <tr><td data-bind="R6:full.0.name"></td><td class="r" data-bind="R6:full.0.circuits"></td><td class="r" data-bind="R6:full.0.median_txt"></td><td class="r" data-bind="R6:full.0.best_pct" data-fmt="pct"></td></tr>
+        <tr><td data-bind="R6:full.1.name"></td><td class="r" data-bind="R6:full.1.circuits"></td><td class="r" data-bind="R6:full.1.median_txt"></td><td class="r" data-bind="R6:full.1.best_pct" data-fmt="pct"></td></tr>
+        <tr><td data-bind="R6:full.2.name"></td><td class="r" data-bind="R6:full.2.circuits"></td><td class="r" data-bind="R6:full.2.median_txt"></td><td class="r" data-bind="R6:full.2.best_pct" data-fmt="pct"></td></tr>
+        <tr class="pub"><td data-bind="R6:full.3.name"></td><td class="r" data-bind="R6:full.3.circuits"></td><td class="r" data-bind="R6:full.3.median_txt"></td><td class="r" data-bind="R6:full.3.best_pct" data-fmt="pct"></td></tr>
+      </table>
+      <div class="fragment math-anchor" style="font-size: 0.52em; margin-top: 0.8em">
+        <b>Supported, moderately.</b> <span data-bind="R6:host_pos_n"></span> host-side measures have means <span data-bind="R6:host_pos_txt"></span> with intervals above 0; every GPU-work measure is negative (<span data-bind="R6:gpu_txt"></span>).
+        The library call reaches about half of what a re-measurement would (<span data-bind="R6:by_key.qxtns_mean.mean_txt"></span> against <span data-bind="R6:ceiling.mean_txt"></span>).<br>
+        <b>Not established:</b> that the labels are exactly these times. Their host (<span data-bind="R6:their_hw.host"></span>), GPU (<span data-bind="R6:their_hw.gpu"></span>), session order and timing code aren't in the release,
+        and the differences between the host-side measures are within the uncertainty.
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    data/R6.json from results/p4q_summary.csv (15 circuits with labels; pricing call 25 enters through its times),
+    p4full_summary.csv and p4q_label_stats.csv. Spearman of minus the time (or minus the flops) with the label speedup, per circuit, so positive
+    means the plan this measure calls cheaper is the one the labels call faster. Dot: mean over circuits; bar: 95% interval from resampling
+    circuits. Medians as text.
+    The measures: QXTns contract_tn! on CuArray{ComplexF32}, 1 warm-up + 50 runs (the paper's protocol); its index and tensor_data phases from
+    the step-by-step re-implementation; the release's contract_tn_rank_mock! run by us with mock=true; the release's own time column (median
+    step × steps, which drops its outlier steps). Compilation: first runs, up to 125 s of it, rank plans unlike the labels. GPU work: OMEinsum's
+    einsums alone, our CuPy executor in both forms, and flops.
+    Right: the full run (phase 4) over all labelled circuits, CuPy only, mean of 50 runs; the release's time column on the same plans; and a
+    simulated re-measurement with the labels' own noise (next-but-one slide). Our hyperindex timings agree more on the OOD split (0.54, mostly QFT,
+    whose plans differ in flops by large factors) and not at all on train (0.03).
+    Our host: Intel Xeon E5-2698 v4; host-bound times can order plans differently on another CPU. With 15 circuits of 3–7 plans and about 10%
+    label noise per plan, the host-side measures can't be told apart from each other. Say "supported, moderately", not "shown".
+  </aside>
+</section>
+
+<section id="rp7">
+  <div class="act-label">Reproduction · where the time goes</div>
+  <h2>Where a run of the authors' library spends its time</h2>
+  <p class="small" style="margin: 0 0 0.3em">QXTns <code>contract_tn!</code> re-implemented step for step, synchronised after each phase; shares summed over each circuit's plans, on a V100.</p>
+  <div class="cols c-wide-left" style="gap: 28px">
+    <div data-fig="phasebars" data-trace="R7"></div>
+    <div>
+      <ul class="rp-facts">
+        <li><b>Finding each step's indices</b> takes <span data-bind="R7:share_txt.indices"></span>% of the run, <b><code>tensor_data</code></b>, which searches the hyperindex groups across the network, <span data-bind="R7:share_txt.data"></span>%.</li>
+        <li><b>The einsum</b>, synchronisation included, <span data-bind="R7:share_txt.einsum"></span>%. Timed alone on prepared operands, the einsums take <span data-bind="R7:ome_txt"></span>% of a <code>contract_tn!</code> run.</li>
+        <li><b>On CPU arrays</b> the same call takes <span data-bind="R7:cpu_le_txt"></span>× the GPU time on <span data-bind="R7:cpu_le_n"></span> of <span data-bind="R7:circuits"></span> circuits (<span data-bind="R7:cpu_gt_txt"></span> on the two largest).</li>
+        <li><b>Little arithmetic:</b> <span data-bind="R7:split_under_2_36"></span> of <span data-bind="R7:split_plans"></span> labelled plans need under \(2^{36}\) flops in hyperindex form, about <span data-bind="R7:arith_ms_2_36_txt"></span> ms at the V100's peak.
+          A run here takes <span data-bind="R7:run_s_txt"></span> s.</li>
+      </ul>
+      <div class="fragment math-anchor" style="font-size: 0.52em">
+        <b>Not established:</b> the same shares on the authors' machine (<span data-bind="R7:their_hw.host"></span>, <span data-bind="R7:their_hw.gpu"></span>); ours is an <span data-bind="R7:our_hw.host"></span> with a V100.
+        On larger circuits, where arithmetic dominates, plans could be ordered differently.
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    data/R7.json from results/p4q_timing.csv (Slurm jobs 224832–224835, all 109 release plans of the 17 QASM circuits, ComplexF32 on CuArray,
+    the release's Manifest). The decomposition re-implements QXTns contract_pair! step for step with a CUDA synchronisation and a clock after each
+    phase: finding the contraction indices, tensor_data (gathers each operand's hyperindex groups; no operand was ever expanded or re-reduced),
+    the einsum with its synchronisation, and the rest (building the result, updating the bond map). Its total is 0.86–1.14 times the library
+    call's (median 0.98). Bars are the sum of each phase over a circuit's plans divided by the sum of all four.
+    Text columns: the library call's median ms per step (0.5–0.7 on the pricing-call circuits, more on DJ and portfolio, whose large hyperindex
+    groups make the search longer) and CPU time over GPU time for the same call (medians over plans). Einsums alone: OMEinsum's EinCode per step
+    on prepared operands of the step's shapes.
+    Arithmetic: 2^36 complex multiply-adds at 8 real operations each, at 15.7 TFLOPS FP32. The heaviest labelled plan needs 2^41.2.
+    Overhead of 0.5–4 ms per step over hundreds to thousands of steps is 0.1 s to tens of seconds, so for nearly every labelled plan the
+    bookkeeping is larger than the arithmetic in this stack.
+  </aside>
+</section>
+
+<section id="rp8">
+  <div class="act-label">Reproduction · label noise</div>
+  <h2>Identical plans, different labels: how close any timing can get</h2>
+  <div class="cols c-wide-left" style="gap: 28px">
+    <div>
+      <div data-fig="copies" data-trace="R8"></div>
+      <table class="tbl" style="font-size: 0.5em; margin-top: 0.4em">
+        <tr><th><span data-bind="R8:example.circuit"></span>, identical plans</th><th class="r">QXTns time, s</th><th class="r">label</th></tr>
+        <tr><td data-bind="R8:example.rows.0.generator"></td><td class="r" data-bind="R8:example.rows.0.qxtns_s_txt"></td><td class="r" data-bind="R8:example.rows.0.label_txt"></td></tr>
+        <tr><td data-bind="R8:example.rows.1.generator"></td><td class="r" data-bind="R8:example.rows.1.qxtns_s_txt"></td><td class="r" data-bind="R8:example.rows.1.label_txt"></td></tr>
+        <tr><td data-bind="R8:example.rows.2.generator"></td><td class="r" data-bind="R8:example.rows.2.qxtns_s_txt"></td><td class="r" data-bind="R8:example.rows.2.label_txt"></td></tr>
+      </table>
+    </div>
+    <div>
+      <ul class="rp-facts">
+        <li><b><span data-bind="R8:copies"></span> labelled plans</b> in <span data-bind="R8:copy_circuits"></span> circuits are step for step their circuit's MinFill plan
+          (<span data-bind="R8:timeouts"></span> look like solver time-outs, <span data-bind="R8:unexplained"></span> unexplained).
+          Their labels: <span data-bind="R8:label_range_txt"></span>. Our timings: <span data-bind="R8:ours_range_txt"></span>.</li>
+        <li><b>Noise:</b> from these and the plans listed twice, one measurement's log speedup varies by \(\sigma \approx\) <span data-bind="R8:sigma_txt"></span>.</li>
+        <li><b>Ceiling:</b> a re-measurement with that noise would agree with the labels to a Spearman median of <span data-bind="R8:replicate.median_txt"></span>
+          (<span data-bind="R8:replicate.circuits"></span> circuits) and pick the same best plan in <span data-bind="R8:replicate.best_pct" data-fmt="pct"></span> of them.</li>
+      </ul>
+      <div class="fragment math-anchor" style="font-size: 0.52em">
+        <b>Not established:</b> where the noise comes from. Session order, garbage collection and the host could each contribute; the release doesn't record how the labels were timed.
+        The ranker is trained on identical feature rows with different grades.
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    data/R8.json from results/p4q_label_noise.csv (the copies, found in phase 3b, results/p3b_flags.csv), p4full_timing.csv (our CuPy speedups of the
+    same plans against their circuit's MinFill plan, both modes, mean of 50 runs; pricing call 25 has no MinFill plan file, so only its labels
+    appear), p4q_label_stats.csv and p4q_timing.csv.
+    The 12 time-out-like copies: minfillbg_mrs on GROVER 9/11/13, QNN_25, QWALK 6/7 and pricing call 21/23/25, Jdrasil on pricing call 23/25,
+    minfill_mrs on pricing call 25. The 5 unexplained ones are fc, gn, minfill_mrs, minfillbg_mrs and tamaki on RQC_5_16 (382 tensors).
+    The pricing-call copies are all below 1.
+    Sigma: 1.4826 × median |difference| / √2 over the copies and the plans RQC_3_7_40 and _52 list twice (each difference holds two
+    measurements' noise). The re-measurement adds noise of that size to every label and correlates it with the labels, 200 draws; on the 15
+    QASM circuits of the previous slides it gives a mean of 0.57 (the dashed line there).
+    The table: QXTns contract_tn! on the V100 times the three identical plans of pricing call 23 within about 1%; their labels differ by up to 40%.
+  </aside>
+</section>
+
+<section id="rp9">
   <div class="act-label">Reproduction · next</div>
-  <h2>Next: from the authors' data to our own pipeline</h2>
-  <p class="small" style="margin: 0 0 0.5em">Phase 0 (setup) and phase 1 (the ranker on the authors' data) are done; each later phase lands as its own pull request and ends with a check against the authors' numbers.</p>
-  <ol class="rp-list" start="2" style="font-size: 0.62em">
-    <li class="fragment"><b>Plans and features.</b> Parse all candidate plans into <code data-bind="R1:package"></code> trees; reimplement the plan features of Table 2 and match the authors' feature file; find the scaler behind the split features.</li>
-    <li class="fragment"><b>Generators.</b> Regenerate the seven plans per circuit and compare cost and width with theirs.</li>
-    <li class="fragment"><b>GPU timing on V100</b> <span class="rp-badge is-planned">planned</span>. Build the CuPy executor; time every plan with it and with their OMEinsum / CUDA.jl code on the same GPU; compare with the paper's Volta results.</li>
-    <li class="fragment"><b>End to end.</b> Our circuits, plans, features and timings, then the ranker, reported next to the paper's tables.</li>
-    <li class="fragment"><b>Slides on <code data-bind="R1:package"></code>.</b> These slides' traces import the package; every test still passes and the data files don't change.</li>
-  </ol>
+  <h2>Next: our own pipeline end to end, then the authors</h2>
+  <p class="small" style="margin: 0 0 0.5em">Each phase lands as its own pull request and ends with a check against the authors' numbers.</p>
+  <ul class="rp-list" style="font-size: 0.68em">
+    <li><b>Done:</b> the ranker on the authors' data; plans, features and the scaler; the seven generators; GPU timings with our CuPy executor and with the authors' stack; what the labels measure.
+      <span class="rp-badge is-done">phases 0–4b</span></li>
+    <li class="fragment"><b>End to end</b> <span class="rp-badge is-planned">phase 5, planned</span>. Our circuits, plans, features and timings, then the ranker, reported next to the paper's tables.
+      Open: which timing the ranker learns from. GPU-work timings and the release's labels rank plans differently.</li>
+    <li class="fragment"><b>Random circuits</b> <span class="rp-badge is-planned">open</span>. The hyperindex form of the <span data-bind="R5:rqc_circuits"></span> RQC circuits depends on a random draw of single-qubit gates.
+      Our draws weren't seeded and the release doesn't show its seed: fix and record one for phase 5, and ask the authors for theirs.</li>
+    <li class="fragment"><b>Review, then the authors</b> <span class="rp-badge is-planned">open</span>. The list of differences and these slides are reviewed first; only then are the authors contacted, with the list.</li>
+    <li class="fragment"><b>Slides on <code data-bind="R1:package"></code></b> <span class="rp-badge is-planned">phase 6</span>. These slides' traces import the package; every test still passes and the data files don't change.</li>
+  </ul>
   <div class="fragment math-anchor" style="font-size: 0.66em">
     <b>Future work, not analysed yet:</b> how precise Top-1 and Top-3 are on <span data-bind="R3:n_id"></span> and <span data-bind="R3:n_ood"></span> circuits
     (sensitivity to round count, fold assignment and sample size), and how much of the gap to the published rows that explains.
   </div>
   <aside class="notes">
-    Phases from src/README.md (agreed 2026-11-05); phase 0 (setup) and phase 1 (ranker on their data) are done. Each phase lands as its own pull
-    request and ends with a check against the authors' numbers. Phase 4 needs a free V100 on the shared machine; the Ampere (RTX A6000) results can
-    only be quoted, as there is no A6000 here. The precision question is deliberately left open in this talk.
+    Phases from src/README.md (agreed 2026-11-05). Phases 0–4b are merged; phase 4b's write-up is in src/notes/deviations.md and the list of
+    differences in src/notes/release-issues.md. Phase 5 needs a decision on which timing the ranker is trained on (our GPU-work timings, the
+    release's labels, or both, each reported as what it is); the slide leaves it open. The RQC question: qctn.builders.rqc draws each single-qubit gate (T, √X, √Y) with an unseeded generator, so the
+    hyperindex groups (T is diagonal, the others are not) change from build to build; the release's draws come from QXZoo's create_RQC with
+    Julia's MersenneTwister and an unknown seed. Dense mode doesn't depend on the draw. The Ampere (RTX A6000) results can only be quoted,
+    as there is no A6000 here. The precision question is deliberately left open in this talk.
   </aside>
 </section>
