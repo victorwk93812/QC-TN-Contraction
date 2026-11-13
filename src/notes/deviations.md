@@ -591,6 +591,134 @@ covers all that parse.
 **Not done.** No full run. The paper's Tables 8, 9 and 11 are not compared. QXTns was timed on 3 circuits only. We did
 not try to reproduce the labels with a host-overhead model.
 
+## Phase 4b: what the labels measure
+
+Numbers: `results/p4q_timing.csv` (one row per plan, one column per measure), `p4q_compare.csv` (per circuit and
+measure), `p4q_summary.csv`, `p4q_measures.csv`, `p4q_steps.csv`, from the Julia runs
+(`experiments/julia/p4q_qxtns.jl`, Slurm `scripts/slurm/p4q_julia.sbatch`) through `experiments/p4q_compare.py`; and
+from the release data alone `p4q_label_stats.csv`, `p4q_label_flops.csv`, `p4q_label_noise.csv`,
+`p4q_label_rescaled.csv` (`experiments/p4q_labels.py`, about 5 min) and `p4q_hyperflops.csv`
+(`experiments/p4q_hyperflops.py`, about 10 min, 6 processes). Checks in `tests/test_p4q.py`. Release issues found so
+far are collected in [`release-issues.md`](release-issues.md).
+
+**Question.** Phase 4's CuPy timings ranked the plans against the labels' order (per-circuit Spearman median −0.20
+dense, −0.29 hyperindex), while the plan files' mock time column ranked them with it (0.45). The hypothesis: the
+labels largely measure host-side overhead of the authors' Julia stack, not GPU contraction work.
+
+**Runs.** Slurm jobs 224825 (pilot), 224832–224835 (four circuit groups, one V100-SXM2-16GB each on four nodes,
+host Xeon E5-2698 v4) and 224836 (one Julia process per plan), Julia 1.9.1 with the release's Manifest
+(QXTns, OMEinsum 0.6.13, CUDA.jl 3.13.1), ComplexF32 storage on the GPU, all 109 release plans of the 17 QASM
+circuits, MinFill first in each circuit. Raw runs in `results/raw/p4q/<job>/` (gitignored). Wall times 1.5–2.8 h per
+group job, 2.7 h for 224836; about 12 GPU-hours in all. The other worker's GPU jobs ran on the same nodes
+throughout (one or two tasks per node besides ours); host-bound timings may have been slowed by that, but the repeat
+variation stayed small (coefficient of variation median 2.7%, at most 6.6%). Modes, each timed as a whole plan
+between device synchronisations, every run kept:
+
+| Mode | What runs | Protocol |
+|---|---|---|
+| `qxtns` | QXTns `contract_tn!(tn, plan)` on `CuArray{ComplexF32}`: the library call | cold run, 1 warm-up, 50 runs (at least 42 within the 10 min per plan) |
+| fresh | the same, the first contraction in a new Julia process | cold, 1 warm-up, 2 runs |
+| `mock` | the same loop with `contract_pair!(...; mock=true)`: QXTns' index bookkeeping, no data | 1 + 10 |
+| `authors`, `authors_mock` | the release's `contract_tn_rank_mock!` with `mock=false` / `true` (`funcions_article_IA.jl` l. 28–71) | 1 + 10 |
+| `decomp` | `contract_pair!` re-implemented step for step with a synchronisation and a clock after each phase | 1 + 10 |
+| `ome` | only the einsums: each step's `EinCode` on prepared operands of the step's shapes | 1 + 10 |
+| CPU | `qxtns` and `ome` on `Array{ComplexF32}` | 1 + 5 |
+
+**Where the time goes.** At these sizes QXTns' `contract_tn!` is host-bound (`p4q_timing.csv`, per circuit medians):
+
+- 0.5–0.7 ms per step on the pricing-call circuits, 1.3–4.1 ms on the DJ and portfolio circuits (whose large
+  hyperindex groups make QXTns' group search longer); 7–88× our CuPy dense times.
+- The einsums alone (`ome`) take 0.6–10% of it. In `decomp`, finding the contraction indices takes 43–53% of the
+  time, `tensor_data` 30–46% (it searches the hyperindex groups across the network; no operand was ever expanded or
+  re-reduced: `reshaped_operands` 0 for all 109 plans), the einsum including its synchronisation 2–17%, building the
+  result and updating the bond map 1–6%. The bookkeeping alone (`mock`) is 36–52% of a `qxtns` run; garbage
+  collection 5–19%.
+- With CPU arrays the same call takes 0.72–1.02× as long as on the GPU on 15 circuits (2.8× and 7.6× on the two
+  largest), so the GPU doesn't make QXTns faster here.
+- Identical plans take the same time to within 1–11% (`pricingcall_…_23`: 9.76, 9.85, 9.88 s, labels 1, 0.60, 0.83;
+  `_25`: 13.1, 14.2, 14.6 s, labels 0.55, 0.57, 0.45), later plans in a session slightly slower.
+- The release's mock column is reproduced step by step: on all 109 plans our run of `contract_tn_rank_mock!(…;
+  mock=true)` gives per-step times with a median step-by-step Spearman of 0.93 (0.73–0.98) against the file's, and
+  a median step of 286 µs against 312 µs (`p4q_steps.csv`). The file's totals contain more outlier steps (median 8
+  steps above 10× the plan's median step; the largest single step 1.43 s), consistent with compilation and garbage
+  collection in a long session.
+
+**Against the labels** (`p4q_summary.csv`; 15 circuits with labels, `pricingcall_…_25` included through its times;
+Spearman of −time with the label speedup per circuit, mean with a 95% interval from resampling circuits; best = the
+fastest plan is the labels' best):
+
+| Measure | Spearman median | mean [95%] | best |
+|---|---|---|---|
+| QXTns `contract_tn!` on the V100, mean of 50 (paper's protocol) | 0.40 | 0.28 [0.11, 0.46] | 5 / 15 |
+| same, median / min | 0.50 / 0.14 | 0.31 / 0.30 | 5 / 4 |
+| index bookkeeping alone (`decomp` indices phase) | 0.43 | 0.39 [0.14, 0.64] | 6 |
+| release's `contract_tn_rank_mock!`, mock (ours) | 0.43 | 0.28 [0.03, 0.53] | 6 |
+| release's mock column: sum / median step × steps | 0.29 / 0.60 | 0.30 / 0.46 [0.22, 0.66] | 6 / 4 |
+| first run in the session (compile included) | −0.14 | 0.06 [−0.21, 0.34] | 6 |
+| first run in a fresh process (24–124 s of it compilation) | −0.04 | 0.00 [−0.23, 0.26] | 2 |
+| warm runs in a fresh process (mean of 2) | 0.29 | 0.12 [−0.15, 0.40] | 6 |
+| einsums alone (`ome`) | −0.21 | −0.18 [−0.42, 0.06] | 2 |
+| CuPy dense / hyperindex (phase 4) | −0.07 / −0.29 | −0.14 / −0.16 | 2 / 3 |
+| log2 flops, hyperindex form | −0.18 | −0.15 [−0.28, −0.01] | 2 |
+| a re-measurement of the labels with their own noise (below) | 0.62 | 0.57 | 6.8 |
+
+Per circuit (`p4q_compare.csv`) QXTns agrees best on the DJ and portfolio circuits (Spearman 0.43–0.82, same best
+plan on all four) and least on `pricingcall_…_11`–`_21` (−0.29 to 0). Our measures fall in two groups that agree
+within themselves and not with each other (`p4q_measures.csv`, median within-circuit Spearman): the host-bound ones
+(`qxtns`, `authors`, `mock`, CPU `qxtns`: 0.75–0.93 between them) and the GPU-work ones (`ome`, CuPy: 0.43–0.57),
+with −0.2 to 0.2 between the groups. The release's mock column agrees with our host-bound totals only at 0.2–0.4,
+although it matches our mock run step by step: within a circuit our mock totals span a factor of 1.35 (median,
+slowest over fastest plan), while the file's outlier steps make its sums span 2.9 (median; up to 14).
+
+**Against the labels, all 223 circuits** (release data only, `p4q_label_stats.csv`, `p4q_label_flops.csv`). The
+labels correlate with the plan files' median mock time per step (Spearman of −time median 0.36, mean 0.29) and sum
+(0.20), and not with the work: log2 flops 0.04 (dense) and 0.11 (hyperindex), where a GPU-bound measurement would give
+a clearly negative value; no single feature exceeds 0.26 in absolute value. Over pairs of plans of one circuit, the
+plan with more hyperindex flops has the lower speedup in 39–47% of pairs at any flop difference up to 2^20. Where the
+larger plan has at least 2^36 flops, it is 60–65%, with a median speedup ratio of 1.02–1.12 for flop differences of
+2^1–2^11. In hyperindex form 1379 of the 1463 split plans have under 2^36 flops (counted as index combinations;
+with 8 real operations each, under 40 ms at the V100's peak FP32 rate, under 15 ms at the A6000's), the heaviest
+2^41.2 (1.4 s and 0.5 s). Host overhead at 0.5–4 ms per step over hundreds to thousands of steps is 0.1 s to tens of
+seconds, so for nearly every split plan the overhead is larger than the arithmetic in this stack.
+
+**How consistent the labels are** (`p4q_label_noise.csv`). The 17 MinFill copies and the 12 repeated listings are
+identical plans with their own speedups. From the copies, one measurement's log speedup has a noise level of
+σ ≈ 0.097 (robust estimate; 0.082 without the pricing-call circuits, whose copies are all slower than MinFill,
+0.45–0.97). A simulated re-measurement with that noise would agree with the labels to a within-circuit Spearman of
+0.64 (median, 223 circuits; 0.62 on the 15 QASM circuits) and pick the same best plan in 40% of circuits. No
+timing can be expected to reproduce the labels better than that.
+
+**MinFill normalisation** (`p4q_label_rescaled.csv`). In the 21 circuits with a MinFill speedup other than 1 that
+`measures.xlsx` covers, every split speedup is `measures.xlsx`'s times one constant, the MinFill row's split value
+(e.g. 686.13 for `QFT_6`, 0.546 for `RQC_4_5_39`). `measures.xlsx` has MinFill at 1 in all its circuits. So these
+circuits' order is the same in both files and only the normaliser differs; where it came from isn't in the release.
+
+**What this shows.**
+
+- Supported, moderately: on these circuits the labels follow host-side overhead of the authors' stack and not GPU
+  arithmetic. The library call, its index and `tensor_data` phases, our run of the release's mock function and the
+  release's mock column all correlate positively with the labels (means 0.28–0.46, 95% intervals above 0); the other
+  host-bound variants (bookkeeping alone, the release's non-mock function, CPU arrays, warm runs in a fresh process)
+  have positive means of 0.10–0.17 with intervals that include 0. Every GPU-work measure (einsums alone, CuPy,
+  flops) has a negative mean (−0.14 to −0.18). Over all 223 circuits the labels are unrelated to flops in either
+  form and related to the mock bookkeeping column. The authors' own library call, timed with the paper's protocol on
+  a V100, ranks plans like the labels with a mean Spearman of 0.28, about half of what a re-measurement of the labels
+  would give (0.57), and better than any GPU-work timing.
+- Not established: that the labels are exactly QXTns `contract_tn!` times. Our host is an Intel Xeon E5-2698 v4, theirs
+  an AMD EPYC 7282; host-bound times can rank plans differently on another CPU, and the session order, garbage
+  collection and the GPU (RTX A6000) are unknown. With 15 circuits of 3–7 plans and label noise of about 10% per plan,
+  the differences between the host-overhead measures (0.28–0.46 in mean Spearman) are within the uncertainty.
+- Not supported: compilation as the source. First runs, in a session or in a fresh process, include up to 125 s of
+  compilation and rank plans unlike the labels.
+- So the speedups in the splits mostly reflect how long QXTns' index and hyperindex bookkeeping takes per plan, which
+  depends on the network's hyperindex groups and the ranks of the intermediates, plus noise of about 10% per plan. A
+  ranker trained on them learns that, which may explain why it does well on these labels with features that don't
+  include the flop count (`log2_sum_flops` was discarded, Sec. 5.3).
+
+**Not done.** Timing on an AMD host or an RTX A6000. Plans outside the 17 QASM circuits (the other worker's full run
+covers CuPy only). A model of the bookkeeping cost per step from the network's hyperindex groups. A session that runs
+the circuits in the authors' order, which the release doesn't record.
+
 ## Phase 4 full run
 
 Numbers: `results/p4full_plans.csv` (one row per plan and mode: compiled size, predicted run time, skip reason),
@@ -700,4 +828,4 @@ circuits checked in phase 4 and the other families have no random gates.
 **Not done.** Skipped and out-of-memory plans were not split or sliced to fit, and the executor doesn't avoid
 `tensordot`'s copies. The RQC draws were not seeded. No cross-GPU tables. The labels' within-circuit order is
 reproduced weakly (Spearman median 0.14 in the primary mode) and the mock times correlate more; this run doesn't
-say why.
+say why; Phase 4b above tests what the labels track.
