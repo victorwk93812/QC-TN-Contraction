@@ -52,7 +52,9 @@ the largest effect on the published numbers come first.
   on CPU arrays is as fast or faster than on the GPU on 15 of the 17 circuits (0.72–1.02×). The library call, its bookkeeping phases and the release's mock function and
   column rank plans like the labels (mean within-circuit Spearman 0.28–0.46, 95% intervals above 0; other host-bound
   variants 0.10–0.17, intervals including 0); every GPU-work measure (einsums alone, our CuPy runs, flops) doesn't
-  (means −0.18 to −0.14). A re-measurement with the labels' own noise (entry 4) would reach about 0.57, so the host-overhead
+  (means −0.18 to −0.14). Over all circuits, our CuPy timings of 1623 plans agree with the labels at a median
+  within-circuit Spearman of 0.14 (hyperindex, 221 circuits) and 0.04 (dense), against 0.21 for the mock time column
+  on the same plans ([Phase 4 full run](deviations.md#phase-4-full-run), `results/p4full_summary.csv`). A re-measurement with the labels' own noise (entry 4) would reach about 0.57, so the host-overhead
   timings reproduce about half of the reproducible part. Over all 223 labelled circuits
   (`results/p4q_label_stats.csv`, `results/p4q_label_flops.csv`), the labels are unrelated to flops in dense or
   hyperindex form (median Spearman 0.04 and 0.11, positive meaning more flops go with larger speedups) and correlate

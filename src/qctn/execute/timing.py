@@ -10,7 +10,8 @@ with transfers, allocation, plan creation and JIT excluded. Here:
 - `warmup` untimed runs first, then `repeats` timed ones; every repeat's time is returned, so the statistic
   (mean as in the paper, median, min) is chosen later;
 - optionally `budget` seconds: no further repeats once the measured runs took that long in total (the count done
-  is recorded). The paper treats a plan over 10 min, or out of memory, as failed.
+  is recorded). The paper treats a plan over 10 min, or out of memory, as failed; `max_warmup` stops a plan
+  whose warm-up run is over a limit (status "slow").
 
 Intermediates are allocated inside the timed region (from CuPy's memory pool, which after the warm-up holds the
 blocks). Wall-clock time (`time.perf_counter` around the synchronised run) is recorded next to the event time.
@@ -41,7 +42,10 @@ class Timing:
 
 
 def time_program(program: Program, arrays: dict, *, backend: str = "cupy", dtype=np.complex64,
-                 warmup: int = 1, repeats: int = 50, budget: float | None = None) -> Timing:
+                 warmup: int = 1, repeats: int = 50, budget: float | None = None,
+                 max_warmup: float | None = None) -> Timing:
+    """`max_warmup`: if a warm-up run takes longer than this many seconds, stop with status "slow" and no
+    measured repeats (the paper fails a plan over 10 minutes)."""
     xp = get_backend(backend)
     out = Timing()
     gpu = backend == "cupy"
@@ -71,6 +75,10 @@ def time_program(program: Program, arrays: dict, *, backend: str = "cupy", dtype
         for _ in range(warmup):
             r, t, _w = once()
             out.warmup.append(t)
+            if max_warmup is not None and t > max_warmup:
+                out.status = "slow"
+                repeats = 0
+                break
         total = 0.0
         for _ in range(repeats):
             r, t, w = once()
