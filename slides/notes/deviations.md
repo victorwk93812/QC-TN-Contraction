@@ -7,6 +7,15 @@ are `s03a` (bags and width on a star, two orders) and `s03b` (treewidth on tree 
 A reproduction section (`rp1`–`rp5`, `deck/slides/repro.html`, Nov 2026) sits between Acts IV and V as deck slides 51–55,
 so from proposal slide 49 on (Act V) **deck number = proposal number + 7**; the deck now has 58 slides + B1–B6.
 It is not in the proposal: it records phase 1 of `src/README.md` (see `src/notes/deviations.md`).
+Four slides on phases 2–4b were added after `rp4` (user request, Nov 13 2026): `rp5` the release next to the paper (grouped from
+`src/notes/release-issues.md`), `rp6` what the labels track, `rp7` where a QXTns run spends its time, `rp8` identical plans with
+different labels; "Next" moved from `rp5` to `rp9`. The section is now deck slides 51–59, so from proposal slide 49 on (Act V)
+**deck number = proposal number + 11**; the deck has 62 slides + B1–B6. Traces R5–R8 (`traces/fig_repro.py`) read `results/p4q_*`,
+`p4full_*`, `p4_timing.csv` and `p2_split_sources.csv`. Where the slides' aggregation differs from the prose in
+`src/notes/deviations.md` the slide states its own definition: phase shares are summed over a circuit's plans (indices 47–52%,
+tensor_data 29–46%, einsum 2–15%; the note gives 43–53, 30–46, 2–17), CPU / GPU is the per-circuit median (0.74–1.02 on 15 circuits;
+the note gives 0.72), the einsums alone are 0.5–10% per plan (note: 0.6–10), and the mock column's step-by-step Spearman range
+rounds to 0.73–0.97 (note: 0.98).
 Proposal slide 10 (spectrum) became "Certificates that treewidth is large" (K₅ and the 4×4 grid); the spectrum
 picture moved into the primer. Act I is 9 min, Act II 9 min (F00).
 

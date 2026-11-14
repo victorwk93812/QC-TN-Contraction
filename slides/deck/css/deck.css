@@ -218,3 +218,24 @@
 .rp-list { font-size: 0.62em; line-height: 1.4; margin: 0; }
 .rp-list li { margin-bottom: 0.45em; }
 .rp-list li::marker { font-weight: 600; color: var(--ink-2); }
+/* phases 2–4b: what the labels measure (rp5–rp8). Host-side overhead = accent, GPU work = side-b, other = muted. */
+.rp-ci { stroke-width: 3.5; stroke-linecap: round; }
+.rp-ci.rp-host { stroke: var(--accent); } .rp-dot.rp-host { fill: var(--accent); }
+.rp-ci.rp-gpu { stroke: var(--side-b); } .rp-dot.rp-gpu { fill: var(--side-b); }
+.rp-ci.rp-compile { stroke: var(--muted-2); } .rp-dot.rp-compile { fill: var(--muted-2); }
+.rp-g-host { fill: var(--accent-ink); } .rp-g-gpu { fill: var(--side-b-ink); } .rp-g-compile { fill: var(--ink-2); }
+.rp-ceiling { stroke: var(--ink-2); stroke-width: 2.4; stroke-dasharray: 7 5; }
+.rp-ph { stroke: var(--bg); stroke-width: 1; }
+.rp-ph-indices { fill: var(--accent); } .rp-ph-data { fill: var(--accent); fill-opacity: 0.45; }
+.rp-ph-einsum { fill: var(--side-b); } .rp-ph-rest { fill: var(--muted); }
+.rp-lab { fill: var(--accent); stroke: var(--accent); stroke-width: 2.5; }
+.rp-lab.is-open { fill: var(--bg); }
+.rp-ours { fill: var(--side-b); fill-opacity: 0.8; stroke: var(--side-b-ink); stroke-width: 1; }
+.rp-groups { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 22px; align-items: start; }
+.rp-group { background: var(--surface); border-radius: 10px; padding: 12px 16px 6px; }
+.rp-group h3 { font-size: 0.66em; margin: 0 0 10px; }
+.rp-group.is-host h3 { color: var(--accent-ink); }
+.rp-group ul { font-size: 0.57em; line-height: 1.38; margin: 0 0 0 1em; padding: 0; }
+.rp-group li { margin-bottom: 0.5em; }
+.rp-facts { font-size: 0.56em; line-height: 1.4; margin: 0 0 0 1em; padding: 0; }
+.rp-facts li { margin-bottom: 0.55em; }
